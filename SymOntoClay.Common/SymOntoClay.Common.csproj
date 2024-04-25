@@ -1,17 +1,15 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>SymOntoClay.Common.xml</DocumentationFile>
-    <Version>0.5.4.1</Version>
+    <Version>0.5.4.2</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://symontoclay.github.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Symontoclay/SymOntoClay.Common</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <FileVersion></FileVersion>
-    <AssemblyVersion></AssemblyVersion>
+    <FileVersion>0.5.4.2</FileVersion>
+    <AssemblyVersion>0.5.4.2</AssemblyVersion>
   </PropertyGroup>
-
 </Project>
