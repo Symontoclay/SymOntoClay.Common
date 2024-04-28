@@ -25,8 +25,11 @@ using System.Linq;
 
 namespace SymOntoClay.Common.CollectionsHelpers
 {
-    public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
+    public static class EnumerableHelper
     {
-        return list == null || !list.Any();
+        public static bool IsNullOrEmpty<T>(this IEnumerable<T> list)
+        {
+            return list == null || !list.Any();
+        }
     }
 }
