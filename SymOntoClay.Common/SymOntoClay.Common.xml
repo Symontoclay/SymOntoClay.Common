@@ -4,6 +4,31 @@
         <name>SymOntoClay.Common</name>
     </assembly>
     <members>
+        <member name="T:SymOntoClay.Common.IObjectToBriefString">
+            <summary>
+            Provides methods for helping in generating debug string image.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Common.IObjectToBriefString.ToBriefString">
+            <summary>
+            Returns a string that represents the current instance in very short way.
+            </summary>
+            <returns>A string that represents the current instance in very short way.</returns>
+        </member>
+        <member name="M:SymOntoClay.Common.IObjectToBriefString.ToBriefString(System.UInt32)">
+            <summary>
+            Returns a string that represents the current instance in very short way.
+            </summary>
+            <param name="n">Count of spaces in the string for more comfortable representation.</param>
+            <returns>A string that represents the current instance in very short way.</returns>
+        </member>
+        <member name="M:SymOntoClay.Common.IObjectToBriefString.PropertiesToBriefString(System.UInt32)">
+            <summary>
+            Internal method which returns a string that represents the current instance in very short way without additional information, only pair name of property - value.
+            </summary>
+            <param name="n">Count of spaces in the string for more comfortable representation.</param>
+            <returns>A string that represents the current instance in very short way without additional information, only pair name of property - value.</returns>
+        </member>
         <member name="T:SymOntoClay.Common.IObjectToShortString">
             <summary>
             Provides methods for helping in generating debug string image.
