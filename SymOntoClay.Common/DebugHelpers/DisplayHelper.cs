@@ -21,6 +21,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 using SymOntoClay.Common.CollectionsHelpers;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -670,15 +672,45 @@ namespace SymOntoClay.Common.DebugHelpers
         public static void PrintExisting(this StringBuilder sb, uint n, string propName, object value)
         {
             var spaces = Spaces(n);
-            var mark = value == null ? "No" : "Yes";
+            var mark = GetPrintExistingMark(value);
             sb.AppendLine($"{spaces}{propName} = {mark}");
         }
 
-        public static void PrintExistingList<T>(this StringBuilder sb, uint n, string propName, IEnumerable<T> items)
+        private const string NoMark = "No";
+        private const string YesMark = "Yes";
+
+        private static string GetPrintExistingMark(object value)
         {
-            var spaces = Spaces(n);
-            var mark = items == null ? "No" : items.Any() ? "Yes" : "No";
-            sb.AppendLine($"{spaces}{propName} = {mark}");
+            if(value == null)
+            {
+                return NoMark;
+            }
+
+            var str = value as string;
+
+            if (str != null)
+            {
+                if(string.IsNullOrWhiteSpace(str))
+                {
+                    return NoMark;
+                }
+
+                return YesMark;
+            }
+
+            var enumerable = value as IEnumerable;
+
+            if(enumerable != null)
+            {
+                if(enumerable.GetEnumerator().MoveNext())
+                {
+                    return YesMark;
+                }
+
+                return NoMark;
+            }
+
+            return YesMark;
         }
 
         public static string PrintPODListProp<T>(this StringBuilder sb, uint n, string propName, IEnumerable<T> items)
