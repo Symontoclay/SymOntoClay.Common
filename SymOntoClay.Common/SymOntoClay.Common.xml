@@ -4,6 +4,22 @@
         <name>SymOntoClay.Common</name>
     </assembly>
     <members>
+        <member name="M:SymOntoClay.Common.Disposing.Disposable.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="P:SymOntoClay.Common.Disposing.Disposable.IsDisposed">
+            <inheritdoc/>
+        </member>
+        <member name="T:SymOntoClay.Common.Disposing.ISymOntoClayDisposable">
+            <summary>
+            Provides small improving of mechanism for releasing unmanaged resources by adding additional members.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Common.Disposing.ISymOntoClayDisposable.IsDisposed">
+            <summary>
+            Returns <c>true</c> if the instance was disposed, otherwise returns <c>false</c>.
+            </summary>
+        </member>
         <member name="T:SymOntoClay.Common.IObjectToBriefString">
             <summary>
             Provides methods for helping in generating debug string image.
