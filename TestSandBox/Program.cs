@@ -51,7 +51,10 @@ namespace TestSandBox
                             Name = "run",
                             SubItems = new List<BaseCommandLineArgument>
                             {
+                                new CommandLineArgument()
+                                {
 
+                                }
                             }
                         },
                         new CommandLineNamedGroup()
@@ -66,13 +69,10 @@ namespace TestSandBox
 
                             }
                         },
-                        new CommandLineNamedGroup()
+                        new CommandLineArgument()
                         {
                             Name = "install",
-                            SubItems = new List<BaseCommandLineArgument>
-                            {
-
-                            }
+                            Kind = KindOfCommandLineArgument.SingleValue
                         }
                     }
                 },
