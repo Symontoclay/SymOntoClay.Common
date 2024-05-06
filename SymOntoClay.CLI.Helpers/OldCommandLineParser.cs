@@ -22,13 +22,14 @@ SOFTWARE.*/
 
 namespace SymOntoClay.CLI.Helpers
 {
-    public class CommandLineParser
+    [Obsolete]
+    public class OldCommandLineParser
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public void RegisterArgument(CommandLineArgumentOptions argumentOptions)
+        public void RegisterArgument(OldCommandLineArgumentOptions argumentOptions)
         {
 #if DEBUG
             //_logger.Info($"argumentOptions = {argumentOptions}");
@@ -51,8 +52,8 @@ namespace SymOntoClay.CLI.Helpers
             }
         }
 
-        private Dictionary<string, CommandLineArgumentOptions> _argumentOptionsDict = new Dictionary<string, CommandLineArgumentOptions>();
-        private List<CommandLineArgumentOptions> _argumentOptionsList = new List<CommandLineArgumentOptions>();
+        private Dictionary<string, OldCommandLineArgumentOptions> _argumentOptionsDict = new Dictionary<string, OldCommandLineArgumentOptions>();
+        private List<OldCommandLineArgumentOptions> _argumentOptionsList = new List<OldCommandLineArgumentOptions>();
 
         public Dictionary<string, object> Parse(string[] args)
         {
@@ -77,7 +78,7 @@ namespace SymOntoClay.CLI.Helpers
             //_logger.Info($"defaultCommandLineArgumentOptions = {JsonConvert.SerializeObject(defaultCommandLineArgumentOptions, Formatting.Indented)}");
 #endif
 
-            CommandLineArgumentOptions currentCommandLineArgumentOptions = null;
+            OldCommandLineArgumentOptions currentCommandLineArgumentOptions = null;
             var currentArgumentName = string.Empty;
             var currentRawResultList = new List<object>();
 
@@ -183,16 +184,16 @@ namespace SymOntoClay.CLI.Helpers
 
                 switch (commandLineArgumentOptionsKind)
                 {
-                    case KindOfCommandLineArgument.Flag:
+                    case OldKindOfCommandLineArgument.Flag:
                         result[arg] = valuesList == null ? false : true;
                         break;
 
-                    case KindOfCommandLineArgument.SingleValue:
+                    case OldKindOfCommandLineArgument.SingleValue:
                         result[arg] = valuesList.FirstOrDefault();
                         break;
 
-                    case KindOfCommandLineArgument.List:
-                    case KindOfCommandLineArgument.SingleValueOrList:
+                    case OldKindOfCommandLineArgument.List:
+                    case OldKindOfCommandLineArgument.SingleValueOrList:
                         result[arg] = valuesList;
                         break;
 
@@ -204,7 +205,7 @@ namespace SymOntoClay.CLI.Helpers
             return result;
         }
 
-        private void InitCurrentArgument(string arg, ref CommandLineArgumentOptions currentCommandLineArgumentOptions, ref string currentArgumentName,
+        private void InitCurrentArgument(string arg, ref OldCommandLineArgumentOptions currentCommandLineArgumentOptions, ref string currentArgumentName,
             ref List<object> currentRawResultList, ref Dictionary<string, List<object>> rawResultDict)
         {
             currentCommandLineArgumentOptions = _argumentOptionsDict[arg];
@@ -213,7 +214,7 @@ namespace SymOntoClay.CLI.Helpers
             ref currentRawResultList, ref rawResultDict);
         }
 
-        private void FillUpCurrentArgumentVars(CommandLineArgumentOptions currentCommandLineArgumentOptions, ref string currentArgumentName,
+        private void FillUpCurrentArgumentVars(OldCommandLineArgumentOptions currentCommandLineArgumentOptions, ref string currentArgumentName,
             ref List<object> currentRawResultList, ref Dictionary<string, List<object>> rawResultDict)
         {
             currentArgumentName = currentCommandLineArgumentOptions.Name;
@@ -229,7 +230,7 @@ namespace SymOntoClay.CLI.Helpers
             }
         }
 
-        private void TryReadValues(string currentOriginalCommandLineArgumentOptionsName, Queue<string> argsList, CommandLineArgumentOptions currentCommandLineArgumentOptions, List<object> currentRawResultList)
+        private void TryReadValues(string currentOriginalCommandLineArgumentOptionsName, Queue<string> argsList, OldCommandLineArgumentOptions currentCommandLineArgumentOptions, List<object> currentRawResultList)
         {
 #if DEBUG
             //_logger.Info($"currentOriginalCommandLineArgumentOptionsName = '{currentOriginalCommandLineArgumentOptionsName}'");
@@ -263,15 +264,15 @@ namespace SymOntoClay.CLI.Helpers
 
                 switch (currentCommandLineArgumentOptionsKind)
                 {
-                    case KindOfCommandLineArgument.Flag:
+                    case OldKindOfCommandLineArgument.Flag:
                         throw new Exception($"Option '{currentOriginalCommandLineArgumentOptionsName}' is a flag. It cannot have an argument '{arg}'.");
 
-                    case KindOfCommandLineArgument.List:
-                    case KindOfCommandLineArgument.SingleValueOrList:
+                    case OldKindOfCommandLineArgument.List:
+                    case OldKindOfCommandLineArgument.SingleValueOrList:
                         currentRawResultList.Add(arg);
                         break;
 
-                    case KindOfCommandLineArgument.SingleValue:
+                    case OldKindOfCommandLineArgument.SingleValue:
                         currentRawResultList.Clear();
                         currentRawResultList.Add(arg);
                         break;

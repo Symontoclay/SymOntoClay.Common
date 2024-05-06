@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System.Text;
 using SymOntoClay.Common.DebugHelpers;
+using SymOntoClay.CLI.Helpers.CommandLineParsing;
 
 namespace TestSandBox
 {
@@ -12,7 +13,93 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstPrintExisting();
+            TstCommandLineParser();
+            //TstPrintExisting();
+        }
+
+        private static void TstCommandLineParser()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineMutuallyExclusiveSet()
+                {
+                    IsRequired = true,
+                    SubItems = new List<BaseCommandLineArgument>
+                    {
+                        new CommandLineArgument()
+                        {
+                            Name = "h",
+                            Aliases = new List<string>
+                            {
+                                "help"
+                            },
+                            Kind = KindOfCommandLineArgument.Flag
+                        },
+                        new CommandLineArgument()
+                        {
+                            Name = "version",
+                            Aliases = new List<string>
+                            {
+                                "v"
+                            },
+                            Kind = KindOfCommandLineArgument.Flag
+                        },
+                        new CommandLineNamedGroup()
+                        {
+                            Name = "run",
+                            SubItems = new List<BaseCommandLineArgument>
+                            {
+
+                            }
+                        },
+                        new CommandLineNamedGroup()
+                        {
+                            Name = "new",
+                            Aliases = new List<string>
+                            {
+                                "n"
+                            },
+                            SubItems = new List<BaseCommandLineArgument>
+                            {
+
+                            }
+                        },
+                        new CommandLineNamedGroup()
+                        {
+                            Name = "install",
+                            SubItems = new List<BaseCommandLineArgument>
+                            {
+
+                            }
+                        }
+                    }
+                },
+                new CommandLineGroup()
+                {
+                    SubItems = new List<BaseCommandLineArgument>
+                    {
+                        new CommandLineArgument()
+                        {
+                            Name = "-nologo",
+                            Kind = KindOfCommandLineArgument.Flag
+                        },
+                        new CommandLineArgument()
+                        {
+                            Name = "-timeout",
+                            Kind = KindOfCommandLineArgument.SingleValue
+                        },
+                        new CommandLineArgument()
+                        {
+                            Name = "-nlp",
+                            Kind = KindOfCommandLineArgument.Flag
+                        }
+                    }
+                }
+            });
+
+            _logger.Info("End");
         }
 
         private static void TstPrintExisting()

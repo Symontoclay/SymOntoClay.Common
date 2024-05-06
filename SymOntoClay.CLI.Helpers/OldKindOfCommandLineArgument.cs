@@ -22,7 +22,8 @@ SOFTWARE.*/
 
 namespace SymOntoClay.CLI.Helpers
 {
-    public enum KindOfCommandLineArgument
+    [Obsolete]
+    public enum OldKindOfCommandLineArgument
     {
         Flag,
         SingleValue,

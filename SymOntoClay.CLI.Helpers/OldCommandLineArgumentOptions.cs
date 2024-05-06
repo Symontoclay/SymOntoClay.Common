@@ -26,12 +26,13 @@ using System.Text;
 
 namespace SymOntoClay.CLI.Helpers
 {
-    public class CommandLineArgumentOptions : IObjectToString
+    [Obsolete]
+    public class OldCommandLineArgumentOptions : IObjectToString
     {
         public string Name { get; set; }
         public List<string> Aliases { get; set; }
         public List<string> Names => new List<string> { Name }.Concat(Aliases ?? new List<string>()).ToList();
-        public KindOfCommandLineArgument Kind { get; set; }
+        public OldKindOfCommandLineArgument Kind { get; set; }
         public bool IsUnique { get; set; }
         public bool IsDefault { get; set; }
 
