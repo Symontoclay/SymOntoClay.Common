@@ -4,5 +4,6 @@
     {
         public string Name { get; set; }
         public List<string> Aliases { get; set; }
+        public bool UseIfCommandLineIsEmpty { get; set; }
     }
 }

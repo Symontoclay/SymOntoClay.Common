@@ -21,83 +21,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
-            {
-                new CommandLineMutuallyExclusiveSet()
-                {
-                    IsRequired = true,
-                    SubItems = new List<BaseCommandLineArgument>
-                    {
-                        new CommandLineArgument()
-                        {
-                            Name = "h",
-                            Aliases = new List<string>
-                            {
-                                "help"
-                            },
-                            Kind = KindOfCommandLineArgument.Flag
-                        },
-                        new CommandLineArgument()
-                        {
-                            Name = "version",
-                            Aliases = new List<string>
-                            {
-                                "v"
-                            },
-                            Kind = KindOfCommandLineArgument.Flag
-                        },
-                        new CommandLineNamedGroup()
-                        {
-                            Name = "run",
-                            SubItems = new List<BaseCommandLineArgument>
-                            {
-                                new CommandLineArgument()
-                                {
-
-                                }
-                            }
-                        },
-                        new CommandLineNamedGroup()
-                        {
-                            Name = "new",
-                            Aliases = new List<string>
-                            {
-                                "n"
-                            },
-                            SubItems = new List<BaseCommandLineArgument>
-                            {
-
-                            }
-                        },
-                        new CommandLineArgument()
-                        {
-                            Name = "install",
-                            Kind = KindOfCommandLineArgument.SingleValue
-                        }
-                    }
-                },
-                new CommandLineGroup()
-                {
-                    SubItems = new List<BaseCommandLineArgument>
-                    {
-                        new CommandLineArgument()
-                        {
-                            Name = "-nologo",
-                            Kind = KindOfCommandLineArgument.Flag
-                        },
-                        new CommandLineArgument()
-                        {
-                            Name = "-timeout",
-                            Kind = KindOfCommandLineArgument.SingleValue
-                        },
-                        new CommandLineArgument()
-                        {
-                            Name = "-nlp",
-                            Kind = KindOfCommandLineArgument.Flag
-                        }
-                    }
-                }
-            });
+            var handler = new TstCommandLineParserHandler();
+            handler.Run();
 
             _logger.Info("End");
         }

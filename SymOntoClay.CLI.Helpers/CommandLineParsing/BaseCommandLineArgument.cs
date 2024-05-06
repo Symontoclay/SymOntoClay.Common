@@ -3,5 +3,6 @@
     public abstract class BaseCommandLineArgument
     {
         public bool IsRequired { get; set; }
+        public string Target { get; set; }
     }
 }

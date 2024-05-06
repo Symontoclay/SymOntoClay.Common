@@ -6,6 +6,7 @@
         MutuallyExclusiveSet,
         Flag,
         SingleValue,
+        FlagOrSingleValue,
         List,
         SingleValueOrList
     }
