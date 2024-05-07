@@ -13,6 +13,7 @@ namespace TestSandBox
 
             CaseSymOntoClayCLI();
             CaseUpdateInstalledNuGetPackagesInAllCSharpProjects();
+            CaseLogFileBuilderApp();
 
             _logger.Info("End");
         }
@@ -168,6 +169,105 @@ namespace TestSandBox
                     Target = "PackageVersion",
                     Kind = KindOfCommandLineArgument.SingleValue,
                     Index = 1
+                }
+            });
+
+            _logger.Info("End");
+        }
+
+        private void CaseLogFileBuilderApp()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineMutuallyExclusiveSet()
+                {
+                    IsRequired = true,
+                    SubItems = new List<BaseCommandLineArgument>
+                    {
+                        new CommandLineArgument()
+                        {
+                            Name = "h",
+                            Aliases = new List<string>
+                            {
+                                "help"
+                            },
+                            Kind = KindOfCommandLineArgument.Flag,
+                            UseIfCommandLineIsEmpty = true
+                        },
+                        new CommandLineGroup()
+                        {
+                            SubItems = new List<BaseCommandLineArgument>
+                            {
+                                new CommandLineArgument()
+                                {
+                                    Name = "--input",
+                                    Aliases = new List<string>()
+                                    {
+                                        "--i"
+                                    },
+                                    Kind = KindOfCommandLineArgument.SingleValue,
+                                    Index = 0
+                                },
+new CommandLineArgumentOptions
+            {
+                Name = "--output",
+                Aliases = new List<string>
+                {
+                    "--o"
+                },
+                Kind = KindOfCommandLineArgument.SingleValue
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--nologo",
+                Kind = KindOfCommandLineArgument.Flag
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--target-nodeid",
+                Kind = KindOfCommandLineArgument.SingleValue
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--target-threadid",
+                Kind = KindOfCommandLineArgument.SingleValue
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--split-by-nodes",
+                Kind = KindOfCommandLineArgument.Flag
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--split-by-threads",
+                Kind = KindOfCommandLineArgument.Flag
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--configuration",
+                Aliases = new List<string>
+                {
+                    "--c",
+                    "--cfg",
+                    "--config"
+                },
+                Kind = KindOfCommandLineArgument.SingleValue
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--html",
+                Kind = KindOfCommandLineArgument.Flag
+            },
+new CommandLineArgumentOptions
+            {
+                Name = "--abs-url",
+                Kind = KindOfCommandLineArgument.Flag
+            }
+                            }
+                        }
+                    }
                 }
             });
 
