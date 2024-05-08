@@ -16,6 +16,18 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
             _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
 #endif
+
+            _сommandLineVirtualRootGroup = new CommandLineVirtualRootGroup
+            {
+                SubItems = commandLineArguments
+            };
+
+#if DEBUG
+            _logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
+#endif
         }
+
+        private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
+        private readonly BaseCommandLineArgument _defaultCommandLineArgumentOptions;
     }
 }
