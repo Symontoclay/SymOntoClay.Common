@@ -2,6 +2,7 @@
 {
     public enum KindOfCommandLineArgument
     {
+        VirtualRootGroup,
         NamedGroup,
         Group,
         MutuallyExclusiveSet,
