@@ -7,7 +7,31 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     {
         public string Name { get; set; }
         public List<string> Aliases { get; set; }
-        public List<string> Names => new List<string> { Name }.Concat(Aliases ?? new List<string>()).ToList();
+        public List<string> Names
+        {
+            get
+            {
+                if(string.IsNullOrWhiteSpace(Name) && Aliases == null)
+                {
+                    return null;
+                }
+
+                var result = new List<string>();
+
+                if(!string.IsNullOrWhiteSpace(Name))
+                {
+                    result.Add(Name);
+                }
+
+                if(Aliases != null)
+                {
+                    result.AddRange(Aliases);
+                }
+
+                return result;
+            }
+        }
+
         public bool UseIfCommandLineIsEmpty { get; set; }
         public bool IsUnique { get; set; }
         public bool IsDefault { get; set; }

@@ -5,7 +5,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     public interface IInternalBaseCommandLineArgument: IObjectToString
     {
         KindOfCommandLineArgument Kind { get; }
-        string Target { get; }      
+        string Target { get; }
         string Name { get; }
         IReadOnlyList<string> Aliases { get; }
         IReadOnlyList<string> Names { get; }
