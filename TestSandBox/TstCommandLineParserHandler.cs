@@ -210,61 +210,65 @@ namespace TestSandBox
                                     Kind = KindOfCommandLineArgument.SingleValue,
                                     Index = 0
                                 },
-new CommandLineArgumentOptions
-            {
-                Name = "--output",
-                Aliases = new List<string>
-                {
-                    "--o"
-                },
-                Kind = KindOfCommandLineArgument.SingleValue
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--nologo",
-                Kind = KindOfCommandLineArgument.Flag
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--target-nodeid",
-                Kind = KindOfCommandLineArgument.SingleValue
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--target-threadid",
-                Kind = KindOfCommandLineArgument.SingleValue
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--split-by-nodes",
-                Kind = KindOfCommandLineArgument.Flag
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--split-by-threads",
-                Kind = KindOfCommandLineArgument.Flag
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--configuration",
-                Aliases = new List<string>
-                {
-                    "--c",
-                    "--cfg",
-                    "--config"
-                },
-                Kind = KindOfCommandLineArgument.SingleValue
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--html",
-                Kind = KindOfCommandLineArgument.Flag
-            },
-new CommandLineArgumentOptions
-            {
-                Name = "--abs-url",
-                Kind = KindOfCommandLineArgument.Flag
-            }
+                                new CommandLineArgument
+                                {
+                                    Name = "--output",
+                                    Aliases = new List<string>
+                                    {
+                                        "--o"
+                                    },
+                                    Kind = KindOfCommandLineArgument.SingleValue
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--nologo",
+                                    Kind = KindOfCommandLineArgument.Flag
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--target-nodeid",
+                                    Kind = KindOfCommandLineArgument.SingleValue
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--target-threadid",
+                                    Kind = KindOfCommandLineArgument.SingleValue
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--split-by-nodes",
+                                    Kind = KindOfCommandLineArgument.Flag
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--split-by-threads",
+                                    Kind = KindOfCommandLineArgument.Flag
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--configuration",
+                                    Aliases = new List<string>
+                                    {
+                                        "--c",
+                                        "--cfg",
+                                        "--config"
+                                    },
+                                    Kind = KindOfCommandLineArgument.SingleValue
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--html",
+                                    Kind = KindOfCommandLineArgument.Flag
+                                },
+                                new CommandLineArgument
+                                {
+                                    Name = "--abs-url",
+                                    Kind = KindOfCommandLineArgument.Flag,
+                                    Requires = new List<string>
+                                    {
+                                        "--html"
+                                    }
+                                }
                             }
                         }
                     }
