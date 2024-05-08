@@ -14,6 +14,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         protected override IReadOnlyList<IInternalBaseCommandLineArgument> NGetSubItems() => SubItems;
 
         /// <inheritdoc/>
+        protected override uint? NGetIndex() => null;
+
+        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);

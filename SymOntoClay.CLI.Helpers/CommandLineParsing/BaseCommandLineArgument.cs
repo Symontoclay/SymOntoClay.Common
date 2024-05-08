@@ -10,6 +10,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         public string Target { get; set; }
         public List<string> Requires { get; set; }
 
+        IReadOnlyList<string> IInternalBaseCommandLineArgument.Requires => Requires;
+
         protected abstract KindOfCommandLineArgument NGetKind();
 
         KindOfCommandLineArgument IInternalBaseCommandLineArgument.Kind => NGetKind();
@@ -18,7 +20,33 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         IReadOnlyList<IInternalBaseCommandLineArgument> IInternalBaseCommandLineArgument.SubItems => NGetSubItems();
 
-        protected static IReadOnlyList<IInternalBaseCommandLineArgument> _emptySubItems = new List<IInternalBaseCommandLineArgument>();
+        protected abstract string NGetName();
+
+        string IInternalBaseCommandLineArgument.Name => NGetName();
+
+        protected abstract IReadOnlyList<string> NGetAliases();
+
+        IReadOnlyList<string> IInternalBaseCommandLineArgument.Aliases => NGetAliases();
+
+        protected abstract IReadOnlyList<string> NGetNames();
+
+        IReadOnlyList<string> IInternalBaseCommandLineArgument.Names => NGetNames();
+
+        protected abstract uint? NGetIndex();
+
+        uint? IInternalBaseCommandLineArgument.Index => NGetIndex();
+
+        protected abstract bool NGetUseIfCommandLineIsEmpty();
+
+        bool IInternalBaseCommandLineArgument.UseIfCommandLineIsEmpty => NGetUseIfCommandLineIsEmpty();
+
+        protected abstract bool NGetIsUnique();
+
+        bool IInternalBaseCommandLineArgument.IsUnique => NGetIsUnique();
+
+        protected abstract bool NGetIsDefault();
+
+        bool IInternalBaseCommandLineArgument.IsDefault => NGetIsDefault();
 
         /// <inheritdoc/>
         public override string ToString()

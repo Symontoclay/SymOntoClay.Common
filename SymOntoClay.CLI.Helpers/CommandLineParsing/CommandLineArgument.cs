@@ -12,6 +12,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         protected override KindOfCommandLineArgument NGetKind() => Kind;
 
         /// <inheritdoc/>
+        protected override uint? NGetIndex() => Index;
+
+        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);

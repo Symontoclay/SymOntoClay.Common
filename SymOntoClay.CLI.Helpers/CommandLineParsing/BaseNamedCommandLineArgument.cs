@@ -13,10 +13,25 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         public bool IsDefault { get; set; }
 
         /// <inheritdoc/>
-        protected override IReadOnlyList<IInternalBaseCommandLineArgument> NGetSubItems()
-        {
-            return _emptySubItems;
-        }
+        protected override IReadOnlyList<IInternalBaseCommandLineArgument> NGetSubItems() => null;
+
+        /// <inheritdoc/>
+        protected override string NGetName() => Name;
+
+        /// <inheritdoc/>
+        protected override IReadOnlyList<string> NGetAliases() => Aliases;
+
+        /// <inheritdoc/>
+        protected override IReadOnlyList<string> NGetNames() => Names;
+
+        /// <inheritdoc/>
+        protected override bool NGetUseIfCommandLineIsEmpty() => UseIfCommandLineIsEmpty;
+
+        /// <inheritdoc/>
+        protected override bool NGetIsUnique() => IsUnique;
+
+        /// <inheritdoc/>
+        protected override bool NGetIsDefault() => IsDefault;
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
