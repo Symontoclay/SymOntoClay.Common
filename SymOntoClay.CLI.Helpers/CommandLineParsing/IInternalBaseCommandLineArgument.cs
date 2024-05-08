@@ -14,7 +14,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         bool IsRequired { get; }
         bool UseIfCommandLineIsEmpty { get; }
         bool IsUnique { get; }
-        bool IsDefault { get; }
         IReadOnlyList<IInternalBaseCommandLineArgument> SubItems { get; }
     }
 }

@@ -34,7 +34,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         public bool UseIfCommandLineIsEmpty { get; set; }
         public bool IsUnique { get; set; }
-        public bool IsDefault { get; set; }
 
         /// <inheritdoc/>
         protected override IReadOnlyList<IInternalBaseCommandLineArgument> NGetSubItems() => null;
@@ -55,9 +54,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         protected override bool NGetIsUnique() => IsUnique;
 
         /// <inheritdoc/>
-        protected override bool NGetIsDefault() => IsDefault;
-
-        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
@@ -68,7 +64,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             sb.PrintPODList(n, nameof(Names), Names);
             sb.AppendLine($"{spaces}{nameof(UseIfCommandLineIsEmpty)} = {UseIfCommandLineIsEmpty}");
             sb.AppendLine($"{spaces}{nameof(IsUnique)} = {IsUnique}");
-            sb.AppendLine($"{spaces}{nameof(IsDefault)} = {IsDefault}");
 
             sb.Append(base.PropertiesToString(n));
 

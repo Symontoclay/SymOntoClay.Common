@@ -44,10 +44,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         bool IInternalBaseCommandLineArgument.IsUnique => NGetIsUnique();
 
-        protected abstract bool NGetIsDefault();
-
-        bool IInternalBaseCommandLineArgument.IsDefault => NGetIsDefault();
-
         /// <inheritdoc/>
         public override string ToString()
         {

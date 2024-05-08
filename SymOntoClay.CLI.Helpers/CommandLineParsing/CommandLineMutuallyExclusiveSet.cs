@@ -14,9 +14,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         protected override uint? NGetIndex() => null;
 
         /// <inheritdoc/>
-        protected override bool NGetIsDefault() => false;
-
-        /// <inheritdoc/>
         protected override bool NGetIsUnique() => false;
 
         /// <inheritdoc/>
