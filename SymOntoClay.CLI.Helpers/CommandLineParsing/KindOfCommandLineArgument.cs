@@ -3,6 +3,7 @@
     public enum KindOfCommandLineArgument
     {
         NamedGroup,
+        Group,
         MutuallyExclusiveSet,
         Flag,
         SingleValue,

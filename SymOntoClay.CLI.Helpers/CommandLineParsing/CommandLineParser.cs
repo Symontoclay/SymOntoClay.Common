@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.Common.DebugHelpers;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
@@ -13,6 +14,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
 #if DEBUG
             _logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
+            _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
 #endif
         }
     }
