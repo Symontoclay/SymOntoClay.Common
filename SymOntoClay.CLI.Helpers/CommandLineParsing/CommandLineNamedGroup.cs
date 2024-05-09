@@ -1,4 +1,5 @@
-﻿using SymOntoClay.Common.DebugHelpers;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
@@ -6,6 +7,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     public class CommandLineNamedGroup: BaseNamedCommandLineArgument
     {
         public List<BaseCommandLineArgument> SubItems { get; set; }
+
+        /// <inheritdoc/>
+        public override void Accept(ICommandLineParsingVisitor visitor)
+        {
+            visitor.VisitCommandLineNamedGroup(this);
+        }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)

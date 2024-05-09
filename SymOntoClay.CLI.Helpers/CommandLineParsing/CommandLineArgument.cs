@@ -1,4 +1,5 @@
-﻿using SymOntoClay.Common.DebugHelpers;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
@@ -7,6 +8,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     {
         public KindOfCommandLineArgument Kind { get; set; }
         public uint? Index { get; set; }
+
+        /// <inheritdoc/>
+        public override void Accept(ICommandLineParsingVisitor visitor)
+        {
+            visitor.VisitCommandLineArgument(this);
+        }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
