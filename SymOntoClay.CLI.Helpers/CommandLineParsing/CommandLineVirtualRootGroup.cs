@@ -8,30 +8,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         public List<BaseCommandLineArgument> SubItems { get; set; }
 
         /// <inheritdoc/>
-        protected override IReadOnlyList<string> NGetAliases() => null;
-
-        /// <inheritdoc/>
-        protected override uint? NGetIndex() => null;
-
-        /// <inheritdoc/>
-        protected override bool NGetIsUnique() => false;
-
-        /// <inheritdoc/>
-        protected override KindOfCommandLineArgument NGetKind() => KindOfCommandLineArgument.VirtualRootGroup;
-
-        /// <inheritdoc/>
-        protected override string NGetName() => null;
-
-        /// <inheritdoc/>
-        protected override IReadOnlyList<string> NGetNames() => null;
-
-        /// <inheritdoc/>
-        protected override IReadOnlyList<IInternalBaseCommandLineArgument> NGetSubItems() => SubItems;
-
-        /// <inheritdoc/>
-        protected override bool NGetUseIfCommandLineIsEmpty() => false;
-
-        /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
