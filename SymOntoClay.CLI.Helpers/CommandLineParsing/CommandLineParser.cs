@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
+using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
@@ -25,6 +27,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
             _logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
 #endif
+
+            var useIfCommandLineIsEmptyVisitor = new UseIfCommandLineIsEmptyVisitor();
+
+            var defaultElementsList = useIfCommandLineIsEmptyVisitor.Run(_сommandLineVirtualRootGroup);
+
+#if DEBUG
+            _logger.Info($"defaultElementsList = {defaultElementsList.WriteListToString()}");
+#endif
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
@@ -36,6 +46,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"args = {args.WritePODListToString()}");
 #endif
 
+            if(args.IsNullOrEmpty())
+            {
+                return ProcessEmptyArgs();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        private CommandLineParsingResult ProcessEmptyArgs()
+        {
             throw new NotImplementedException();
         }
     }
