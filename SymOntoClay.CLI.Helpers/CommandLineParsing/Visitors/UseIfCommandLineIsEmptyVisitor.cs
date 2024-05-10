@@ -23,7 +23,38 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
                 _result = new List<BaseNamedCommandLineArgument>();
             }
 
-            throw new NotImplementedException();
+            rootElement.Accept(this);
+
+            var result = _result;
+            _result = null;
+
+            return result;
+        }
+
+        /// <inheritdoc/>
+        protected override void OnVisitCommandLineArgument(CommandLineArgument element)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            if(element.UseIfCommandLineIsEmpty)
+            {
+                _result.Add(element);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override void OnVisitCommandLineNamedGroup(CommandLineNamedGroup element)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            if (element.UseIfCommandLineIsEmpty)
+            {
+                _result.Add(element);
+            }
         }
     }
 }

@@ -70,6 +70,12 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineVirtualRootGroup)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineArgument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineNamedGroup)">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.ToString">
             <inheritdoc/>
         </member>
