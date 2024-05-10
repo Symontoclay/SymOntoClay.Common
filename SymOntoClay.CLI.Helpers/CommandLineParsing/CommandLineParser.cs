@@ -29,5 +29,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
         private readonly BaseCommandLineArgument _defaultCommandLineArgumentOptions;
+
+        public CommandLineParsingResult Parse(string[] args)
+        {
+#if DEBUG
+            _logger.Info($"args = {args.WritePODListToString()}");
+#endif
+
+            throw new NotImplementedException();
+        }
     }
 }

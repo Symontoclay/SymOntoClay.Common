@@ -149,6 +149,12 @@ namespace TestSandBox
                 }
             });
 
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
             _logger.Info("End");
         }
 
@@ -171,6 +177,12 @@ namespace TestSandBox
                     Index = 1
                 }
             });
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
 
             _logger.Info("End");
         }
@@ -274,6 +286,12 @@ namespace TestSandBox
                     }
                 }
             });
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
 
             _logger.Info("End");
         }
