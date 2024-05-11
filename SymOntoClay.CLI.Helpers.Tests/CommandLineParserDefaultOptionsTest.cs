@@ -17,10 +17,23 @@ namespace SymOntoClay.CLI.Helpers.Tests
         {
             var args = new List<string>();
 
-            var exception = Assert.Catch<DefaultOptionException>(() => { var parser = CreateParserWithTwoDefaultOptions();
+            var exception = Assert.Catch<DefaultOptionException>(() => { var parser = new CommandLineParser(GetTwoDefaultOptions());
                 parser.Parse(args.ToArray()); });
 
             Assert.That(exception.Message, Is.EqualTo("Too many options set as default: 'help', 'run'. There must be only one default option."));
+        }
+
+        [Test]
+        public void TwoDefaultOptions_EmptyCommandLine_ErrorsList()
+        {
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(GetTwoDefaultOptions(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Too many options set as default: 'help', 'run'. There must be only one default option."));
         }
 
         [Test]
@@ -29,16 +42,29 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>();
 
             var exception = Assert.Catch<DefaultOptionException>(() => {
-                var parser = CreateParserWithOneWrongDefaultOption();
+                var parser = new CommandLineParser(GetOneWrongDefaultOption());
                 parser.Parse(args.ToArray());
             });
 
             Assert.That(exception.Message, Is.EqualTo("SingleValue must not be used as default option."));
         }
 
-        private CommandLineParser CreateParserWithTwoDefaultOptions()
+        [Test]
+        public void OneWrongDefaultOption_EmptyCommandLine_ErrorsList()
         {
-            return new CommandLineParser(new List<BaseCommandLineArgument>()
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(GetOneWrongDefaultOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("SingleValue must not be used as default option."));
+        }
+
+        private List<BaseCommandLineArgument> GetTwoDefaultOptions()
+        {
+            return new List<BaseCommandLineArgument>()
             {
                 new CommandLineArgument()
                 {
@@ -60,12 +86,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Kind = KindOfCommandLineArgument.Flag,
                     UseIfCommandLineIsEmpty = true
                 }
-            });
+            };
         }
 
-        private CommandLineParser CreateParserWithOneWrongDefaultOption()
+        private List<BaseCommandLineArgument> GetOneWrongDefaultOption()
         {
-            return new CommandLineParser(new List<BaseCommandLineArgument>()
+            return new List<BaseCommandLineArgument>()
             {
                 new CommandLineArgument()
                 {
@@ -86,7 +112,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     },
                     Kind = KindOfCommandLineArgument.Flag
                 }
-            });
+            };
         }
     }
 }
