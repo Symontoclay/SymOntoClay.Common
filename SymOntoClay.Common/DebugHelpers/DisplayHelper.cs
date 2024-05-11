@@ -359,7 +359,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintObjDict_1_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
+        public static void PrintObjDict_1_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<K, V>> items)
             where K : IObjectToString
             where V : IObjectToString
         {
@@ -489,7 +489,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintShortObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
+        public static void PrintShortObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<K, V>> items)
             where K : struct
             where V : IObjectToShortString
         {
@@ -520,7 +520,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintBriefObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
+        public static void PrintBriefObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<K, V>> items)
             where K : struct
             where V : IObjectToBriefString
         {
@@ -551,7 +551,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IDictionary<string, V> items)
+        public static void PrintObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
             where V : IObjectToString
         {
             var spaces = Spaces(n);
@@ -581,7 +581,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintShortObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IDictionary<string, V> items)
+        public static void PrintShortObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
             where V : IObjectToShortString
         {
             var spaces = Spaces(n);
@@ -611,7 +611,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintBriefObjDict_3_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<string, V> items)
+        public static void PrintBriefObjDict_3_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
             where V : IObjectToBriefString
         {
             var spaces = Spaces(n);
@@ -641,7 +641,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintPODDictProp<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
+        public static void PrintPODDictProp<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<K, V>> items)
         {
             var spaces = Spaces(n);
             var nextN = n + IndentationStep;

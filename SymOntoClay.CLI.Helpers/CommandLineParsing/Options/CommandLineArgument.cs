@@ -10,6 +10,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public uint? Index { get; set; }
 
         /// <inheritdoc/>
+        public override KindOfCommandLineArgument GetKind()
+        {
+            return Kind;
+        }
+
+        /// <inheritdoc/>
         public override void Accept(ICommandLineParsingVisitor visitor)
         {
             visitor.VisitCommandLineArgument(this);

@@ -25,10 +25,16 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseNamedCommandLineArgument.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.GetKind">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.GetKind">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
@@ -37,16 +43,25 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.GetKind">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.GetKind">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.GetKind">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">

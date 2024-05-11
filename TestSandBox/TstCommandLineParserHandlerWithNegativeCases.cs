@@ -12,7 +12,88 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case1();
+            Case2_a();
+            //Case2();
+            //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void Case2_a()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "help",
+                        Aliases = new List<string>
+                        {
+                            "h"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        UseIfCommandLineIsEmpty = true
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "run",
+                        Aliases = new List<string>
+                        {
+                            "r"
+                        },
+                        Kind = KindOfCommandLineArgument.Flag
+                    }
+                }, true);
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void Case2()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "help",
+                        Aliases = new List<string>
+                        {
+                            "h"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        UseIfCommandLineIsEmpty = true
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "run",
+                        Aliases = new List<string>
+                        {
+                            "r"
+                        },
+                        Kind = KindOfCommandLineArgument.Flag
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+            }
 
             _logger.Info("End");
         }
@@ -21,36 +102,42 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            try
             {
-                new CommandLineArgument()
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
                 {
-                    Name = "h",
-                    Aliases = new List<string>
+                    new CommandLineArgument()
                     {
-                        "help"
+                        Name = "help",
+                        Aliases = new List<string>
+                        {
+                            "h"
+                        },
+                        Kind = KindOfCommandLineArgument.Flag,
+                        UseIfCommandLineIsEmpty = true
                     },
-                    Kind = KindOfCommandLineArgument.Flag,
-                    UseIfCommandLineIsEmpty = true
-                },
-                new CommandLineArgument()
-                {
-                    Name = "r",
-                    Aliases = new List<string>
+                    new CommandLineArgument()
                     {
-                        "run"
-                    },
-                    Kind = KindOfCommandLineArgument.Flag,
-                    UseIfCommandLineIsEmpty = true
-                }
+                        Name = "run",
+                        Aliases = new List<string>
+                        {
+                            "r"
+                        },
+                        Kind = KindOfCommandLineArgument.Flag,
+                        UseIfCommandLineIsEmpty = true
+                    }
+                });
 
-            });
+                var args = new List<string>();
 
-            var args = new List<string>();
+                var result = parser.Parse(args.ToArray());
 
-            var result = parser.Parse(args.ToArray());
-
-            _logger.Info($"result = {result}");
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+            }
 
             _logger.Info("End");
         }

@@ -6,12 +6,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
     public class CommandLineParsingResult : IObjectToString
     {
+        public IReadOnlyDictionary<string, object> Params { get; set; }
+        public IReadOnlyList<string> Errors { get; set; }
+
         /// <inheritdoc/>
         public override string ToString()
         {
             return ToString(0u);
         }
-
+        
         /// <inheritdoc/>
         public string ToString(uint n)
         {
@@ -23,6 +26,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
+            sb.PrintPODDictProp(n, nameof(Params), Params);
+            sb.PrintPODList(n, nameof(Errors), Errors);
             return sb.ToString();
         }
     }

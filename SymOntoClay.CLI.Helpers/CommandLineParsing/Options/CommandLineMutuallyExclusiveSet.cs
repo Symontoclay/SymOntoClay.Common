@@ -9,6 +9,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public List<BaseCommandLineArgument> SubItems { get; set; }
 
         /// <inheritdoc/>
+        public override KindOfCommandLineArgument GetKind()
+        {
+            return KindOfCommandLineArgument.MutuallyExclusiveSet;
+        }
+
+        /// <inheritdoc/>
         public override void Accept(ICommandLineParsingVisitor visitor)
         {
             visitor.VisitCommandLineMutuallyExclusiveSet(this);

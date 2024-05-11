@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
@@ -13,7 +15,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
-        public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments) 
+        public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
+            : this(commandLineArguments, false)
+        {
+        }
+
+        public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments, bool initWithoutExceptions)
         {
 #if DEBUG
             _logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
@@ -39,20 +46,67 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             if(defaultElementsList.Count > 1)
             {
-                throw new Exception($"Too many options set as default: {string.Join(", ", defaultElementsList.Select(p => $"'{p.Name}'"))}. There can be only one default option.");
+                var errorMessage = $"Too many options set as default: {string.Join(", ", defaultElementsList.Select(p => $"'{p.Name}'"))}. There must be only one default option.";
+                
+                if(initWithoutExceptions)
+                {
+                    _initialErrors.Add(errorMessage);
+                }
+                else
+                {
+                    throw new DefaultOptionException(errorMessage);
+                }                
+            }
+            else
+            {
+                _defaultCommandLineArgumentOptions = defaultElementsList.SingleOrDefault();
+
+                if (_defaultCommandLineArgumentOptions != null)
+                {
+                    var kind = _defaultCommandLineArgumentOptions.GetKind();
+
+#if DEBUG
+                    _logger.Info($"kind = {kind}");
+#endif
+
+                    if (!KindOfCommandLineArgumentHelper.CanBeUsedIfCommandLineIsEmpty(kind))
+                    {
+                        var errorMessage = $"{kind} must not be used as default option.";
+
+                        if (initWithoutExceptions)
+                        {
+                            _initialErrors.Add(errorMessage);
+                        }
+                        else
+                        {
+                            throw new DefaultOptionException(errorMessage);
+                        }
+                    }
+                }
             }
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
         private readonly BaseCommandLineArgument _defaultCommandLineArgumentOptions;
+        private readonly List<string> _initialErrors = new List<string>();
 
         public CommandLineParsingResult Parse(string[] args)
         {
 #if DEBUG
             _logger.Info($"args = {args.WritePODListToString()}");
+            _logger.Info($"_initialErrors = {_initialErrors.WritePODListToString()}");
 #endif
 
-            if(args.IsNullOrEmpty())
+            if(_initialErrors.Any())
+            {
+                return new CommandLineParsingResult
+                {
+                    Params = new Dictionary<string, object>(),
+                    Errors = _initialErrors.ToList()
+                };
+            }
+
+            if (args.IsNullOrEmpty())
             {
                 return ProcessEmptyArgs();
             }
