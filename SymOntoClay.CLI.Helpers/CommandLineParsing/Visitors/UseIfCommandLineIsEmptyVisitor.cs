@@ -6,7 +6,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
     public class UseIfCommandLineIsEmptyVisitor: BaseCommandLineParsingVisitor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private List<BaseNamedCommandLineArgument> _result;
@@ -36,7 +36,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineArgument(CommandLineArgument element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if(element.UseIfCommandLineIsEmpty)
@@ -49,7 +49,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineNamedGroup(CommandLineNamedGroup element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if (element.UseIfCommandLineIsEmpty)

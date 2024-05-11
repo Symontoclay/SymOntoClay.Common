@@ -23,7 +23,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments, bool initWithoutExceptions)
         {
 #if DEBUG
-            _logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
+            //_logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
             _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
 #endif
 
