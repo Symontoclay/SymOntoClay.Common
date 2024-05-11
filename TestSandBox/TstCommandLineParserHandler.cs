@@ -1,5 +1,6 @@
 ﻿using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace TestSandBox
 {

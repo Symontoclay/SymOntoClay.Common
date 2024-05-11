@@ -1,7 +1,7 @@
 ﻿using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
-namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
     public abstract class BaseNamedCommandLineArgument : BaseCommandLineArgument
     {
@@ -11,19 +11,19 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
             get
             {
-                if(string.IsNullOrWhiteSpace(Name) && Aliases == null)
+                if (string.IsNullOrWhiteSpace(Name) && Aliases == null)
                 {
                     return null;
                 }
 
                 var result = new List<string>();
 
-                if(!string.IsNullOrWhiteSpace(Name))
+                if (!string.IsNullOrWhiteSpace(Name))
                 {
                     result.Add(Name);
                 }
 
-                if(Aliases != null)
+                if (Aliases != null)
                 {
                     result.AddRange(Aliases);
                 }

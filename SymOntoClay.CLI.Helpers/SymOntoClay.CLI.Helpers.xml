@@ -4,42 +4,6 @@
         <name>SymOntoClay.CLI.Helpers</name>
     </assembly>
     <members>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.BaseCommandLineArgument.ToString">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.BaseCommandLineArgument.ToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.BaseCommandLineArgument.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.BaseNamedCommandLineArgument.PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineArgument.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineArgument.PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineGroup.PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineMutuallyExclusiveSet.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineMutuallyExclusiveSet.PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineNamedGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineNamedGroup.PropertiesToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineParsingResult.ToString">
             <inheritdoc/>
         </member>
@@ -49,31 +13,67 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineParsingResult.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineVirtualRootGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseCommandLineArgument.ToString">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineVirtualRootGroup.PropertiesToString(System.UInt32)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseCommandLineArgument.ToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineArgument)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseCommandLineArgument.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineGroup)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseNamedCommandLineArgument.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineMutuallyExclusiveSet(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineMutuallyExclusiveSet)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineNamedGroup)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineVirtualRootGroup)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineArgument)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineNamedGroup)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.Accept(SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ICommandLineParsingVisitor)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineMutuallyExclusiveSet(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.ToString">

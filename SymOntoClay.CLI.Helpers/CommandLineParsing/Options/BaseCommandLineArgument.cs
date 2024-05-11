@@ -3,9 +3,9 @@ using SymOntoClay.Common;
 using System.Text;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 
-namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
-    public abstract class BaseCommandLineArgument: IObjectToString
+    public abstract class BaseCommandLineArgument : IObjectToString
     {
         public bool IsRequired { get; set; }
         public string Target { get; set; }

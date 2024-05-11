@@ -1,4 +1,6 @@
-﻿namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 {
     public interface ICommandLineParsingVisitor
     {

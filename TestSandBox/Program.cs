@@ -13,8 +13,19 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCommandLineParser();
+            TstCommandLineParserHandlerWithNegativeCases();
+            //TstCommandLineParser();
             //TstPrintExisting();
+        }
+
+        private static void TstCommandLineParserHandlerWithNegativeCases()
+        {
+            _logger.Info("Begin");
+
+            var handler = new TstCommandLineParserHandlerWithNegativeCases();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstCommandLineParser()

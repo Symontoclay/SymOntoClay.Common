@@ -2,9 +2,9 @@
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
-namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
-    public class CommandLineMutuallyExclusiveSet: BaseCommandLineArgument
+    public class CommandLineMutuallyExclusiveSet : BaseCommandLineArgument
     {
         public List<BaseCommandLineArgument> SubItems { get; set; }
 

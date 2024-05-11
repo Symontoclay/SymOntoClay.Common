@@ -2,17 +2,16 @@
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
-namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
-    public class CommandLineArgument: BaseNamedCommandLineArgument
+    public class CommandLineVirtualRootGroup : BaseCommandLineArgument
     {
-        public KindOfCommandLineArgument Kind { get; set; }
-        public uint? Index { get; set; }
+        public List<BaseCommandLineArgument> SubItems { get; set; }
 
         /// <inheritdoc/>
         public override void Accept(ICommandLineParsingVisitor visitor)
         {
-            visitor.VisitCommandLineArgument(this);
+            visitor.VisitCommandLineVirtualRootGroup(this);
         }
 
         /// <inheritdoc/>
@@ -21,8 +20,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
-            sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
-            sb.AppendLine($"{spaces}{nameof(Index)} = {Index}");
+            sb.PrintObjListProp(n, nameof(SubItems), SubItems);
 
             sb.Append(base.PropertiesToString(n));
 

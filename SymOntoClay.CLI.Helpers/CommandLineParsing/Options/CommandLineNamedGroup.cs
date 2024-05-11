@@ -2,16 +2,16 @@
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
-namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
-    public class CommandLineGroup : BaseCommandLineArgument
+    public class CommandLineNamedGroup : BaseNamedCommandLineArgument
     {
         public List<BaseCommandLineArgument> SubItems { get; set; }
 
         /// <inheritdoc/>
         public override void Accept(ICommandLineParsingVisitor visitor)
         {
-            visitor.VisitCommandLineGroup(this);
+            visitor.VisitCommandLineNamedGroup(this);
         }
 
         /// <inheritdoc/>

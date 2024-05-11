@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
@@ -35,6 +36,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
             _logger.Info($"defaultElementsList = {defaultElementsList.WriteListToString()}");
 #endif
+
+            if(defaultElementsList.Count > 1)
+            {
+                throw new Exception($"Too many options set as default: {string.Join(", ", defaultElementsList.Select(p => $"'{p.Name}'"))}. There can be only one default option.");
+            }
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;

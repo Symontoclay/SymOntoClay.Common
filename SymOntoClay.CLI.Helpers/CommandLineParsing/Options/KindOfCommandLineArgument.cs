@@ -1,4 +1,4 @@
-﻿namespace SymOntoClay.CLI.Helpers.CommandLineParsing
+﻿namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
     public enum KindOfCommandLineArgument
     {
