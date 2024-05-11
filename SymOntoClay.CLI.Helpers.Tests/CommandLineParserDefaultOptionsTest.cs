@@ -9,7 +9,32 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneDefaultOption_EmptyCommandLine_Success()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+            var parser = new CommandLineParser(GetOneDefaultOption());
+
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+
+            Assert.That(result.Params.ContainsKey("help"), Is.EqualTo(true));
+            Assert.That(result.Params["help"], Is.EqualTo(true));
+        }
+
+        [Test]
+        public void NoDefaultOptions_EmptyCommandLine_Success()
+        {
+            var args = new List<string>();
+            var parser = new CommandLineParser(GetNoDefaultOptions());
+
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -60,6 +85,57 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
             Assert.That(result.Errors[0], Is.EqualTo("SingleValue must not be used as default option."));
+        }
+
+        private List<BaseCommandLineArgument> GetOneDefaultOption()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "help",
+                    Aliases = new List<string>
+                    {
+                        "h"
+                    },
+                    Kind = KindOfCommandLineArgument.Flag,
+                    UseIfCommandLineIsEmpty = true
+                },
+                new CommandLineArgument()
+                {
+                    Name = "run",
+                    Aliases = new List<string>
+                    {
+                        "r"
+                    },
+                    Kind = KindOfCommandLineArgument.Flag
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> GetNoDefaultOptions()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "help",
+                    Aliases = new List<string>
+                    {
+                        "h"
+                    },
+                    Kind = KindOfCommandLineArgument.Flag
+                },
+                new CommandLineArgument()
+                {
+                    Name = "run",
+                    Aliases = new List<string>
+                    {
+                        "r"
+                    },
+                    Kind = KindOfCommandLineArgument.Flag
+                }
+            };
         }
 
         private List<BaseCommandLineArgument> GetTwoDefaultOptions()

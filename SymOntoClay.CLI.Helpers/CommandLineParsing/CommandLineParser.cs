@@ -59,7 +59,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
             else
             {
-                _defaultCommandLineArgumentOptions = defaultElementsList.SingleOrDefault();
+                _defaultCommandLineArgumentOptions = defaultElementsList.SingleOrDefault() as BaseNamedCommandLineArgument;
 
                 if (_defaultCommandLineArgumentOptions != null)
                 {
@@ -87,7 +87,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
-        private readonly BaseCommandLineArgument _defaultCommandLineArgumentOptions;
+        private readonly BaseNamedCommandLineArgument _defaultCommandLineArgumentOptions;
         private readonly List<string> _initialErrors = new List<string>();
 
         public CommandLineParsingResult Parse(string[] args)
@@ -116,7 +116,23 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         private CommandLineParsingResult ProcessEmptyArgs()
         {
-            throw new NotImplementedException();
+            if(_defaultCommandLineArgumentOptions == null)
+            {
+                return new CommandLineParsingResult
+                {
+                    Params = new Dictionary<string, object>(),
+                    Errors = new List<string>()
+                };
+            }
+
+            return new CommandLineParsingResult
+            {
+                Params = new Dictionary<string, object>
+                {
+                    { _defaultCommandLineArgumentOptions.Name , true }
+                },
+                Errors = new List<string>()
+            };
         }
     }
 }
