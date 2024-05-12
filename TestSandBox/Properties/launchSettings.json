@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "TestSandBox": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:/Some user\" -help"
+    }
+  }
+}

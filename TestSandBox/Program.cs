@@ -1,7 +1,7 @@
-﻿using NLog;
-using System.Text;
+﻿using Newtonsoft.Json;
+using NLog;
 using SymOntoClay.Common.DebugHelpers;
-using SymOntoClay.CLI.Helpers.CommandLineParsing;
+using System.Text;
 
 namespace TestSandBox
 {
@@ -13,8 +13,12 @@ namespace TestSandBox
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            TstCommandLineParserHandlerWithNegativeCases();
-            //TstCommandLineParser();
+#if DEBUG
+            _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
+#endif
+
+            //TstCommandLineParserHandlerWithNegativeCases();
+            TstCommandLineParser();
             //TstPrintExisting();
         }
 

@@ -2,6 +2,7 @@
 using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
@@ -155,7 +156,50 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 return ProcessEmptyArgs();
             }
 
+            var tokensList = ConvertToTokens(args);
+
+#if DEBUG
+            _logger.Info($"tokensList = {tokensList.WriteListToString()}");
+#endif
+
             throw new NotImplementedException();
+        }
+
+        private List<CommandLineToken> ConvertToTokens(string[] args)
+        {
+            if(_namedCommandLineArgumentsDict.Count == 0)
+            {
+                return args.Select(p => new CommandLineToken { Kind = KindOfCommandLineToken.Value, Content = p}).ToList();
+            }
+
+            var tokensList = new List<CommandLineToken>();
+
+            foreach (var arg in args)
+            {
+#if DEBUG
+                _logger.Info($"arg = {arg}");
+#endif
+
+                var token = new CommandLineToken { Content = arg };
+
+                if(_namedCommandLineArgumentsDict.ContainsKey(arg))
+                {
+                    token.Option = _namedCommandLineArgumentsDict[arg];
+                    token.Kind = KindOfCommandLineToken.Option;
+                }
+                else
+                {
+                    token.Kind = KindOfCommandLineToken.Value;
+                }
+
+#if DEBUG
+                _logger.Info($"token = {token}");
+#endif
+
+                tokensList.Add(token);
+            }
+
+            return tokensList;
         }
 
         private CommandLineParsingResult ProcessEmptyArgs()

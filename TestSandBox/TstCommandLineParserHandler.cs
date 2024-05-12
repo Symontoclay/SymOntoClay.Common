@@ -288,11 +288,26 @@ namespace TestSandBox
                 }
             });
 
-            var args = new List<string>();
+            //{
+            //    var args = new List<string>();
 
-            var result = parser.Parse(args.ToArray());
+            //    var result = parser.Parse(args.ToArray());
 
-            _logger.Info($"result = {result}");
+            //    _logger.Info($"result = {result}");
+            //}
+
+            {
+                var commandLineStr = @"--i c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\ --o c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\ --target-nodeid #DummyNPC --html --abs-url";
+
+                _logger.Info($"commandLineStr = {commandLineStr}");
+
+                var args = commandLineStr.Split(' ').ToList();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+
 
             _logger.Info("End");
         }
