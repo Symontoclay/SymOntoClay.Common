@@ -128,11 +128,17 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
                 }
             }
+
+            _uniqueElementsList = namedCommandLineArgumentsList.Where(p => p.IsUnique).ToList();
+
+            _requiredElementsList = namedCommandLineArgumentsList.Where(p => p.IsRequired).ToList();
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
         private readonly Dictionary<string, BaseNamedCommandLineArgument> _namedCommandLineArgumentsDict;
         private readonly BaseNamedCommandLineArgument _defaultCommandLineArgumentOptions;
+        private readonly List<BaseNamedCommandLineArgument> _uniqueElementsList;
+        private readonly List<BaseNamedCommandLineArgument> _requiredElementsList;
         private readonly List<string> _initialErrors = new List<string>();
 
         public CommandLineParsingResult Parse(string[] args)
