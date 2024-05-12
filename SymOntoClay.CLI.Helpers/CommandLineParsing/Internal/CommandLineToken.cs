@@ -10,6 +10,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
         public KindOfCommandLineToken Kind { get; set; } = KindOfCommandLineToken.Unknown;
         public string Content { get; set; }
         public BaseNamedCommandLineArgument Option { get; set; }
+        public int Position { get; set; }
 
         /// <inheritdoc/>
         public override string ToString()
@@ -31,6 +32,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
             sb.AppendLine($"{spaces}{nameof(Kind)} = {Kind}");
             sb.AppendLine($"{spaces}{nameof(Content)} = {Content}");
             sb.PrintObjProp(n, nameof(Option), Option);
+            sb.AppendLine($"{spaces}{nameof(Position)} = {Position}");
 
             return sb.ToString();
         }

@@ -174,13 +174,19 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             var tokensList = new List<CommandLineToken>();
 
+            var n = 0;
+
             foreach (var arg in args)
             {
 #if DEBUG
                 _logger.Info($"arg = {arg}");
 #endif
 
-                var token = new CommandLineToken { Content = arg };
+                var token = new CommandLineToken 
+                { 
+                    Content = arg,
+                    Position = n
+                };
 
                 if(_namedCommandLineArgumentsDict.ContainsKey(arg))
                 {
@@ -195,6 +201,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
                 _logger.Info($"token = {token}");
 #endif
+
+                n++;
 
                 tokensList.Add(token);
             }
