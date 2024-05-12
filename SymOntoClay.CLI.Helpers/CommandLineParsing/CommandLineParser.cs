@@ -168,6 +168,41 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"tokensList = {tokensList.WriteListToString()}");
 #endif
 
+            ProcessCommandLineVirtualRootGroup(_сommandLineVirtualRootGroup, new Queue<CommandLineToken>(tokensList));
+
+            throw new NotImplementedException();
+        }
+
+        private void ProcessBaseCommandLineArgument(BaseCommandLineArgument element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            var kind = element.GetKind();
+
+#if DEBUG
+            _logger.Info($"kind = {kind}");
+#endif
+
+            switch(kind)
+            {
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+            }
+        }
+
+        private void ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            foreach(var subItem in element.SubItems)
+            {
+                ProcessBaseCommandLineArgument(subItem, commandLineTokens);
+            }
+
             throw new NotImplementedException();
         }
 
