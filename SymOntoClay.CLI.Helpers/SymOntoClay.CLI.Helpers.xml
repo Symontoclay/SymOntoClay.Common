@@ -85,10 +85,10 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.NamedCommandLineArgumentsVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
             <inheritdoc/>
         </member>
-        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.UseIfCommandLineIsEmptyVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.NamedCommandLineArgumentsVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.ToString">

@@ -3,7 +3,7 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 {
-    public class UseIfCommandLineIsEmptyVisitor: BaseCommandLineParsingVisitor
+    public class NamedCommandLineArgumentsVisitor: BaseCommandLineParsingVisitor
     {
 #if DEBUG
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -18,7 +18,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 if (_result != null)
                 {
-                    throw new Exception($"{nameof(UseIfCommandLineIsEmptyVisitor)} can not be used in multiple threads.");
+                    throw new Exception($"{nameof(NamedCommandLineArgumentsVisitor)} can not be used in multiple threads.");
                 }
 
                 _result = new List<BaseNamedCommandLineArgument>();
@@ -39,10 +39,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             //_logger.Info($"element = {element}");
 #endif
 
-            if(element.UseIfCommandLineIsEmpty)
-            {
-                _result.Add(element);
-            }
+            _result.Add(element);
         }
 
         /// <inheritdoc/>
@@ -52,10 +49,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             //_logger.Info($"element = {element}");
 #endif
 
-            if (element.UseIfCommandLineIsEmpty)
-            {
-                _result.Add(element);
-            }
+            _result.Add(element);
         }
     }
 }

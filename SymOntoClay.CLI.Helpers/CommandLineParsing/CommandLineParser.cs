@@ -36,9 +36,52 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
 #endif
 
-            var useIfCommandLineIsEmptyVisitor = new UseIfCommandLineIsEmptyVisitor();
+            var namedCommandLineArgumentsVisitor = new NamedCommandLineArgumentsVisitor();
 
-            var defaultElementsList = useIfCommandLineIsEmptyVisitor.Run(_сommandLineVirtualRootGroup);
+            var namedCommandLineArgumentsList = namedCommandLineArgumentsVisitor.Run(_сommandLineVirtualRootGroup);
+
+            var namedCommandLineArgumentsRawDict = namedCommandLineArgumentsList
+                .Where(p => (p.Names?.Count ?? 0) > 0)
+                .Select(p => p.Names.Select(x => new KeyValuePair<string, BaseNamedCommandLineArgument>(x, p)))
+                .SelectMany(p => p).GroupBy(p => p.Key)
+                .ToDictionary(p => p.Key, p => p.Select(x => x.Value).ToList());
+
+#if DEBUG
+            //_logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(namedCommandLineArgumentsRawDict, Formatting.Indented)}");
+#endif
+
+            _namedCommandLineArgumentsDict = new Dictionary<string, BaseNamedCommandLineArgument>();
+
+            foreach (var namedCommandLineArgumentsKvpItem in namedCommandLineArgumentsRawDict)
+            {
+#if DEBUG
+                _logger.Info($"namedCommandLineArgumentsKvpItem.Key = {namedCommandLineArgumentsKvpItem.Key}");
+                _logger.Info($"namedCommandLineArgumentsKvpItem.Value.Count = {namedCommandLineArgumentsKvpItem.Value.Count}");
+#endif
+
+                if(namedCommandLineArgumentsKvpItem.Value.Count == 1)
+                {
+                    _namedCommandLineArgumentsDict[namedCommandLineArgumentsKvpItem.Key] = namedCommandLineArgumentsKvpItem.Value.Single();
+                    continue;
+                }
+
+                var errorMessage = $"Option '{namedCommandLineArgumentsKvpItem.Key}' is declared {namedCommandLineArgumentsKvpItem.Value.Count} times.";
+
+#if DEBUG
+                _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                if (initWithoutExceptions)
+                {
+                    _initialErrors.Add(errorMessage);
+                }
+                else
+                {
+                    throw new DuplicatedOptionException(errorMessage);
+                }
+            }
+
+            var defaultElementsList = namedCommandLineArgumentsList.Where(p => p.UseIfCommandLineIsEmpty).ToList();
 
 #if DEBUG
             _logger.Info($"defaultElementsList = {defaultElementsList.WriteListToString()}");
@@ -59,7 +102,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
             else
             {
-                _defaultCommandLineArgumentOptions = defaultElementsList.SingleOrDefault() as BaseNamedCommandLineArgument;
+                _defaultCommandLineArgumentOptions = defaultElementsList.SingleOrDefault();
 
                 if (_defaultCommandLineArgumentOptions != null)
                 {
@@ -87,6 +130,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         }
 
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
+        private readonly Dictionary<string, BaseNamedCommandLineArgument> _namedCommandLineArgumentsDict;
         private readonly BaseNamedCommandLineArgument _defaultCommandLineArgumentOptions;
         private readonly List<string> _initialErrors = new List<string>();
 
