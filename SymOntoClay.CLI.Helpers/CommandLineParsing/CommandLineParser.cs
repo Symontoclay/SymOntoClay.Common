@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using NLog;
+﻿using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
@@ -187,9 +186,69 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             switch(kind)
             {
+                case KindOfCommandLineArgument.VirtualRootGroup:
+                    ProcessCommandLineVirtualRootGroup(element as CommandLineVirtualRootGroup, commandLineTokens);
+                    break;
+
+                case KindOfCommandLineArgument.NamedGroup:
+                    ProcessCommandLineNamedGroup(element as CommandLineNamedGroup, commandLineTokens);
+                    break;
+
+                case KindOfCommandLineArgument.Group:
+                    ProcessCommandLineGroup(element as CommandLineGroup, commandLineTokens);
+                    break;
+
+                case KindOfCommandLineArgument.MutuallyExclusiveSet:
+                    ProcessCommandLineMutuallyExclusiveSet(element as CommandLineMutuallyExclusiveSet, commandLineTokens);
+                    break;
+
+                case KindOfCommandLineArgument.Flag:
+                case KindOfCommandLineArgument.SingleValue:
+                case KindOfCommandLineArgument.FlagOrSingleValue:
+                case KindOfCommandLineArgument.List:
+                case KindOfCommandLineArgument.SingleValueOrList:
+                    ProcessCommandLineArgument(element as CommandLineArgument, commandLineTokens);
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
+        }
+
+        private void ProcessCommandLineNamedGroup(CommandLineNamedGroup element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void ProcessCommandLineGroup(CommandLineGroup element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void ProcessCommandLineArgument(CommandLineArgument element, Queue<CommandLineToken> commandLineTokens)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            throw new NotImplementedException();
         }
 
         private void ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, Queue<CommandLineToken> commandLineTokens)
