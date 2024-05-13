@@ -167,15 +167,36 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"tokensList = {tokensList.WriteListToString()}");
 #endif
 
-            ProcessCommandLineVirtualRootGroup(_сommandLineVirtualRootGroup, new Queue<CommandLineToken>(tokensList));
+            var errorsList = new List<string>();
+
+            var processingResult = ProcessCommandLineVirtualRootGroup(_сommandLineVirtualRootGroup, tokensList, null, errorsList);
+
+#if DEBUG
+            _logger.Info($"processingResult = {processingResult}");
+            _logger.Info($"errorsList = {errorsList.WritePODListToString()}");
+#endif
+
+            if(errorsList.Any())
+            {
+                return new CommandLineParsingResult
+                {
+                    Params = new Dictionary<string, object>(),
+                    Errors = errorsList
+                };
+            }
+
+#if DEBUG
+            _logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
+#endif
 
             throw new NotImplementedException();
         }
 
-        private void ProcessBaseCommandLineArgument(BaseCommandLineArgument element, Queue<CommandLineToken> commandLineTokens)
+        private bool ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
 #endif
 
             var kind = element.GetKind();
@@ -187,82 +208,247 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             switch(kind)
             {
                 case KindOfCommandLineArgument.VirtualRootGroup:
-                    ProcessCommandLineVirtualRootGroup(element as CommandLineVirtualRootGroup, commandLineTokens);
-                    break;
+                    return ProcessCommandLineVirtualRootGroup(element as CommandLineVirtualRootGroup, commandLineTokens, parserContext, errorsList);
 
                 case KindOfCommandLineArgument.NamedGroup:
-                    ProcessCommandLineNamedGroup(element as CommandLineNamedGroup, commandLineTokens);
-                    break;
+                    return ProcessCommandLineNamedGroup(element as CommandLineNamedGroup, commandLineTokens, parserContext, errorsList);
 
                 case KindOfCommandLineArgument.Group:
-                    ProcessCommandLineGroup(element as CommandLineGroup, commandLineTokens);
-                    break;
+                    return ProcessCommandLineGroup(element as CommandLineGroup, commandLineTokens, parserContext, errorsList);
 
                 case KindOfCommandLineArgument.MutuallyExclusiveSet:
-                    ProcessCommandLineMutuallyExclusiveSet(element as CommandLineMutuallyExclusiveSet, commandLineTokens);
-                    break;
+                    return ProcessCommandLineMutuallyExclusiveSet(element as CommandLineMutuallyExclusiveSet, commandLineTokens, parserContext, errorsList);
 
                 case KindOfCommandLineArgument.Flag:
                 case KindOfCommandLineArgument.SingleValue:
                 case KindOfCommandLineArgument.FlagOrSingleValue:
                 case KindOfCommandLineArgument.List:
                 case KindOfCommandLineArgument.SingleValueOrList:
-                    ProcessCommandLineArgument(element as CommandLineArgument, commandLineTokens);
-                    break;
+                    return ProcessCommandLineArgument(element as CommandLineArgument, commandLineTokens, parserContext, errorsList);
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
             }
         }
 
-        private void ProcessCommandLineNamedGroup(CommandLineNamedGroup element, Queue<CommandLineToken> commandLineTokens)
+        private bool ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
 #endif
 
             throw new NotImplementedException();
         }
 
-        private void ProcessCommandLineGroup(CommandLineGroup element, Queue<CommandLineToken> commandLineTokens)
+        private bool ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
 #endif
 
-            throw new NotImplementedException();
-        }
+            var ownParserContext = new CommandLineParserContext(parserContext);
 
-        private void ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, Queue<CommandLineToken> commandLineTokens)
-        {
-#if DEBUG
-            _logger.Info($"element = {element}");
-#endif
+            var processingResult = false;
 
-            throw new NotImplementedException();
-        }
-
-        private void ProcessCommandLineArgument(CommandLineArgument element, Queue<CommandLineToken> commandLineTokens)
-        {
-#if DEBUG
-            _logger.Info($"element = {element}");
-#endif
-
-            throw new NotImplementedException();
-        }
-
-        private void ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, Queue<CommandLineToken> commandLineTokens)
-        {
-#if DEBUG
-            _logger.Info($"element = {element}");
-#endif
-
-            foreach(var subItem in element.SubItems)
+            foreach (var subItem in element.SubItems)
             {
-                ProcessBaseCommandLineArgument(subItem, commandLineTokens);
+                var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
+
+#if DEBUG
+                _logger.Info($"processingItemResult = {processingItemResult}");
+#endif
+
+                if(processingItemResult)
+                {
+                    processingResult = true;
+                }
             }
 
-            throw new NotImplementedException();
+            return processingResult;
+        }
+
+        private bool ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
+#endif
+
+            var ownParserContext = new CommandLineParserContext(parserContext);
+
+            var processingItemResultsList = new List<bool>();
+
+            foreach (var subItem in element.SubItems)
+            {
+                var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
+
+#if DEBUG
+                _logger.Info($"processingItemResult = {processingItemResult}");
+#endif
+
+                processingItemResultsList.Add(processingItemResult);
+            }
+
+#if DEBUG
+            _logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
+#endif
+
+            var trueCount = processingItemResultsList.Count(p => p == true);
+
+#if DEBUG
+            _logger.Info($"trueCount = {trueCount}");
+#endif
+
+            switch(trueCount)
+            {
+                case 0:
+                    throw new NotImplementedException();
+
+                case 1:
+                    return true;
+
+                default:
+                    throw new NotImplementedException();
+            }            
+        }
+
+        private bool ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
+            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+#endif
+
+            var kind = element.Kind;
+
+#if DEBUG
+            _logger.Info($"kind = {kind}");
+#endif
+
+            if (element.Names?.Any() ?? false)
+            {
+                var foundTokens = commandLineTokens.Where(p => p.Kind == KindOfCommandLineToken.Option && element.Names.Contains(p.Content)).ToList();
+
+#if DEBUG
+                _logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
+#endif
+
+                if(foundTokens.Any())
+                {
+                    switch(kind)
+                    {
+                        case KindOfCommandLineArgument.Flag:
+                            return true;
+
+                        case KindOfCommandLineArgument.SingleValue:
+                            {
+                                foreach (var foundToken in foundTokens)
+                                {
+#if DEBUG
+                                    _logger.Info($"foundToken = {foundToken}");
+#endif
+
+                                    ProcessSingleValue(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
+                                }
+
+                                return true;
+                            }
+
+                        default:
+                            throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                    }
+
+                    throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                switch (kind)
+                {
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
+                }
+
+                //if (element.Index.HasValue)
+                //{
+                //    throw new NotImplementedException();
+                //}
+            }
+
+            return false;
+        }
+
+        private void ProcessSingleValue(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"targetIndex = {targetIndex}");
+            _logger.Info($"isObligate = {isObligate}");
+            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+#endif
+
+            if (commandLineTokens.Count > targetIndex + 1)
+            {
+                var targetToken = commandLineTokens[targetIndex];
+
+#if DEBUG
+                _logger.Info($"targetToken = {targetToken}");
+#endif
+
+                if(targetToken.Kind == KindOfCommandLineToken.Value)
+                {
+                    if (targetToken.Option == null)
+                    {
+                        targetToken.Option = element;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+
+#if DEBUG
+            _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+#endif
+        }
+
+        private bool ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
+#endif
+
+            var ownParserContext = new CommandLineParserContext(parserContext);
+
+            var processingResult = false;
+
+            foreach (var subItem in element.SubItems)
+            {
+                var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
+
+#if DEBUG
+                _logger.Info($"processingItemResult = {processingItemResult}");
+#endif
+
+                if (processingItemResult)
+                {
+                    processingResult = true;
+                }
+            }
+
+            return processingResult;
         }
 
         private List<CommandLineToken> ConvertToTokens(string[] args)
