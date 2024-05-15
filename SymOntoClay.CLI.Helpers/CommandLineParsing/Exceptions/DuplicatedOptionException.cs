@@ -2,7 +2,8 @@
 {
     public class DuplicatedOptionException : Exception
     {
-        public DuplicatedOptionException(string message) : base(message)
+        public DuplicatedOptionException(string message) 
+            : base(message)
         {
         }
     }

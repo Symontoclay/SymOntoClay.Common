@@ -22,6 +22,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments, bool initWithoutExceptions)
         {
+            _initWithoutExceptions = initWithoutExceptions;
+
 #if DEBUG
             //_logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
             _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
@@ -133,6 +135,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _requiredElementsList = namedCommandLineArgumentsList.Where(p => p.IsRequired).ToList();
         }
 
+        private readonly bool _initWithoutExceptions;
         private readonly CommandLineVirtualRootGroup _сommandLineVirtualRootGroup;
         private readonly Dictionary<string, BaseNamedCommandLineArgument> _namedCommandLineArgumentsDict;
         private readonly BaseNamedCommandLineArgument _defaultCommandLineArgumentOptions;
@@ -192,7 +195,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             throw new NotImplementedException();
         }
 
-        private bool ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -231,7 +234,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private bool ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -241,7 +244,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             throw new NotImplementedException();
         }
 
-        private bool ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -260,16 +263,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
-                if(processingItemResult)
+                if(processingItemResult.Result)
                 {
                     processingResult = true;
                 }
             }
 
-            return processingResult;
+            return (processingResult, null, null);
         }
 
-        private bool ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -278,7 +281,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             var ownParserContext = new CommandLineParserContext(parserContext);
 
-            var processingItemResultsList = new List<bool>();
+            var processingItemResultsList = new List<(bool Result, string Name, BaseNamedCommandLineArgument NamedElement)>();
 
             foreach (var subItem in element.SubItems)
             {
@@ -295,7 +298,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
 #endif
 
-            var trueCount = processingItemResultsList.Count(p => p == true);
+            var trueProcessingItemResultsList = processingItemResultsList.Where(p => p.Result == true).ToList();
+
+            var trueCount = trueProcessingItemResultsList.Count;
 
 #if DEBUG
             _logger.Info($"trueCount = {trueCount}");
@@ -307,14 +312,31 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     throw new NotImplementedException();
 
                 case 1:
-                    return true;
+                    return (true, null, null);
 
                 default:
-                    throw new NotImplementedException();
+                    {
+                        var errorMessage = $"Options {string.Join(", ", trueProcessingItemResultsList.Select(p => $"'{p.Name}'"))} cannot be used at the same time.";
+
+#if DEBUG
+                        _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                        if (_initWithoutExceptions)
+                        {
+                            errorsList.Add(errorMessage);
+
+                            return (false, null, null);
+                        }
+                        else
+                        {
+                            throw new DuplicatedMutuallyExclusiveOptionsSetException(errorMessage);
+                        }
+                    }
             }            
         }
 
-        private bool ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -338,10 +360,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                 if(foundTokens.Any())
                 {
-                    switch(kind)
+                    var firstFoundToken = foundTokens.First();
+
+#if DEBUG
+                    _logger.Info($"firstFoundToken = {firstFoundToken}");
+#endif
+
+                    switch (kind)
                     {
                         case KindOfCommandLineArgument.Flag:
-                            return true;
+                            return (true, firstFoundToken.Content, firstFoundToken.Option);
 
                         case KindOfCommandLineArgument.SingleValue:
                             {
@@ -354,7 +382,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                     ProcessSingleValue(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
                                 }
 
-                                return true;
+                                return (true, firstFoundToken.Content, firstFoundToken.Option);
                             }
 
                         default:
@@ -378,7 +406,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 //}
             }
 
-            return false;
+            return (false, null, null);
         }
 
         private void ProcessSingleValue(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)
@@ -423,7 +451,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #endif
         }
 
-        private bool ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -442,13 +470,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
-                if (processingItemResult)
+                if (processingItemResult.Result)
                 {
                     processingResult = true;
                 }
             }
 
-            return processingResult;
+            return (processingResult, null, null);
         }
 
         private List<CommandLineToken> ConvertToTokens(string[] args)
