@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Newtonsoft.Json.Linq;
+using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
@@ -309,8 +310,25 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             switch(trueCount)
             {
                 case 0:
-                    throw new NotImplementedException();
+                    {
+                        var errorMessage = $"Required command line arguments must be entered.";
 
+#if DEBUG
+                        _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                        if (_initWithoutExceptions)
+                        {
+                            errorsList.Add(errorMessage);
+
+                            return (false, null, null);
+                        }
+                        else
+                        {
+                            throw new RequiredOptionException(errorMessage);
+                        }
+                    }
+                    
                 case 1:
                     return (true, null, null);
 
@@ -539,6 +557,10 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 if(requiredCommandLineArgumentsList.Count > 0)
                 {
                     var errorMessage = $"Required command line arguments must be entered.";
+
+#if DEBUG
+                    _logger.Info($"errorMessage = {errorMessage}");
+#endif
 
                     if (_initWithoutExceptions)
                     {

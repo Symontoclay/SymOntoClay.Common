@@ -12,7 +12,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case5_a();
+            Case6();
+            //Case5_a();
             //Case5();
             //Case4_a();
             //Case4();
@@ -21,6 +22,79 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void Case6()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "help",
+                                Aliases = new List<string>
+                                {
+                                    "h"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "run",
+                                Aliases = new List<string>
+                                {
+                                    "r"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            }
+                        }
+                    },
+                    new CommandLineGroup()
+                    {
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "-nologo",
+                                Kind = KindOfCommandLineArgument.Flag
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "-timeout",
+                                Kind = KindOfCommandLineArgument.SingleValue
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "-nlp",
+                                Kind = KindOfCommandLineArgument.Flag
+                            }
+                        }
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+            }
 
             _logger.Info("End");
         }
