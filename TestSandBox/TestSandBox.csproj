@@ -13,7 +13,9 @@
     <PackageReference Include="NLog" Version="5.1.4" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SymOntoClay.CLI.Helpers.Tests\SymOntoClay.CLI.Helpers.Tests.csproj" />
     <ProjectReference Include="..\SymOntoClay.CLI.Helpers\SymOntoClay.CLI.Helpers.csproj" />
+    <ProjectReference Include="..\SymOntoClay.Common.Tests\SymOntoClay.Common.Tests.csproj" />
     <ProjectReference Include="..\SymOntoClay.Common\SymOntoClay.Common.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -12,13 +12,106 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case4_a();
+            Case5_a();
+            //Case5();
+            //Case4_a();
             //Case4();
             //Case3_a();
             //Case3();
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void Case5_a()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "help",
+                                Aliases = new List<string>
+                                {
+                                    "h"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "run",
+                                Aliases = new List<string>
+                                {
+                                    "r"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            }
+                        }
+                    }
+                }, true);
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void Case5()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "help",
+                                Aliases = new List<string>
+                                {
+                                    "h"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "run",
+                                Aliases = new List<string>
+                                {
+                                    "r"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            }
+                        }
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+            }
 
             _logger.Info("End");
         }

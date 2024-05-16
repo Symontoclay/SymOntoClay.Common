@@ -103,6 +103,21 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineMutuallyExclusiveSet(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup)">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.NamedCommandLineArgumentsVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
             <inheritdoc/>
         </member>

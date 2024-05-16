@@ -528,6 +528,35 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
             if(_defaultCommandLineArgumentOptions == null)
             {
+                var isRequiredCommandLineArgumentsVisitor = new IsRequiredCommandLineArgumentsVisitor();
+
+                var requiredCommandLineArgumentsList = isRequiredCommandLineArgumentsVisitor.Run(_сommandLineVirtualRootGroup);
+
+#if DEBUG
+                _logger.Info($"requiredCommandLineArgumentsList = {requiredCommandLineArgumentsList.WriteListToString()}");
+#endif
+
+                if(requiredCommandLineArgumentsList.Count > 0)
+                {
+                    var errorMessage = $"Required command line arguments must be entered.";
+
+                    if (_initWithoutExceptions)
+                    {
+                        return new CommandLineParsingResult
+                        {
+                            Params = new Dictionary<string, object>(),
+                            Errors = new List<string>()
+                            {
+                                errorMessage
+                            }
+                        };
+                    }
+                    else
+                    {
+                        throw new RequiredOptionException(errorMessage);
+                    }
+                }
+
                 return new CommandLineParsingResult
                 {
                     Params = new Dictionary<string, object>(),

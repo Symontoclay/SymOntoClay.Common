@@ -40,6 +40,32 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("Options 'help', 'run' cannot be used at the same time."));
         }
 
+        [Test]
+        public void RequredNoDefaultOptions_EmptyCommandLine_Fail()
+        {
+            var args = new List<string>();
+
+            var exception = Assert.Catch<RequiredOptionException>(() => {
+                var parser = new CommandLineParser(GetMinimalRequiredMutuallyExclusiveSet());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Required command line arguments must be entered."));
+        }
+
+        [Test]
+        public void RequredNoDefaultOptions_EmptyCommandLine_ErrorsList()
+        {
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(GetMinimalRequiredMutuallyExclusiveSet(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Required command line arguments must be entered."));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
