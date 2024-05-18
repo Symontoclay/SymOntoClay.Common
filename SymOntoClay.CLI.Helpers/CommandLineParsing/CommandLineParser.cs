@@ -432,11 +432,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
 #if DEBUG
             _logger.Info($"targetIndex = {targetIndex}");
+            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
             _logger.Info($"isObligate = {isObligate}");
             _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
-            if (commandLineTokens.Count > targetIndex + 1)
+            if (commandLineTokens.Count >= targetIndex + 1)
             {
                 var targetToken = commandLineTokens[targetIndex];
 

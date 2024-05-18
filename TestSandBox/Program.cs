@@ -19,6 +19,7 @@ namespace TestSandBox
 
             //TstCommandLineParserHandlerWithNegativeCases();
             TstCommandLineParser();
+            //TstCommandLineParserRealAppHandler();
             //TstPrintExisting();
         }
 
@@ -37,6 +38,16 @@ namespace TestSandBox
             _logger.Info("Begin");
 
             var handler = new TstCommandLineParserHandler();
+            handler.Run();
+
+            _logger.Info("End");
+        }
+
+        private static void TstCommandLineParserRealAppHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new TstCommandLineParserRealAppHandler();
             handler.Run();
 
             _logger.Info("End");
