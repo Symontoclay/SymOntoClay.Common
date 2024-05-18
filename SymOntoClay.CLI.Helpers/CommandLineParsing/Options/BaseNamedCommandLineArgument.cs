@@ -35,12 +35,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public bool UseIfCommandLineIsEmpty { get; set; }
         public bool IsUnique { get; set; }
 
+        public string Identifier => string.IsNullOrWhiteSpace(Target) ? Name : Target;
+
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
         {
             var spaces = DisplayHelper.Spaces(n);
             var sb = new StringBuilder();
 
+            sb.AppendLine($"{spaces}{nameof(Identifier)} = {Identifier}");
             sb.AppendLine($"{spaces}{nameof(Name)} = {Name}");
             sb.PrintPODList(n, nameof(Aliases), Aliases);
             sb.PrintPODList(n, nameof(Names), Names);

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Newtonsoft.Json;
+using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
@@ -190,6 +191,64 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
 #if DEBUG
             _logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
+#endif
+
+            var rawResultsList = new List<(string ParamName, List<string> ParamValues)>();
+
+            BaseNamedCommandLineArgument currentOption = null;
+            List<string> currentValuesList = null;
+
+            foreach (var token in tokensList)
+            {
+#if DEBUG
+                _logger.Info($"token = {token}");
+#endif
+
+                if(currentOption == null || currentOption != token.Option)
+                {
+                    if(currentOption != null && currentOption != token.Option)
+                    {
+                        AppendToRawResultsList(ref rawResultsList, currentOption, currentValuesList);
+                    }
+
+                    currentOption = token.Option;
+                    currentValuesList = new List<string>();
+                }
+
+                var tokenKind  = token.Kind;
+
+#if DEBUG
+                _logger.Info($"tokenKind = {tokenKind}");
+#endif
+
+                switch(tokenKind)
+                {
+                    case KindOfCommandLineToken.Option:
+                        break;
+
+                    case KindOfCommandLineToken.Value:
+                        currentValuesList.Add(token.Content);
+                        break;
+
+                    default: 
+                        throw new ArgumentOutOfRangeException(nameof(tokenKind), tokenKind, null);
+                }
+            }
+
+            AppendToRawResultsList(ref rawResultsList, currentOption, currentValuesList);
+
+#if DEBUG
+            _logger.Info($" = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
+        private void AppendToRawResultsList(ref List<(string ParamName, List<string> ParamValues)> rawResultsList, BaseNamedCommandLineArgument currentOption, List<string> currentValuesList)
+        {
+#if DEBUG
+            _logger.Info($"currentOption = {currentOption}");
+            _logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
 #endif
 
             throw new NotImplementedException();
