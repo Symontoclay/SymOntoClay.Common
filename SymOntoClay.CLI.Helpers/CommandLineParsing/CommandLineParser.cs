@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using NLog;
+﻿using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
@@ -310,6 +309,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             switch(trueCount)
             {
                 case 0:
+                    if(element.IsRequired)
                     {
                         var errorMessage = $"Required command line arguments must be entered.";
 
@@ -328,7 +328,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             throw new RequiredOptionException(errorMessage);
                         }
                     }
-                    
+                    return (false, null, null);
+
                 case 1:
                     return (true, null, null);
 
