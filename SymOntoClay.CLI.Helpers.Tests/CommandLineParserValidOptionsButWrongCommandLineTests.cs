@@ -4,7 +4,7 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.Tests
 {
-    public class CommandLineParserValidOptionsButWrongCommandLineTest
+    public class CommandLineParserValidOptionsButWrongCommandLineTests
     {
         [Test]
         public void DuplicatedMutuallyExclusiveSet_WrongCommandLine_Fail()

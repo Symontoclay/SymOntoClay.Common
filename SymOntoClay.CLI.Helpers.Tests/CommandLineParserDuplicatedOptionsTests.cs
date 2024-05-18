@@ -4,7 +4,7 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.Tests
 {
-    public class CommandLineParserDuplicatedOptionsTest
+    public class CommandLineParserDuplicatedOptionsTests
     {
         [Test]
         public void NoDuplicatedOptions_EmptyCommandLine_Success()

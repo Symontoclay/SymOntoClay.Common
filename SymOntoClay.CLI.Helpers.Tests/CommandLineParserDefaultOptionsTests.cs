@@ -4,7 +4,7 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.Tests
 {
-    public class CommandLineParserDefaultOptionsTest
+    public class CommandLineParserDefaultOptionsTests
     {
         [Test]
         public void OneDefaultOption_EmptyCommandLine_Success()

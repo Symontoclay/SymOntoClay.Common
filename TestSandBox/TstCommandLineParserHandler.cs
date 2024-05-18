@@ -12,9 +12,51 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
             //CaseSymOntoClayCLI();
             //CaseUpdateInstalledNuGetPackagesInAllCSharpProjects();
-            CaseLogFileBuilderApp();
+            //CaseLogFileBuilderApp();
+
+            _logger.Info("End");
+        }
+
+        private void NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "help",
+                                Aliases = new List<string>
+                                {
+                                    "h"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            },
+                            new CommandLineArgument()
+                            {
+                                Name = "run",
+                                Aliases = new List<string>
+                                {
+                                    "r"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                            }
+                        }
+                    }
+                }, true);
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
 
             _logger.Info("End");
         }
