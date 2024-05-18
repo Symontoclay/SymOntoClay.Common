@@ -193,7 +193,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
 #endif
 
-            var rawResultsList = new List<(string ParamName, List<string> ParamValues)>();
+            var rawResultsList = new List<(BaseNamedCommandLineArgument Option, List<string> ParamValues)>();
 
             BaseNamedCommandLineArgument currentOption = null;
             List<string> currentValuesList = null;
@@ -208,7 +208,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 {
                     if(currentOption != null && currentOption != token.Option)
                     {
-                        AppendToRawResultsList(ref rawResultsList, currentOption, currentValuesList);
+#if DEBUG
+                        _logger.Info($"currentOption = {currentOption}");
+                        _logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
+#endif
+
+                        rawResultsList.Add((currentOption, currentValuesList));
                     }
 
                     currentOption = token.Option;
@@ -235,23 +240,76 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
             }
 
-            AppendToRawResultsList(ref rawResultsList, currentOption, currentValuesList);
-
-#if DEBUG
-            _logger.Info($" = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
-#endif
-
-            throw new NotImplementedException();
-        }
-
-        private void AppendToRawResultsList(ref List<(string ParamName, List<string> ParamValues)> rawResultsList, BaseNamedCommandLineArgument currentOption, List<string> currentValuesList)
-        {
 #if DEBUG
             _logger.Info($"currentOption = {currentOption}");
             _logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
 #endif
 
-            throw new NotImplementedException();
+            rawResultsList.Add((currentOption, currentValuesList));
+
+#if DEBUG
+            _logger.Info($"rawResultsList.Count = {rawResultsList.Count}");
+            _logger.Info($"rawResultsList = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
+#endif
+
+            if(rawResultsList.Count > 1)
+            {
+                throw new NotImplementedException("Check unique options here");
+            }
+
+            var rawResultsDict = rawResultsList.GroupBy(p => p.Option).ToDictionary(p => p.Key, p => p.Select(x => x.ParamValues).ToList());
+
+            var resultOptionsList = new Dictionary<string, object>();
+
+            foreach (var rawResultsKvpItem in rawResultsDict)
+            {
+                var option = rawResultsKvpItem.Key;
+
+#if DEBUG
+                _logger.Info($"option = {option}");
+                _logger.Info($"rawResultsKvpItem.Value = {JsonConvert.SerializeObject(rawResultsKvpItem.Value, Formatting.Indented)}");
+#endif
+
+                var targetValue = rawResultsKvpItem.Value.LastOrDefault();
+
+#if DEBUG
+                _logger.Info($"targetValue = {targetValue.WritePODListToString()}");
+#endif
+
+                var identifier = option.Identifier;
+
+#if DEBUG
+                _logger.Info($"identifier = {identifier}");
+#endif
+
+                var optionKind = option.GetKind();
+
+#if DEBUG
+                _logger.Info($"optionKind = {optionKind}");
+#endif
+
+                if (targetValue.Any())
+                {
+                    if(optionKind == KindOfCommandLineArgument.SingleValue)
+                    {
+                        resultOptionsList[identifier] = targetValue.FirstOrDefault();
+                    }
+                    else
+                    {
+                        resultOptionsList[identifier] = targetValue;
+                    }                    
+                }
+                else
+                {
+                    resultOptionsList[identifier] = true;
+                }
+            }
+
+            return new CommandLineParsingResult
+            {
+                Params = resultOptionsList,
+                Errors = new List<string>(),
+            };
         }
 
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
