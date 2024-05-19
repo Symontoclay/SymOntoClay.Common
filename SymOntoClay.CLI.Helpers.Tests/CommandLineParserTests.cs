@@ -19,6 +19,28 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Params.Count, Is.EqualTo(0));
         }
 
+        [Test]
+        public void OneNamedOption_NonEmptyCommandLine_Success()
+        {
+            var args = new List<string>()
+            {
+                "--i",
+                @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+            };
+
+            var optionIdentifier = "--input";
+
+            var parser = new CommandLineParser(GetOneOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(optionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[optionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -48,6 +70,23 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         }
                     }
                 };
+        }
+
+        private List<BaseCommandLineArgument> GetOneOption()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0
+                }
+            };
         }
     }
 }
