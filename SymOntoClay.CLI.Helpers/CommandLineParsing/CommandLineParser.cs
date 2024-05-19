@@ -132,8 +132,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
             _uniqueElementsList = namedCommandLineArgumentsList.Where(p => p.IsUnique).ToList();
-
-            _requiredElementsList = namedCommandLineArgumentsList.Where(p => p.IsRequired).ToList();
         }
 
         private readonly bool _initWithoutExceptions;
@@ -141,7 +139,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private readonly Dictionary<string, BaseNamedCommandLineArgument> _namedCommandLineArgumentsDict;
         private readonly BaseNamedCommandLineArgument _defaultCommandLineArgumentOptions;
         private readonly List<BaseNamedCommandLineArgument> _uniqueElementsList;
-        private readonly List<BaseNamedCommandLineArgument> _requiredElementsList;
         private readonly List<string> _initialErrors = new List<string>();
 
         public CommandLineParsingResult Parse(string[] args)
@@ -254,12 +251,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             if(rawResultsList.Count > 1)
             {
+#if DEBUG
+                _logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");                
+#endif
+
                 throw new NotImplementedException("Check unique options here");
             }
 
             var rawResultsDict = rawResultsList.GroupBy(p => p.Option).ToDictionary(p => p.Key, p => p.Select(x => x.ParamValues).ToList());
 
-            var resultOptionsList = new Dictionary<string, object>();
+            var resultOptionsDict = new Dictionary<string, object>();
 
             foreach (var rawResultsKvpItem in rawResultsDict)
             {
@@ -292,22 +293,22 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 {
                     if(optionKind == KindOfCommandLineArgument.SingleValue)
                     {
-                        resultOptionsList[identifier] = targetValue.FirstOrDefault();
+                        resultOptionsDict[identifier] = targetValue.FirstOrDefault();
                     }
                     else
                     {
-                        resultOptionsList[identifier] = targetValue;
+                        resultOptionsDict[identifier] = targetValue;
                     }                    
                 }
                 else
                 {
-                    resultOptionsList[identifier] = true;
+                    resultOptionsDict[identifier] = true;
                 }
             }
 
             return new CommandLineParsingResult
             {
-                Params = resultOptionsList,
+                Params = resultOptionsDict,
                 Errors = new List<string>(),
             };
         }
