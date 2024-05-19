@@ -1,4 +1,6 @@
-﻿using SymOntoClay.Common;
+﻿using NLog;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
@@ -6,6 +8,10 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
 {
     public class CommandLineParserContext : IObjectToString
     {
+#if DEBUG
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+#endif
+
         public CommandLineParserContext()
             : this(null)
         { 
@@ -16,14 +22,23 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
         {
         }
 
-        public CommandLineParserContext(CommandLineParserContext parentContext, int? absIndex)
+        public CommandLineParserContext(CommandLineParserContext parentContext, uint? absIndex)
         {
             ParentContext = parentContext;
             AbsIndex = absIndex;
         }
 
         public CommandLineParserContext ParentContext { get; }
-        public int? AbsIndex { get; }
+        public uint? AbsIndex { get; }
+
+        public uint? GetAbsIndex(uint index)
+        {
+#if DEBUG
+            _logger.Info($"index = {index}");
+#endif
+
+            throw new NotImplementedException();
+        }
 
         /// <inheritdoc/>
         public override string ToString()

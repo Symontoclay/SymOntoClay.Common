@@ -349,16 +349,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
-        {
-#if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
-#endif
-
-            throw new NotImplementedException();
-        }
-
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
@@ -470,6 +460,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }            
         }
 
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
+#endif
+
+            throw new NotImplementedException();
+        }
+
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
@@ -524,6 +524,17 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
 
                     throw new NotImplementedException();
+                }
+                else
+                {
+                    if(element.Index.HasValue)
+                    {
+                        var absIndex = parserContext.GetAbsIndex(element.Index.Value);
+
+
+
+                        throw new NotImplementedException();
+                    }
                 }
             }
             else
