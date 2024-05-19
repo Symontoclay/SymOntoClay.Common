@@ -467,7 +467,20 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"parserContext = {parserContext}");
 #endif
 
-            throw new NotImplementedException();
+            if (element.Names?.Any() ?? false)
+            {
+                var foundTokens = commandLineTokens.Where(p => p.Kind == KindOfCommandLineToken.Option && element.Names.Contains(p.Content)).ToList();
+
+#if DEBUG
+                _logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
+#endif
+
+                throw new NotImplementedException();
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
