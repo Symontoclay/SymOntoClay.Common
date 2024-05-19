@@ -25,7 +25,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
             {
                 "--i",
-                @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
             };
 
             var inputOptionIdentifier = "--input";
@@ -38,7 +38,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.Count, Is.EqualTo(1));
             Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
             {
                 "--i",
-                @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
                 "--o",
-                @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
             };
 
             var inputOptionIdentifier = "--input";
@@ -63,10 +63,31 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.Count, Is.EqualTo(2));
             Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
 
             Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"));
+        }
+
+        [Test]
+        public void OnePositionedOption_NonEmptyCommandLine_Success()
+        {
+            var args = new List<string>()
+            {
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+            };
+
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(GetOneSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()

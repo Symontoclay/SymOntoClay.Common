@@ -29,15 +29,27 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
         }
 
         public CommandLineParserContext ParentContext { get; }
+
         public uint? AbsIndex { get; }
 
         public uint? GetAbsIndex(uint index)
         {
 #if DEBUG
             _logger.Info($"index = {index}");
+            _logger.Info($"AbsIndex = {AbsIndex}");
 #endif
 
-            throw new NotImplementedException();
+            if (AbsIndex.HasValue)
+            {
+                return AbsIndex + index;
+            }
+
+            if(ParentContext != null)
+            {
+                return ParentContext.GetAbsIndex(index);
+            }
+
+            return index;
         }
 
         /// <inheritdoc/>

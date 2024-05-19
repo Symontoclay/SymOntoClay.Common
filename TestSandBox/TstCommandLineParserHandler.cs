@@ -12,8 +12,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            TstPositionedSingleValueCase1();
-            //OnePositionedSingleValueCase();
+            //TstPositionedSingleValueCase1();
+            OnePositionedSingleValueCase();
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();

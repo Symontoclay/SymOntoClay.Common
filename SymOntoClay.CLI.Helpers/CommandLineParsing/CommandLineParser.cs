@@ -457,7 +457,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             throw new DuplicatedMutuallyExclusiveOptionsSetException(errorMessage);
                         }
                     }
-            }            
+            }
         }
 
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
@@ -475,7 +475,21 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
 #endif
 
-                throw new NotImplementedException();
+                if(foundTokens.Any())
+                {
+                    foreach (var foundToken in foundTokens)
+                    {
+#if DEBUG
+                        _logger.Info($"foundToken = {foundToken}");
+#endif
+                    }
+
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    return (false, null, null);
+                }
             }
             else
             {
@@ -544,9 +558,23 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     {
                         var absIndex = parserContext.GetAbsIndex(element.Index.Value);
 
+#if DEBUG
+                        _logger.Info($"absIndex = {absIndex}");
+#endif
 
+                        if(absIndex < commandLineTokens.Count)
+                        {
+                            var targetToken = commandLineTokens[(int)absIndex.Value];
 
-                        throw new NotImplementedException();
+#if DEBUG
+                            _logger.Info($"targetToken = {targetToken}");
+#endif
+
+                            if(targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
+                            {
+                                targetToken.Option = element;
+                            }
+                        }
                     }
                 }
             }
