@@ -247,14 +247,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
             _logger.Info($"rawResultsList.Count = {rawResultsList.Count}");
             _logger.Info($"rawResultsList = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
+            _logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");
 #endif
 
-            if(rawResultsList.Count > 1)
+            if (rawResultsList.Count > 1 && _uniqueElementsList.Count > 0)
             {
-#if DEBUG
-                _logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");                
-#endif
-
                 throw new NotImplementedException("Check unique options here");
             }
 

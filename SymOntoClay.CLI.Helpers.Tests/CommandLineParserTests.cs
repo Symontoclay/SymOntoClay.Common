@@ -28,17 +28,45 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
             };
 
-            var optionIdentifier = "--input";
+            var inputOptionIdentifier = "--input";
 
-            var parser = new CommandLineParser(GetOneOption());
+            var parser = new CommandLineParser(GetOneSingleValueOption());
             var result = parser.Parse(args.ToArray());
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(0));
 
             Assert.That(result.Params.Count, Is.EqualTo(1));
-            Assert.That(result.Params.ContainsKey(optionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[optionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+        }
+
+        [Test]
+        public void TwoNamedOptions_NonEmptyCommandLine_Success()
+        {
+            var args = new List<string>()
+            {
+                "--i",
+                @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                "--o",
+                @"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+            };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(GetTwoSingleValueOptions());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo(@"c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
@@ -72,7 +100,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 };
         }
 
-        private List<BaseCommandLineArgument> GetOneOption()
+        private List<BaseCommandLineArgument> GetOneSingleValueOption()
         {
             return new List<BaseCommandLineArgument>()
             {
@@ -85,6 +113,32 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     },
                     Kind = KindOfCommandLineArgument.SingleValue,
                     Index = 0
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> GetTwoSingleValueOptions()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0
+                },
+                new CommandLineArgument
+                {
+                    Name = "--output",
+                    Aliases = new List<string>
+                    {
+                        "--o"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue
                 }
             };
         }
