@@ -482,6 +482,28 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
                         _logger.Info($"foundToken = {foundToken}");
 #endif
+
+                        var ownParserContext = new CommandLineParserContext(parserContext, foundToken.Position + 1);
+
+                        var processingResult = false;
+
+                        foreach (var subItem in element.SubItems)
+                        {
+                            var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
+
+#if DEBUG
+                            _logger.Info($"processingItemResult = {processingItemResult}");
+#endif
+
+                            if (processingItemResult.Result)
+                            {
+                                processingResult = true;
+                            }
+                        }
+
+#if DEBUG
+                        _logger.Info($"processingResult = {processingResult}");
+#endif
                     }
 
                     throw new NotImplementedException();
@@ -564,7 +586,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                         if(absIndex < commandLineTokens.Count)
                         {
-                            var targetToken = commandLineTokens[(int)absIndex.Value];
+                            var targetToken = commandLineTokens[absIndex.Value];
 
 #if DEBUG
                             _logger.Info($"targetToken = {targetToken}");
@@ -582,6 +604,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             {
                 switch (kind)
                 {
+                    case KindOfCommandLineArgument.SingleValue:
+                        throw new NotImplementedException();
+
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }

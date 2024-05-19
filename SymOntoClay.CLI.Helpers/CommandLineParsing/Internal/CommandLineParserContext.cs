@@ -22,7 +22,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
         {
         }
 
-        public CommandLineParserContext(CommandLineParserContext parentContext, uint? absIndex)
+        public CommandLineParserContext(CommandLineParserContext parentContext, int? absIndex)
         {
             ParentContext = parentContext;
             AbsIndex = absIndex;
@@ -30,9 +30,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
 
         public CommandLineParserContext ParentContext { get; }
 
-        public uint? AbsIndex { get; }
+        public int? AbsIndex { get; }
 
-        public uint? GetAbsIndex(uint index)
+        public int? GetAbsIndex(int index)
         {
 #if DEBUG
             _logger.Info($"index = {index}");
