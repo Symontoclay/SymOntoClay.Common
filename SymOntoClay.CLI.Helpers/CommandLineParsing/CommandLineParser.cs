@@ -7,6 +7,7 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
+using System.Collections.Generic;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
@@ -477,6 +478,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                 if(foundTokens.Any())
                 {
+                    var firstFoundToken = foundTokens.First();
+
+#if DEBUG
+                    _logger.Info($"firstFoundToken = {firstFoundToken}");
+#endif
+
                     foreach (var foundToken in foundTokens)
                     {
 #if DEBUG
@@ -485,7 +492,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                         var ownParserContext = new CommandLineParserContext(parserContext, foundToken.Position + 1);
 
-                        var processingResult = false;
+                        //var processingResult = false;
 
                         foreach (var subItem in element.SubItems)
                         {
@@ -495,18 +502,18 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             _logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
-                            if (processingItemResult.Result)
-                            {
-                                processingResult = true;
-                            }
+                            //if (processingItemResult.Result)
+                            //{
+                            //    processingResult = true;
+                            //}
                         }
 
 #if DEBUG
-                        _logger.Info($"processingResult = {processingResult}");
+                        //_logger.Info($"processingResult = {processingResult}");
 #endif
                     }
 
-                    throw new NotImplementedException();
+                    return (true, firstFoundToken.Content, firstFoundToken.Option);
                 }
                 else
                 {
@@ -576,28 +583,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
                 else
                 {
-                    if(element.Index.HasValue)
-                    {
-                        var absIndex = parserContext.GetAbsIndex(element.Index.Value);
-
-#if DEBUG
-                        _logger.Info($"absIndex = {absIndex}");
-#endif
-
-                        if(absIndex < commandLineTokens.Count)
-                        {
-                            var targetToken = commandLineTokens[absIndex.Value];
-
-#if DEBUG
-                            _logger.Info($"targetToken = {targetToken}");
-#endif
-
-                            if(targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
-                            {
-                                targetToken.Option = element;
-                            }
-                        }
-                    }
+                    return BindSingleValueByPosition(element, commandLineTokens, parserContext);
                 }
             }
             else
@@ -605,16 +591,47 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 switch (kind)
                 {
                     case KindOfCommandLineArgument.SingleValue:
-                        throw new NotImplementedException();
+                        return BindSingleValueByPosition(element, commandLineTokens, parserContext);
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                 }
+            }
 
-                //if (element.Index.HasValue)
-                //{
-                //    throw new NotImplementedException();
-                //}
+            //return (false, null, null);
+        }
+
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
+            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+#endif
+
+            if (element.Index.HasValue)
+            {
+                var absIndex = parserContext.GetAbsIndex(element.Index.Value);
+
+#if DEBUG
+                _logger.Info($"absIndex = {absIndex}");
+#endif
+
+                if (absIndex < commandLineTokens.Count)
+                {
+                    var targetToken = commandLineTokens[absIndex.Value];
+
+#if DEBUG
+                    _logger.Info($"targetToken = {targetToken}");
+#endif
+
+                    if (targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
+                    {
+                        targetToken.Option = element;
+
+                        return (true, targetToken.Content, element);
+                    }
+                }
             }
 
             return (false, null, null);
