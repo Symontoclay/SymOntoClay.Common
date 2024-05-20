@@ -90,6 +90,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
         }
 
+        [Test]
         public void NamedGroupWithPositionedOption_NonEmptyCommandLine_Success()
         {
             var args = new List<string>()
@@ -98,7 +99,15 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 "Elf"
             };
 
+            var parser = new CommandLineParser(GetCommandLineNamedGroupOptions());
+            var result = parser.Parse(args.ToArray());
 
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+
+            throw new NotImplementedException();
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
