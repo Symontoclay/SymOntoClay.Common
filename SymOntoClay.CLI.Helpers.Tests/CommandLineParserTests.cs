@@ -99,15 +99,23 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 "Elf"
             };
 
+            var newIdentifier = "new";
+            var elfIdentifier = "Elf";
+            var npcNameIdentifier = "NPCName";
+
             var parser = new CommandLineParser(GetCommandLineNamedGroupOptions());
             var result = parser.Parse(args.ToArray());
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(0));
 
-            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.Count, Is.EqualTo(2));
 
-            throw new NotImplementedException();
+            Assert.That(result.Params.ContainsKey(newIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[newIdentifier], Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(npcNameIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[npcNameIdentifier], Is.EqualTo(elfIdentifier));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()

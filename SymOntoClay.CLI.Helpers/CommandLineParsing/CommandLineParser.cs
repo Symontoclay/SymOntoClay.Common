@@ -7,7 +7,6 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
 using SymOntoClay.Common.DebugHelpers;
-using System.Collections.Generic;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
