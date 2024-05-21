@@ -12,6 +12,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            FlagInsteadOfSingleValue_Case3();//TODO: cover by tests
             FlagInsteadOfSingleValue_Case2();//TODO: cover by tests
             FlagInsteadOfSingleValue();//TODO: cover by tests
             //Case6();
@@ -24,6 +25,55 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void FlagInsteadOfSingleValue_Case3()//TODO: cover by tests
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                    "--o"                    
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }
