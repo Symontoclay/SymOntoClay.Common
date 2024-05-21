@@ -645,6 +645,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
+            var flagInsteadOfSingleValueErrorMessage = $"'{element.Identifier}' must be a single value, but used as flag.";
+
             if (commandLineTokens.Count >= targetIndex + 1)
             {
                 var targetToken = commandLineTokens[targetIndex];
@@ -666,12 +668,26 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    if (_initWithoutExceptions)
+                    {
+                        errorsList.Add(flagInsteadOfSingleValueErrorMessage);
+                    }
+                    else
+                    {
+                        throw new ValueException(flagInsteadOfSingleValueErrorMessage);
+                    }
                 }
             }
             else
             {
-                throw new NotImplementedException();
+                if (_initWithoutExceptions)
+                {
+                    errorsList.Add(flagInsteadOfSingleValueErrorMessage);
+                }
+                else
+                {
+                    throw new ValueException(flagInsteadOfSingleValueErrorMessage);
+                }
             }
 
 #if DEBUG

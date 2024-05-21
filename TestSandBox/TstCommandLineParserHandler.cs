@@ -25,7 +25,6 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-
             var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
             {
                 new CommandLineMutuallyExclusiveSet()
