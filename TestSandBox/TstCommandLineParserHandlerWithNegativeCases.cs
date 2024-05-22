@@ -12,9 +12,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagInsteadOfSingleValue_Case3();//TODO: cover by tests
-            FlagInsteadOfSingleValue_Case2();//TODO: cover by tests
-            FlagInsteadOfSingleValue();//TODO: cover by tests
+            FlagInsteadOfSingleValue_Case3();
+            //FlagInsteadOfSingleValue_Case2_a();
+            //FlagInsteadOfSingleValue_Case2();
+            //FlagInsteadOfSingleValue_a();
+            //FlagInsteadOfSingleValue();
             //Case6();
             //Case5_a();
             //Case5();
@@ -29,7 +31,7 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void FlagInsteadOfSingleValue_Case3()//TODO: cover by tests
+        private void FlagInsteadOfSingleValue_Case3()
         {
             _logger.Info("Begin");
 
@@ -78,7 +80,49 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void FlagInsteadOfSingleValue_Case2()//TODO: cover by tests
+
+        private void FlagInsteadOfSingleValue_Case2_a()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--o",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void FlagInsteadOfSingleValue_Case2()
         {
             _logger.Info("Begin");
 
@@ -127,8 +171,37 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        //TODO: check also "--input" as flag with --output as second valid parameter
-        private void FlagInsteadOfSingleValue()//TODO: cover by tests
+        private void FlagInsteadOfSingleValue_a()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void FlagInsteadOfSingleValue()
         {
             _logger.Info("Begin");
 
