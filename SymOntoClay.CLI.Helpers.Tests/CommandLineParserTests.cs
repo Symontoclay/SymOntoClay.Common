@@ -25,7 +25,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
             {
                 "--i",
-                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
             };
 
             var inputOptionIdentifier = "--input";
@@ -38,7 +38,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.Count, Is.EqualTo(1));
             Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"));
         }
 
         [Test]
@@ -47,7 +47,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
             {
                 "--i",
-                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
                 "--o",
                 @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
             };
@@ -63,7 +63,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.Count, Is.EqualTo(2));
             Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"));
 
             Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
             Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"));
@@ -74,7 +74,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
         {
             var args = new List<string>()
             {
-                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
             };
 
             var inputOptionIdentifier = "--input";
@@ -87,7 +87,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.Count, Is.EqualTo(1));
             Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
-            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(@"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"));
         }
 
         [Test]

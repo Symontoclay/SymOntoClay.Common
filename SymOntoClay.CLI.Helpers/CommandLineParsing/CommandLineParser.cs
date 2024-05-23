@@ -190,6 +190,39 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
 #endif
 
+            var unknownTokens = tokensList.Where(p => p.Option == null).ToList();
+
+            if(unknownTokens.Count > 0)
+            {
+#if DEBUG
+                _logger.Info($"unknownTokens = {unknownTokens.WriteListToString()}");
+#endif
+
+                if (_initWithoutExceptions)
+                {
+                    foreach(var unknownToken in unknownTokens)
+                    {
+                        errorsList.Add(UnknownValueException.GetMessage(unknownToken.Content, unknownToken.Position));
+                    }
+
+                    return new CommandLineParsingResult
+                    {
+                        Params = new Dictionary<string, object>(),
+                        Errors = errorsList
+                    };
+                }
+                else
+                {
+                    var firstUnknownToken = unknownTokens.First();
+
+#if DEBUG
+                    _logger.Info($"firstUnknownToken = {firstUnknownToken}");
+#endif
+
+                    throw new UnknownValueException(firstUnknownToken.Content, firstUnknownToken.Position);
+                }
+            }
+
             var rawResultsList = new List<(BaseNamedCommandLineArgument Option, List<string> ParamValues)>();
 
             BaseNamedCommandLineArgument currentOption = null;

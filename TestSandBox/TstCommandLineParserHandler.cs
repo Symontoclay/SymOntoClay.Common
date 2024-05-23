@@ -203,7 +203,7 @@ namespace TestSandBox
             //}
 
             {
-                var commandLineStr = @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\";
+                var commandLineStr = @"c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\";
 
                 _logger.Info($"commandLineStr = {commandLineStr}");
 
@@ -253,7 +253,7 @@ namespace TestSandBox
             //}
 
             {
-                var commandLineStr = @"--i c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\ --o c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\";
+                var commandLineStr = @"--i c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\ --o c:\Users\Acer\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\";
 
                 _logger.Info($"commandLineStr = {commandLineStr}");
 
@@ -294,7 +294,7 @@ namespace TestSandBox
             //}
 
             {
-                var commandLineStr = @"--i c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\";
+                var commandLineStr = @"--i c:\Users\Acer\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\";
 
                 _logger.Info($"commandLineStr = {commandLineStr}");
 

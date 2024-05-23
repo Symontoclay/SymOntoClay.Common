@@ -12,7 +12,19 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagInsteadOfSingleValue_Case3();
+            ExtraValue_Case3_a_1();//TODO: It should be covered
+            ExtraValue_Case3_1();//TODO: It should be covered
+            //ExtraValue_Case3_a();//TODO: It should be covered
+            //ExtraValue_Case3();//TODO: It should be covered
+            //ExtraValue_Case2_a_1();//TODO: It should be covered
+            //ExtraValue_Case2_1();//TODO: It should be covered
+            //ExtraValue_Case2_a();//TODO: It should be covered
+            //ExtraValue_Case2();//TODO: It should be covered
+            //ExtraValue_Case1_a_1();//TODO: It should be covered
+            //ExtraValue_Case1_1();//TODO: It should be covered
+            //ExtraValue_Case1_a();//TODO: It should be covered
+            //ExtraValue_Case1();//TODO: It should be covered
+            //FlagInsteadOfSingleValue_Case3();
             //FlagInsteadOfSingleValue_Case2_a();
             //FlagInsteadOfSingleValue_Case2();
             //FlagInsteadOfSingleValue_a();
@@ -27,6 +39,532 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case3_a_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case3_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case3_a()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case3()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case2_a_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case2_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case2_a()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case2()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case1_a_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case1_1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case1_a()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void ExtraValue_Case1()//TODO: It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }
@@ -63,7 +601,7 @@ namespace TestSandBox
                 var args = new List<string>()
                 {
                     "--input",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
                     "--o"                    
                 };
 
@@ -112,7 +650,7 @@ namespace TestSandBox
                 {
                     "--input",
                     "--o",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
                 };
 
             var result = parser.Parse(args.ToArray());
@@ -155,7 +693,7 @@ namespace TestSandBox
                 {
                     "--input",
                     "--o",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
                 };
 
                 var result = parser.Parse(args.ToArray());

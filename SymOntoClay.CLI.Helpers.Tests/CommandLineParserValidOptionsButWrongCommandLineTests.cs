@@ -137,7 +137,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 {
                     "--input",
                     "--o",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
                 };
 
             var exception = Assert.Catch<ValueException>(() => {
@@ -155,7 +155,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 {
                     "--input",
                     "--o",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\"
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\"
                 };
 
             var parser = new CommandLineParser(GetTwoSingleValueOptions(), true);
@@ -172,7 +172,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
                 {
                     "--input",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
                     "--o"
                 };
 
@@ -190,7 +190,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var args = new List<string>()
                 {
                     "--input",
-                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_13_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
                     "--o"
                 };
 
