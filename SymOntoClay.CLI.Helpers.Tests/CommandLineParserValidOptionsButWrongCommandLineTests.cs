@@ -202,6 +202,247 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("'--output' must be a single value, but used as flag."));
         }
 
+        [Test]
+        public void OnePositionedOption_ExtraValueInCommandLine_Case1_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetOneSingleValueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void OnePositionedOption_ExtraValueInCommandLine_Case1_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var parser = new CommandLineParser(GetOneSingleValueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void OnePositionedOption_ExtraValueInCommandLine_Case2_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetOneSingleValueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void OnePositionedOption_ExtraValueInCommandLine_Case2_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var parser = new CommandLineParser(GetOneSingleValueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(2));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+            Assert.That(result.Errors[1], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\' in 3 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case1_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetTwoSingleValueOptions());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case1_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var parser = new CommandLineParser(GetTwoSingleValueOptions(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case2_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetTwoSingleValueOptions());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case2_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\"
+                };
+
+            var parser = new CommandLineParser(GetTwoSingleValueOptions(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(2));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 2 position."));
+            Assert.That(result.Errors[1], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\' in 3 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case3_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetTwoSingleValueOptions());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 4 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case3_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\"
+                };
+
+            var parser = new CommandLineParser(GetTwoSingleValueOptions(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 4 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case4_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var exception = Assert.Catch<UnknownValueException>(() => {
+                var parser = new CommandLineParser(GetTwoSingleValueOptions());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 4 position."));
+        }
+
+        [Test]
+        public void TwoPositionedOptions_ExtraValueInCommandLine_Case4_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_10_14_58_31\",
+                    "--o",
+                    @"c:\Users\SomeUser\source\repos\SymOntoClay\TestSandbox\bin\Debug\net7.0\MessagesLogsOutputDir\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\",
+                    @"c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\"
+                };
+
+            var parser = new CommandLineParser(GetTwoSingleValueOptions(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(2));
+            Assert.That(result.Errors[0], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\2024_03_11_14_58_31\' in 4 position."));
+            Assert.That(result.Errors[1], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\' in 5 position."));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
