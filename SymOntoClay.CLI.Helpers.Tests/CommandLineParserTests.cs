@@ -120,7 +120,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
         }
 
         [Test]
-        public void OneListValueOption_TwoValuesInCommandLine_Success()
+        public void OneListValueOption_TwoValuesInTheEndOfCommandLine_Success()
         {
             var args = new List<string>()
                 {
@@ -147,7 +147,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
         }
 
         [Test]
-        public void OneListValueOption_OneValueInCommandLine_Success()
+        public void OneListValueOption_OneValueInTheEndOfCommandLine_Success()
         {
             var args = new List<string>()
                 {
@@ -172,7 +172,71 @@ namespace SymOntoClay.CLI.Helpers.Tests
         }
 
         [Test]
-        public void OneSingleValueOrListOption_TwoValuesInCommandLine_Success()
+        public void OneListValueOption_TwoValuesInTheMiddleOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "value2",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneListValueOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(2));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+            Assert.That(inputValue.Contains("value2"), Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
+        }
+
+        [Test]
+        public void OneListValueOption_OneValueInTheMiddleOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneListValueOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(1));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_TwoValuesInTheEndOfCommandLine_Success()
         {
             var args = new List<string>()
                 {
@@ -199,7 +263,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
         }
 
         [Test]
-        public void OneSingleValueOrListOption_OneValueInCommandLine_Success()
+        public void OneSingleValueOrListOption_OneValueInTheEndOfCommandLine_Success()
         {
             var args = new List<string>()
                 {
@@ -221,6 +285,70 @@ namespace SymOntoClay.CLI.Helpers.Tests
             var inputValue = (List<string>)result.Params[inputOptionIdentifier];
             Assert.That(inputValue.Count, Is.EqualTo(1));
             Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_TwoValuesInTheMiddleOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneSingleValueOrListOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(1));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_OneValueInTheMiddleOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "value2",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneSingleValueOrListOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(2));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+            Assert.That(inputValue.Contains("value2"), Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()

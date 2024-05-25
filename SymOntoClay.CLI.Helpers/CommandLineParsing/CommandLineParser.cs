@@ -791,7 +791,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         }
                         else
                         {
-                            throw new NotImplementedException();
+                            break;
                         }
                     }
 
