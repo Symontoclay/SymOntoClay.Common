@@ -12,7 +12,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagInsteadOfListInTheMiddle_a();
+            HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
+            //HasOptionalValueButDoesNotHaveRequired_CommandLineArgument();
+            //FlagInsteadOfListInTheMiddle_a();
             //FlagInsteadOfListInTheMiddle();
             //FlagInsteadOfListInTheEnd();
             //ExtraValue_Case3_a_1();
@@ -42,6 +44,149 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        Name = "new",
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        },
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineMutuallyExclusiveSet()
+                            {
+                                IsRequired = true,
+                                SubItems = new List<BaseCommandLineArgument>
+                                {
+                                    new CommandLineArgument()
+                                    {
+                                        Target = "NPCName",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Target = "NPCName",
+                                        Name = "-npc",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-thing",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-world",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-w"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-lib",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-l"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-nav",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-player",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-p"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void HasOptionalValueButDoesNotHaveRequired_CommandLineArgument()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        IsRequired = true
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }

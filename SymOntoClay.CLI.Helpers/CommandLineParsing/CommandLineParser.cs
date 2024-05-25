@@ -552,6 +552,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
                 else
                 {
+                    if (element.IsRequired)
+                    {
+                        ProcessRequiredOptionError(element, errorsList);
+                    }
+
                     return (false, null, null);
                 }
             }
@@ -645,7 +650,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
                 else
                 {
-                    return BindSingleValueByPosition(element, commandLineTokens, parserContext);
+                    return BindSingleValueByPosition(element, commandLineTokens, parserContext, errorsList);
                 }
             }
             else
@@ -653,7 +658,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 switch (kind)
                 {
                     case KindOfCommandLineArgument.SingleValue:
-                        return BindSingleValueByPosition(element, commandLineTokens, parserContext);
+                        return BindSingleValueByPosition(element, commandLineTokens, parserContext, errorsList);
 
                     default:
                         throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
@@ -663,7 +668,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             //return (false, null, null);
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             _logger.Info($"element = {element}");
@@ -694,6 +699,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         return (true, targetToken.Content, element);
                     }
                 }
+            }
+
+            if(element.IsRequired)
+            {
+                ProcessRequiredOptionError(element, errorsList);
             }
 
             return (false, null, null);
@@ -958,6 +968,61 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
             return tokensList;
+        }
+
+        private void ProcessRequiredOptionError(BaseCommandLineArgument element, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            var errorMessage = GetRequiredOptionErrorMessage(element);
+
+            if (_initWithoutExceptions)
+            {
+                errorsList.Add(errorMessage);
+            }
+            else
+            {
+                throw new RequiredOptionException(errorMessage);
+            }
+        }
+
+        private string GetRequiredOptionErrorMessage(BaseCommandLineArgument element)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+#endif
+
+            var kind = element.GetKind();
+
+#if DEBUG
+            _logger.Info($"kind = {kind}");
+#endif
+
+            switch (kind)
+            {
+                case KindOfCommandLineArgument.Flag:
+                case KindOfCommandLineArgument.SingleValue:
+                case KindOfCommandLineArgument.FlagOrSingleValue:
+                case KindOfCommandLineArgument.List:
+                case KindOfCommandLineArgument.SingleValueOrList:
+                    {
+                        var concreteElem = element as CommandLineArgument;
+
+                        return $"Required command line argument '{concreteElem.Identifier}' must be entered.";
+                    }
+
+                case KindOfCommandLineArgument.NamedGroup:
+                    {
+                        var concreteElem = element as CommandLineNamedGroup;
+
+                        return $"Required command line argument '{concreteElem.Identifier}' must be entered.";
+                    }
+
+                default:
+                    return $"Required command line arguments must be entered.";
+            }
         }
 
         private CommandLineParsingResult ProcessEmptyArgs()

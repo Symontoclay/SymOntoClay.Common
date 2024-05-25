@@ -579,6 +579,70 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
         }
 
+        [Test]
+        public void OneRequiredOptionAndOneNonRequiredOption_OnlyNonRequiredOptionInCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+            var exception = Assert.Catch<RequiredOptionException>(() => {
+                var parser = new CommandLineParser(OneRequiredOptionAndOneNonRequiredOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Required command line argument '--input' must be entered."));
+        }
+
+        [Test]
+        public void OneRequiredOptionAndOneNonRequiredOption_OnlyNonRequiredOptionInCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+            var parser = new CommandLineParser(OneRequiredOptionAndOneNonRequiredOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Required command line argument '--input' must be entered."));
+        }
+
+        [Test]
+        public void OneRequiredNamedGroupAndOneNonRequiredOption_OnlyNonRequiredOptionInCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+            var exception = Assert.Catch<RequiredOptionException>(() => {
+                var parser = new CommandLineParser(OneRequiredNamedGroupAndOneNonRequiredOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Required command line argument 'new' must be entered."));
+        }
+
+        [Test]
+        public void OneRequiredNamedGroupAndOneNonRequiredOption_OnlyNonRequiredOptionInCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo"
+                };
+
+            var parser = new CommandLineParser(OneRequiredNamedGroupAndOneNonRequiredOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Required command line argument 'new' must be entered."));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -785,6 +849,107 @@ namespace SymOntoClay.CLI.Helpers.Tests
                             "--o"
                         },
                         Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneRequiredOptionAndOneNonRequiredOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        IsRequired = true
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneRequiredNamedGroupAndOneNonRequiredOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        Name = "new",
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        },
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineMutuallyExclusiveSet()
+                            {
+                                IsRequired = true,
+                                SubItems = new List<BaseCommandLineArgument>
+                                {
+                                    new CommandLineArgument()
+                                    {
+                                        Target = "NPCName",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Target = "NPCName",
+                                        Name = "-npc",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-thing",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-world",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-w"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-lib",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-l"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-nav",
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "-player",
+                                        Aliases = new List<string>()
+                                        {
+                                            "-p"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag
                     }
                 };
         }
