@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Newtonsoft.Json;
+using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
@@ -41,10 +42,6 @@ namespace TestSandBox
             });
 
             {
-                var commandLineStr = @"  ";
-
-                _logger.Info($"commandLineStr = {commandLineStr}");
-
                 var args = new List<string>()
                 {
                     "--input",
@@ -55,6 +52,12 @@ namespace TestSandBox
                 var result = parser.Parse(args.ToArray());
 
                 _logger.Info($"result = {result}");
+
+                var inputValue = (List<string>)result.Params["--input"];
+
+#if DEBUG
+                _logger.Info($"inputValue = {JsonConvert.SerializeObject(inputValue, Formatting.Indented)}");
+#endif
             }
 
             _logger.Info("End");

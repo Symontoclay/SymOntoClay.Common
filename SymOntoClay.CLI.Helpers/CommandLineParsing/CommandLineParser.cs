@@ -767,7 +767,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                     if (targetToken.Kind == KindOfCommandLineToken.Value)
                     {
-                        throw new NotImplementedException();
+                        if (targetToken.Option == null)
+                        {
+                            targetToken.Option = element;
+                        }
+                        else
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
                     else
                     {
@@ -782,6 +789,10 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 throw new ValueException(flagInsteadOfValueListErrorMessage);
                             }
                         }
+                        else
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
 
                     if (isFirst)
@@ -789,8 +800,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         isFirst = false;
                     }
                 }
-
-                throw new NotImplementedException();
             }
             else
             {

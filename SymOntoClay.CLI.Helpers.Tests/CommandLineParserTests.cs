@@ -1,5 +1,6 @@
 ﻿using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using System.Linq;
 
 namespace SymOntoClay.CLI.Helpers.Tests
 {
@@ -116,6 +117,76 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.That(result.Params.ContainsKey(npcNameIdentifier), Is.EqualTo(true));
             Assert.That(result.Params[npcNameIdentifier], Is.EqualTo(elfIdentifier));
+        }
+
+        [Test]
+        public void OneListValueOption_TwoValuesInCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "value2"
+                };
+
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneListValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(2));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+            Assert.That(inputValue.Contains("value2"), Is.EqualTo(true));
+        }
+
+        [Test]
+        public void OneListValueOption_OneValueInCommandLine_Success()
+        {
+            var parser = new CommandLineParser(OneListValueOption());
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_TwoValuesInCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "value2"
+                };
+
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneSingleValueOrListOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(2));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
+            Assert.That(inputValue.Contains("value2"), Is.EqualTo(true));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_OneValueInCommandLine_Success()
+        {
+            var parser = new CommandLineParser(OneSingleValueOrListOption());
+
+            throw new NotImplementedException();
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
@@ -321,6 +392,88 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     }
                 }
             };
+        }
+
+        private List<BaseCommandLineArgument> OneListValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.List
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneListValueOptionAndNextSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.List
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValueOrListOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValueOrList
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValueOrListOptionAndNextSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValueOrList
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                };
         }
     }
 }
