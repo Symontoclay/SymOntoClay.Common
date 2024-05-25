@@ -607,11 +607,24 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 return (true, firstFoundToken.Content, firstFoundToken.Option);
                             }
 
+                        case KindOfCommandLineArgument.List:
+                        case KindOfCommandLineArgument.SingleValueOrList:
+                            {
+                                foreach (var foundToken in foundTokens)
+                                {
+#if DEBUG
+                                    _logger.Info($"foundToken = {foundToken}");
+#endif
+
+                                    ProcessValueList(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
+                                }
+
+                                return (true, firstFoundToken.Content, firstFoundToken.Option);
+                            }
+
                         default:
                             throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                     }
-
-                    throw new NotImplementedException();
                 }
                 else
                 {
@@ -720,6 +733,74 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 else
                 {
                     throw new ValueException(flagInsteadOfSingleValueErrorMessage);
+                }
+            }
+
+#if DEBUG
+            _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+#endif
+        }
+
+        private void ProcessValueList(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"targetIndex = {targetIndex}");
+            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
+            _logger.Info($"isObligate = {isObligate}");
+            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+#endif
+
+            var flagInsteadOfValueListErrorMessage = $"'{element.Identifier}' must be a single value or list of values, but used as flag.";
+
+            if (commandLineTokens.Count >= targetIndex + 1)
+            {
+                var isFirst = true;
+
+                for(var i = targetIndex; i < commandLineTokens.Count; i++)
+                {
+                    var targetToken = commandLineTokens[i];
+
+#if DEBUG
+                    _logger.Info($"targetToken = {targetToken}");
+                    _logger.Info($"isFirst = {isFirst}");
+#endif
+
+                    if (targetToken.Kind == KindOfCommandLineToken.Value)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        if(isFirst)
+                        {
+                            if (_initWithoutExceptions)
+                            {
+                                errorsList.Add(flagInsteadOfValueListErrorMessage);
+                            }
+                            else
+                            {
+                                throw new ValueException(flagInsteadOfValueListErrorMessage);
+                            }
+                        }
+                    }
+
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                }
+
+                throw new NotImplementedException();
+            }
+            else
+            {
+                if (_initWithoutExceptions)
+                {
+                    errorsList.Add(flagInsteadOfValueListErrorMessage);
+                }
+                else
+                {
+                    throw new ValueException(flagInsteadOfValueListErrorMessage);
                 }
             }
 

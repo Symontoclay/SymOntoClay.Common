@@ -443,6 +443,142 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[1], Is.EqualTo(@"Unknown value 'c:\Users\SomeUser\AppData\Roaming\SymOntoClayAsset\NpcLogMessages\58_31\' in 5 position."));
         }
 
+        [Test]
+        public void OneListValueOption_FlagInTheEndOfCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var exception = Assert.Catch<ValueException>(() => {
+                var parser = new CommandLineParser(OneListValueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneListValueOption_FlagInTheEndOfCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var parser = new CommandLineParser(OneListValueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneListValueOption_FlagInTheMiddleOfCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var exception = Assert.Catch<ValueException>(() => {
+                var parser = new CommandLineParser(OneListValueOptionAndNextSingleValueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneListValueOption_FlagInTheMiddleOfCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var parser = new CommandLineParser(OneListValueOptionAndNextSingleValueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_FlagInTheEndOfCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var exception = Assert.Catch<ValueException>(() => {
+                var parser = new CommandLineParser(OneSingleValueOrListOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_FlagInTheEndOfCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var parser = new CommandLineParser(OneSingleValueOrListOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_FlagInTheMiddleOfCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var exception = Assert.Catch<ValueException>(() => {
+                var parser = new CommandLineParser(OneSingleValueOrListOptionAndNextSingleValueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
+        [Test]
+        public void OneSingleValueOrListOption_FlagInTheMiddleOfCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var parser = new CommandLineParser(OneSingleValueOrListOptionAndNextSingleValueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("'--input' must be a single value or list of values, but used as flag."));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -558,6 +694,88 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         },
                         Kind = KindOfCommandLineArgument.SingleValue,
                         Index = 0
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneListValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.List
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneListValueOptionAndNextSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.List
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValueOrListOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValueOrList
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValueOrListOptionAndNextSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValueOrList
                     },
                     new CommandLineArgument
                     {
