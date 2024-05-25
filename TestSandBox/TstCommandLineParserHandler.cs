@@ -13,12 +13,52 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            TstValueList_Case1();
+            TstValueList_Case1_1();
+            //TstValueList_Case1();
             //TstPositionedSingleValueCase1();
             //OnePositionedSingleValueCase();
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void TstValueList_Case1_1()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.List,
+                    Index = 0
+                }
+            });
+
+            {
+                var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+
+                var inputValue = (List<string>)result.Params["--input"];
+
+#if DEBUG
+                _logger.Info($"inputValue = {JsonConvert.SerializeObject(inputValue, Formatting.Indented)}");
+#endif
+            }
 
             _logger.Info("End");
         }

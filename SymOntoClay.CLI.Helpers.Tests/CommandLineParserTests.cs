@@ -149,9 +149,26 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneListValueOption_OneValueInCommandLine_Success()
         {
-            var parser = new CommandLineParser(OneListValueOption());
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                };
 
-            throw new NotImplementedException();
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneListValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(1));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
         }
 
         [Test]
@@ -184,9 +201,26 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneSingleValueOrListOption_OneValueInCommandLine_Success()
         {
-            var parser = new CommandLineParser(OneSingleValueOrListOption());
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                };
 
-            throw new NotImplementedException();
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneSingleValueOrListOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+
+            var inputValue = (List<string>)result.Params[inputOptionIdentifier];
+            Assert.That(inputValue.Count, Is.EqualTo(1));
+            Assert.That(inputValue.Contains("value1"), Is.EqualTo(true));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
