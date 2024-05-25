@@ -12,7 +12,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagInsteadOfListInTheMiddle();
+            FlagInsteadOfListInTheMiddle_a();
+            //FlagInsteadOfListInTheMiddle();
             //FlagInsteadOfListInTheEnd();
             //ExtraValue_Case3_a_1();
             //ExtraValue_Case3_1();
@@ -41,6 +42,46 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void FlagInsteadOfListInTheMiddle_a()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "--input",
+                        Aliases = new List<string>()
+                        {
+                            "--i"
+                        },
+                        Kind = KindOfCommandLineArgument.List
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "--output",
+                        Aliases = new List<string>
+                        {
+                            "--o"
+                        },
+                        Kind = KindOfCommandLineArgument.SingleValue
+                    }
+                }, true);
+
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
 
             _logger.Info("End");
         }

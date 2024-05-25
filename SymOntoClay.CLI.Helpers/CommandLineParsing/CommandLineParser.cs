@@ -783,6 +783,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             if (_initWithoutExceptions)
                             {
                                 errorsList.Add(flagInsteadOfValueListErrorMessage);
+
+                                break;
                             }
                             else
                             {
