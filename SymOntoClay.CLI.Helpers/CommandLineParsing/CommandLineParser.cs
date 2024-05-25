@@ -321,14 +321,17 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                 if (targetValue.Any())
                 {
-                    if(optionKind == KindOfCommandLineArgument.SingleValue)
+                    switch(optionKind)
                     {
-                        resultOptionsDict[identifier] = targetValue.FirstOrDefault();
+                        case KindOfCommandLineArgument.SingleValue:
+                        case KindOfCommandLineArgument.FlagOrSingleValue:
+                            resultOptionsDict[identifier] = targetValue.FirstOrDefault();
+                            break;
+
+                        default:
+                            resultOptionsDict[identifier] = targetValue;
+                            break;
                     }
-                    else
-                    {
-                        resultOptionsDict[identifier] = targetValue;
-                    }                    
                 }
                 else
                 {
@@ -622,6 +625,20 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 return (true, firstFoundToken.Content, firstFoundToken.Option);
                             }
 
+                        case KindOfCommandLineArgument.FlagOrSingleValue:
+                            {
+                                foreach (var foundToken in foundTokens)
+                                {
+#if DEBUG
+                                    _logger.Info($"foundToken = {foundToken}");
+#endif
+
+                                    ProcessFlagOrSingleValue(element, foundToken.Position + 1, commandLineTokens, errorsList);
+                                }
+
+                                return (true, firstFoundToken.Content, firstFoundToken.Option);
+                            }
+
                         default:
                             throw new ArgumentOutOfRangeException(nameof(kind), kind, null);
                     }
@@ -680,6 +697,52 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
             return (false, null, null);
+        }
+
+        private void ProcessFlagOrSingleValue(BaseNamedCommandLineArgument element, int targetIndex, List<CommandLineToken> commandLineTokens, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"targetIndex = {targetIndex}");
+            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
+            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+#endif
+
+            if (commandLineTokens.Count >= targetIndex + 1)
+            {
+                var targetToken = commandLineTokens[targetIndex];
+
+#if DEBUG
+                _logger.Info($"targetToken = {targetToken}");
+#endif
+
+                if (targetToken.Kind == KindOfCommandLineToken.Value)
+                {
+                    if (targetToken.Option == null)
+                    {
+                        targetToken.Option = element;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+
+#if DEBUG
+                _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+#endif
+            }
+            else
+            {
+#if DEBUG
+                _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+#endif
+
+                return;
+            }
         }
 
         private void ProcessSingleValue(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)

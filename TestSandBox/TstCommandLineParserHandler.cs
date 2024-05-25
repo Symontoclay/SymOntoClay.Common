@@ -13,7 +13,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            TstValueList_Case2();
+            FlagOrSingleValue_Flag();
+            //FlagOrSingleValue_SingleValue();
+            //TstValueList_Case2();
             //TstValueList_Case1_1();
             //TstValueList_Case1();
             //TstPositionedSingleValueCase1();
@@ -21,6 +23,69 @@ namespace TestSandBox
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void FlagOrSingleValue_Flag()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                }
+            });
+
+            {
+                var args = new List<string>()
+                {
+                    "--input"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void FlagOrSingleValue_SingleValue()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                }
+            });
+
+            {
+                var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
 
             _logger.Info("End");
         }

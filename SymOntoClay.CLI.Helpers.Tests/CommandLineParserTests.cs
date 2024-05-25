@@ -351,6 +351,61 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
         }
 
+        [Test]
+        public void OneFlagOrSingleValueOption_SingleValueInTheEndOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                };
+
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneFlagOrSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo("value1"));
+        }
+
+        [Test]
+        public void OneFlagOrSingleValueOption_FlagInTheEndOfCommandLine_Success()
+        {
+            var args = new List<string>()
+                {
+                    "--input"
+                };
+
+            var inputOptionIdentifier = "--input";
+
+            var parser = new CommandLineParser(OneFlagOrSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(true));
+        }
+
+        [Test]
+        public void OneFlagOrSingleValueOption_SingleValueInTheMiddleOfCommandLine_Success()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneFlagOrSingleValueOption_FlagInTheMiddleOfCommandLine_Success()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -636,6 +691,22 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         Kind = KindOfCommandLineArgument.SingleValue
                     }
                 };
+        }
+
+        private List<BaseCommandLineArgument> OneFlagOrSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                }
+            };
         }
     }
 }
