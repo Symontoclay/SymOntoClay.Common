@@ -728,7 +728,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
                 else
                 {
-                    throw new NotImplementedException();
+#if DEBUG
+                    _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+#endif
+
+                    return;
                 }
 
 #if DEBUG

@@ -13,7 +13,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagOrSingleValue_Flag();
+            FlagOrSingleValue_Flag_2();
+            //FlagOrSingleValue_Flag();
+            //FlagOrSingleValue_SingleValue_2();
             //FlagOrSingleValue_SingleValue();
             //TstValueList_Case2();
             //TstValueList_Case1_1();
@@ -23,6 +25,48 @@ namespace TestSandBox
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void FlagOrSingleValue_Flag_2()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                },
+                new CommandLineArgument
+                {
+                    Name = "--output",
+                    Aliases = new List<string>
+                    {
+                        "--o"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue
+                }
+            });
+
+            {
+                var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
 
             _logger.Info("End");
         }
@@ -48,6 +92,49 @@ namespace TestSandBox
                 var args = new List<string>()
                 {
                     "--input"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void FlagOrSingleValue_SingleValue_2()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                },
+                new CommandLineArgument
+                {
+                    Name = "--output",
+                    Aliases = new List<string>
+                    {
+                        "--o"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue
+                }
+            });
+
+            {
+                var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "--output",
+                    "someValue"
                 };
 
                 var result = parser.Parse(args.ToArray());

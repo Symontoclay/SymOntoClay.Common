@@ -397,13 +397,56 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneFlagOrSingleValueOption_SingleValueInTheMiddleOfCommandLine_Success()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+                {
+                    "--input",
+                    "value1",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneFlagOrSingleValueOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo("value1"));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
         }
 
         [Test]
         public void OneFlagOrSingleValueOption_FlagInTheMiddleOfCommandLine_Success()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+                {
+                    "--input",
+                    "--output",
+                    "someValue"
+                };
+
+            var inputOptionIdentifier = "--input";
+            var outputOptionIdentifier = "--output";
+
+            var parser = new CommandLineParser(OneFlagOrSingleValueOptionAndNextSingleValueOption());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(inputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[inputOptionIdentifier], Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(outputOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
@@ -705,6 +748,31 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         "--i"
                     },
                     Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneFlagOrSingleValueOptionAndNextSingleValueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Name = "--input",
+                    Aliases = new List<string>()
+                    {
+                        "--i"
+                    },
+                    Kind = KindOfCommandLineArgument.FlagOrSingleValue
+                },
+                new CommandLineArgument
+                {
+                    Name = "--output",
+                    Aliases = new List<string>
+                    {
+                        "--o"
+                    },
+                    Kind = KindOfCommandLineArgument.SingleValue
                 }
             };
         }
