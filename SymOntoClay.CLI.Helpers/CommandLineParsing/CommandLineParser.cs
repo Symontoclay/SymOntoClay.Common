@@ -336,17 +336,37 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"optionKind = {optionKind}");
 #endif
 
+                var typeChecker = option.TypeChecker;
+
                 if (targetValue.Any())
                 {
                     switch(optionKind)
                     {
                         case KindOfCommandLineArgument.SingleValue:
                         case KindOfCommandLineArgument.FlagOrSingleValue:
-                            resultOptionsDict[identifier] = targetValue.FirstOrDefault();
+                            {
+                                var targetValueItem = targetValue.FirstOrDefault();
+
+                                if (typeChecker == null)
+                                {
+                                    resultOptionsDict[identifier] = targetValueItem;
+                                }
+                                else
+                                {
+                                    resultOptionsDict[identifier] = typeChecker.ConvertFromString(targetValueItem);
+                                }                                
+                            }                            
                             break;
 
                         default:
-                            resultOptionsDict[identifier] = targetValue;
+                            if(typeChecker == null)
+                            {
+                                resultOptionsDict[identifier] = targetValue;
+                            }
+                            else
+                            {
+                                resultOptionsDict[identifier] = targetValue.Select(typeChecker.ConvertFromString).ToList();
+                            }
                             break;
                     }
                 }
@@ -721,6 +741,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     if (targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
                     {
                         targetToken.Option = element;
+
+                        if(element.TypeChecker != null)
+                        {
+                            if(!element.TypeChecker.Check(targetToken.Content))
+                            {
+                                throw new NotImplementedException();
+                            }                            
+                        }
 
                         return (true, targetToken.Content, element);
                     }

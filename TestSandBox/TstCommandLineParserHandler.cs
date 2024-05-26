@@ -2,6 +2,8 @@
 using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers;
+using SymOntoClay.CLI.Helpers.Tests;
 
 namespace TestSandBox
 {
@@ -13,7 +15,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            FlagOrSingleValue_Flag_2();
+            EnumChecker();
+            //FlagOrSingleValue_Flag_2();
             //FlagOrSingleValue_Flag();
             //FlagOrSingleValue_SingleValue_2();
             //FlagOrSingleValue_SingleValue();
@@ -25,6 +28,37 @@ namespace TestSandBox
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void EnumChecker()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "TargetFramework",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new EnumChecker<TestEnum>()
+                }
+            });
+
+            var args = new List<string>()
+            {
+                "NetStandard"
+            };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            var targetFramework = (TestEnum)result.Params["TargetFramework"];
+
+            _logger.Info($"targetFramework = {targetFramework}");
 
             _logger.Info("End");
         }

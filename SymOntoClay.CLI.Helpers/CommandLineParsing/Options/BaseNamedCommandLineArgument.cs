@@ -1,4 +1,5 @@
-﻿using SymOntoClay.Common.DebugHelpers;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers;
+using SymOntoClay.Common.DebugHelpers;
 using System.Text;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
@@ -31,11 +32,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
                 return result;
             }
         }
-
+        
         public bool UseIfCommandLineIsEmpty { get; set; }
         public bool IsUnique { get; set; }
 
         public string Identifier => string.IsNullOrWhiteSpace(Target) ? Name : Target;
+
+        public BaseChecker TypeChecker { get; set; }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -49,6 +52,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
             sb.PrintPODList(n, nameof(Names), Names);
             sb.AppendLine($"{spaces}{nameof(UseIfCommandLineIsEmpty)} = {UseIfCommandLineIsEmpty}");
             sb.AppendLine($"{spaces}{nameof(IsUnique)} = {IsUnique}");
+            sb.PrintObjProp(n, nameof(TypeChecker), TypeChecker);
 
             sb.Append(base.PropertiesToString(n));
 

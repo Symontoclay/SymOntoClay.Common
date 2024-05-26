@@ -1,6 +1,7 @@
 ﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers;
 
 namespace SymOntoClay.CLI.Helpers.Tests
 {
@@ -999,6 +1000,20 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         IsUnique = true
                     }
                 };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithEnumChecker()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "TargetFramework",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new EnumChecker<TestEnum>()
+                }
+            };
         }
     }
 }

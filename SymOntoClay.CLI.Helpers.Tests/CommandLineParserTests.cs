@@ -1,5 +1,6 @@
 ﻿using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers;
 using System.Linq;
 
 namespace SymOntoClay.CLI.Helpers.Tests
@@ -449,6 +450,27 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Params[outputOptionIdentifier], Is.EqualTo("someValue"));
         }
 
+        [Test]
+        public void OneSingleValuePositionedOptionWithEnumChecker_ValidCommandLine_Success()
+        {
+            var args = new List<string>()
+            {
+                "NetStandard"
+            };
+
+            var targetFrameworkIdentifier = "TargetFramework";
+
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithEnumChecker());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(targetFrameworkIdentifier), Is.EqualTo(true));
+            Assert.That((TestEnum)result.Params[targetFrameworkIdentifier], Is.EqualTo(TestEnum.NetStandard));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -773,6 +795,20 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         "--o"
                     },
                     Kind = KindOfCommandLineArgument.SingleValue
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithEnumChecker()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "TargetFramework",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new EnumChecker<TestEnum>()
                 }
             };
         }
