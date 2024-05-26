@@ -643,6 +643,40 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("Required command line argument 'new' must be entered."));
         }
 
+        [Test]
+        public void OneUniqueOption_DuplicatedUniqueOptionInCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo",
+                    "-nologo"
+                };
+
+            var exception = Assert.Catch<UniqueOptionException>(() => {
+                var parser = new CommandLineParser(OneUniqueOption());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Option '-nologo' must be unique."));
+        }
+
+        [Test]
+        public void OneUniqueOption_DuplicatedUniqueOptionInCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "-nologo",
+                    "-nologo"
+                };
+
+            var parser = new CommandLineParser(OneUniqueOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Option '-nologo' must be unique."));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -950,6 +984,19 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     {
                         Name = "-nologo",
                         Kind = KindOfCommandLineArgument.Flag
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> OneUniqueOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag,
+                        IsUnique = true
                     }
                 };
         }

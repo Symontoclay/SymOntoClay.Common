@@ -1,6 +1,6 @@
 ﻿namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions
 {
-    public class UniqueOptionException : Exception
+    public class UniqueOptionException : CommandLineParsingException
     {
         public UniqueOptionException(string message)
             : base(message)

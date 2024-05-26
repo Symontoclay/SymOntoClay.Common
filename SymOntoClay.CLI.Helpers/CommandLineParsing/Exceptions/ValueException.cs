@@ -1,6 +1,6 @@
 ﻿namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions
 {
-    public class ValueException : Exception
+    public class ValueException : CommandLineParsingException
     {
         public ValueException(string message)
             : base(message)
