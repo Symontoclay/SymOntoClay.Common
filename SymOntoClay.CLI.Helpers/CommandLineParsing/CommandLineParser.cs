@@ -714,6 +714,28 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             //return (false, null, null);
         }
 
+        private void CheckValueType(BaseNamedCommandLineArgument element, string content, List<string> errorsList)
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"content = {content}");
+#endif
+
+            var typeChecker = element.TypeChecker;
+
+            if(typeChecker == null)
+            {
+                return;
+            }
+
+            if (typeChecker.Check(content))
+            {
+                return;
+            }
+
+            throw new NotImplementedException();
+        }
+
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
@@ -742,13 +764,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     {
                         targetToken.Option = element;
 
-                        if(element.TypeChecker != null)
-                        {
-                            if(!element.TypeChecker.Check(targetToken.Content))
-                            {
-                                throw new NotImplementedException();
-                            }
-                        }
+                        CheckValueType(element, targetToken.Content, errorsList);
 
                         return (true, targetToken.Content, element);
                     }
@@ -784,6 +800,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     if (targetToken.Option == null)
                     {
                         targetToken.Option = element;
+
+                        CheckValueType(element, targetToken.Content, errorsList);
                     }
                     else
                     {
@@ -837,6 +855,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     if (targetToken.Option == null)
                     {
                         targetToken.Option = element;
+
+                        CheckValueType(element, targetToken.Content, errorsList);
                     }
                     else
                     {
@@ -901,6 +921,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         if (targetToken.Option == null)
                         {
                             targetToken.Option = element;
+
+                            CheckValueType(element, targetToken.Content, errorsList);
                         }
                         else
                         {
