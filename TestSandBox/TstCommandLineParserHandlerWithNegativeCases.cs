@@ -14,7 +14,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum();//It should be covered
+            VersionCheckerWithoutTypeCheckErrorMessage_WrongValue();
+            //VersionCheckerWithTypeCheckErrorMessage_WrongValue();
+            //IntCheckerWithoutTypeCheckErrorMessage_WrongValue();
+            //IntCheckerWithTypeCheckErrorMessage_WrongValue();
+            //EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum();
             //EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum();
             //DuplicatedUniqueOption();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
@@ -53,7 +57,149 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum()//It should be covered
+        private void VersionCheckerWithoutTypeCheckErrorMessage_WrongValue()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Target = "Version",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new VersionChecker()
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void VersionCheckerWithTypeCheckErrorMessage_WrongValue()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Target = "Version",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new VersionChecker(),
+                        TypeCheckErrorMessage = "Unknown version"
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void IntCheckerWithoutTypeCheckErrorMessage_WrongValue()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Target = "Port",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new IntChecker()
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void IntCheckerWithTypeCheckErrorMessage_WrongValue()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Target = "Port",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new IntChecker(),
+                        TypeCheckErrorMessage = "Unknown port"
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum()
         {
             _logger.Info("Begin");
 

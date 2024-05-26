@@ -15,7 +15,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EnumChecker();
+            VersionChecker();
+            //IntChecker();
+            //EnumChecker();
             //FlagOrSingleValue_Flag_2();
             //FlagOrSingleValue_Flag();
             //FlagOrSingleValue_SingleValue_2();
@@ -28,6 +30,70 @@ namespace TestSandBox
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void VersionChecker()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Version",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new VersionChecker(),
+                    TypeCheckErrorMessage = "Unknown version"
+                }
+            });
+
+            var args = new List<string>()
+            {
+                "0.3.1"
+            };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            var version = (Version)result.Params["Version"];
+
+            _logger.Info($"version = {version}");
+
+            _logger.Info("End");
+        }
+
+        private void IntChecker()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Port",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new IntChecker(),
+                    TypeCheckErrorMessage = "Unknown port"
+                }
+            });
+
+            var args = new List<string>()
+            {
+                "16"
+            };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            var port = (int)result.Params["Port"];
+
+            _logger.Info($"port = {port}");
 
             _logger.Info("End");
         }

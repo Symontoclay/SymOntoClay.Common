@@ -750,7 +750,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithIntCheckerAndWithTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Unknown port 'Cat'."));
         }
 
         [Test]
@@ -761,7 +766,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithIntCheckerAndWithTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Unknown port 'Cat'."));
         }
 
         [Test]
@@ -772,7 +782,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithIntCheckerAndWithoutTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Can not convert value 'Cat' to type 'Int32'."));
         }
 
         [Test]
@@ -783,7 +798,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithIntCheckerAndWithoutTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Can not convert value 'Cat' to type 'Int32'."));
         }
 
         [Test]
@@ -794,7 +814,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithVersionCheckerAndWithTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Unknown version 'Cat'."));
         }
 
         [Test]
@@ -805,7 +830,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithVersionCheckerAndWithTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Unknown version 'Cat'."));
         }
 
         [Test]
@@ -816,7 +846,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithVersionCheckerAndWithoutTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Can not convert value 'Cat' to type 'Version'."));
         }
 
         [Test]
@@ -827,7 +862,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithVersionCheckerAndWithoutTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Can not convert value 'Cat' to type 'Version'."));
         }
 
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
@@ -1179,6 +1219,64 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Kind = KindOfCommandLineArgument.SingleValue,
                     Index = 0,
                     TypeChecker = new EnumChecker<TestEnum>()
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithIntCheckerAndWithTypeCheckErrorMessage()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Port",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new IntChecker(),
+                    TypeCheckErrorMessage = "Unknown port"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithIntCheckerAndWithoutTypeCheckErrorMessage()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Port",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new IntChecker()
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithVersionCheckerAndWithTypeCheckErrorMessage()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Version",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new VersionChecker(),
+                    TypeCheckErrorMessage = "Unknown version"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithVersionCheckerAndWithoutTypeCheckErrorMessage()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Version",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new VersionChecker()
                 }
             };
         }

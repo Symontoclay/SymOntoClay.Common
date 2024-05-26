@@ -2,7 +2,7 @@
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
 {
-    public class EnumChecker<TEnum> : BaseChecker where TEnum : struct
+    public class VersionChecker : BaseChecker
     {
 #if DEBUG
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
@@ -11,7 +11,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
         /// <inheritdoc/>
         public override string GetTypeName()
         {
-            return typeof(TEnum).Name;
+            return nameof(Version);
         }
 
         /// <inheritdoc/>
@@ -21,7 +21,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             _logger.Info($"value = {value}");
 #endif
 
-            return Enum.TryParse<TEnum>(value, out var result);
+            return Version.TryParse(value, out var result);
         }
 
         /// <inheritdoc/>
@@ -31,7 +31,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             _logger.Info($"value = {value}");
 #endif
 
-            Enum.TryParse<TEnum>(value, out var result);
+            Version.TryParse(value, out var result);
 
             return result;
         }

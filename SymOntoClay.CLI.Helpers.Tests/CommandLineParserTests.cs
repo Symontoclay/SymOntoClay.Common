@@ -474,13 +474,43 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneSingleValuePositionedOptionWithIntChecker_ValidCommandLine_Success()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+            {
+                "16"
+            };
+
+            var portIdentifier = "Port";
+
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithIntChecker());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(portIdentifier), Is.EqualTo(true));
+            Assert.That((int)result.Params[portIdentifier], Is.EqualTo(16));
         }
 
         [Test]
         public void OneSingleValuePositionedOptionWithVersionChecker_ValidCommandLine_Success()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+            {
+                "0.3.1"
+            };
+
+            var versionIdentifier = "Version";
+
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithVersionChecker());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(1));
+            Assert.That(result.Params.ContainsKey(versionIdentifier), Is.EqualTo(true));
+            Assert.That((Version)result.Params[versionIdentifier], Is.EqualTo(new Version(0, 3, 1)));
         }
 
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
@@ -822,6 +852,36 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Index = 0,
                     TypeChecker = new EnumChecker<TestEnum>(),
                     TypeCheckErrorMessage = "Unknown target framework"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithIntChecker()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Port",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new IntChecker(),
+                    TypeCheckErrorMessage = "Unknown port"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithVersionChecker()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "Version",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new VersionChecker(),
+                    TypeCheckErrorMessage = "Unknown version"
                 }
             };
         }
