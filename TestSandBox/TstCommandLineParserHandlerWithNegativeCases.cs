@@ -1,6 +1,8 @@
 ﻿using NLog;
 using SymOntoClay.CLI.Helpers.CommandLineParsing;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers;
+using SymOntoClay.CLI.Helpers.Tests;
 
 namespace TestSandBox
 {
@@ -12,7 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            DuplicatedUniqueOption();
+            EnumChecker_NonexistentEnum();//It should be covered
+            //DuplicatedUniqueOption();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineArgument();
             //FlagInsteadOfListInTheMiddle_a();
@@ -45,6 +48,37 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void EnumChecker_NonexistentEnum()//It should be covered
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "TargetFramework",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new EnumChecker<TestEnum>()
+                }
+            });
+
+            var args = new List<string>()
+            {
+                "Cat"
+            };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            var targetFramework = (TestEnum)result.Params["TargetFramework"];
+
+            _logger.Info($"targetFramework = {targetFramework}");
 
             _logger.Info("End");
         }

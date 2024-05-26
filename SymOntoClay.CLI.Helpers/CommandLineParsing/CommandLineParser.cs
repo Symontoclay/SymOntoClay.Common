@@ -747,7 +747,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             if(!element.TypeChecker.Check(targetToken.Content))
                             {
                                 throw new NotImplementedException();
-                            }                            
+                            }
                         }
 
                         return (true, targetToken.Content, element);
