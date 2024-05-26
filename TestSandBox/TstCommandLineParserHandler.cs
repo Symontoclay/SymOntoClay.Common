@@ -43,7 +43,8 @@ namespace TestSandBox
                     Target = "TargetFramework",
                     Kind = KindOfCommandLineArgument.SingleValue,
                     Index = 0,
-                    TypeChecker = new EnumChecker<TestEnum>()
+                    TypeChecker = new EnumChecker<TestEnum>(),
+                    TypeCheckErrorMessage = "Unknown target framework"
                 }
             });
 

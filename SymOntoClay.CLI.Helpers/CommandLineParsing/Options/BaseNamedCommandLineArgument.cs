@@ -39,6 +39,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public string Identifier => string.IsNullOrWhiteSpace(Target) ? Name : Target;
 
         public BaseChecker TypeChecker { get; set; }
+        public string TypeCheckErrorMessage { get; set; }
 
         /// <inheritdoc/>
         protected override string PropertiesToString(uint n)
@@ -53,6 +54,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
             sb.AppendLine($"{spaces}{nameof(UseIfCommandLineIsEmpty)} = {UseIfCommandLineIsEmpty}");
             sb.AppendLine($"{spaces}{nameof(IsUnique)} = {IsUnique}");
             sb.PrintObjProp(n, nameof(TypeChecker), TypeChecker);
+            sb.AppendLine($"{spaces}{nameof(TypeCheckErrorMessage)} = {TypeCheckErrorMessage}");
 
             sb.Append(base.PropertiesToString(n));
 
