@@ -471,6 +471,18 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That((TestEnum)result.Params[targetFrameworkIdentifier], Is.EqualTo(TestEnum.NetStandard));
         }
 
+        [Test]
+        public void OneSingleValuePositionedOptionWithIntChecker_ValidCommandLine_Success()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithVersionChecker_ValidCommandLine_Success()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()

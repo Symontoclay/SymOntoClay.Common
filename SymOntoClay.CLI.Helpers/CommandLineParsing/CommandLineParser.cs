@@ -733,7 +733,38 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 return;
             }
 
-            throw new NotImplementedException();
+            var errorMessage = element.TypeCheckErrorMessage;
+
+#if DEBUG
+            _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                throw new NotImplementedException();
+            }
+            else
+            {
+                if(!errorMessage.EndsWith(" "))
+                {
+                    errorMessage = $"{errorMessage} ";
+                }
+
+                errorMessage = $"{errorMessage}'{content}'.";
+            }
+
+#if DEBUG
+            _logger.Info($"errorMessage (after) = {errorMessage}");
+#endif
+
+            if (_initWithoutExceptions)
+            {
+                errorsList.Add(errorMessage);
+            }
+            else
+            {
+                throw new TypeCheckingException(errorMessage);
+            }
         }
 
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)

@@ -6,6 +6,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
 {
     public abstract class BaseChecker : IObjectToString
     {
+        public abstract string GetTypeName();
         public abstract bool Check(string value);
         public abstract object ConvertFromString(string value);
 

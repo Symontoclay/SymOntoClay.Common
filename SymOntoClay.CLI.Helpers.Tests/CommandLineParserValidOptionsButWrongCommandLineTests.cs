@@ -678,6 +678,148 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("Option '-nologo' must be unique."));
         }
 
+        [Test]
+        public void OneSingleValuePositionedOptionWithEnumCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithEnumCheckerAndWithTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Unknown target framework 'Cat'."));
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithEnumCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithEnumCheckerAndWithTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Unknown target framework 'Cat'."));
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithEnumCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithEnumCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithIntCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithIntCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithIntCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithIntCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithVersionCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithVersionCheckerAndWithTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithVersionCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_Fail()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneSingleValuePositionedOptionWithVersionCheckerAndWithoutTypeCheckErrorMessage_WrongCommandLine_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+            throw new NotImplementedException();
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -1002,7 +1144,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 };
         }
 
-        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithEnumChecker()
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithEnumCheckerAndWithTypeCheckErrorMessage()
         {
             return new List<BaseCommandLineArgument>()
             {
@@ -1013,6 +1155,20 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Index = 0,
                     TypeChecker = new EnumChecker<TestEnum>(),
                     TypeCheckErrorMessage = "Unknown target framework"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> OneSingleValuePositionedOptionWithEnumCheckerAndWithoutTypeCheckErrorMessage()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                    Target = "TargetFramework",
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    Index = 0,
+                    TypeChecker = new EnumChecker<TestEnum>()
                 }
             };
         }

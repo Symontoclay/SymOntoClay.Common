@@ -8,6 +8,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
+        // <inheritdoc/>
+        public override string GetTypeName()
+        {
+            return typeof(TEnum).Name;
+        }
+
         /// <inheritdoc/>
         public override bool Check(string value)
         {

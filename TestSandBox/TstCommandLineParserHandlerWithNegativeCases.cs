@@ -14,7 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EnumChecker_NonexistentEnum();//It should be covered
+            //EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum();//It should be covered
+            EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum();//It should be covered
             //DuplicatedUniqueOption();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineArgument();
@@ -52,34 +53,82 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void EnumChecker_NonexistentEnum()//It should be covered
+        private void EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum()//It should be covered
         {
             _logger.Info("Begin");
 
-            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            try
             {
-                new CommandLineArgument()
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
                 {
-                    Target = "TargetFramework",
-                    Kind = KindOfCommandLineArgument.SingleValue,
-                    Index = 0,
-                    TypeChecker = new EnumChecker<TestEnum>(),
-                    TypeCheckErrorMessage = "Unknown target framework"
-                }
-            });
+                    new CommandLineArgument()
+                    {
+                        Target = "TargetFramework",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new EnumChecker<TestEnum>(),
+                        TypeCheckErrorMessage = "Unknown target framework"
+                    }
+                });
 
-            var args = new List<string>()
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+
+                var targetFramework = (TestEnum)result.Params["TargetFramework"];
+
+                _logger.Info($"targetFramework = {targetFramework}");
+            }
+            catch (Exception ex)
             {
-                "Cat"
-            };
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
-            var result = parser.Parse(args.ToArray());
+            _logger.Info("End");
+        }
 
-            _logger.Info($"result = {result}");
+        private void EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum()//It should be covered
+        {
+            _logger.Info("Begin");
 
-            var targetFramework = (TestEnum)result.Params["TargetFramework"];
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Target = "TargetFramework",
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        Index = 0,
+                        TypeChecker = new EnumChecker<TestEnum>(),
+                        TypeCheckErrorMessage = "Unknown target framework"
+                    }
+                });
 
-            _logger.Info($"targetFramework = {targetFramework}");
+                var args = new List<string>()
+                {
+                    "Cat"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+
+                var targetFramework = (TestEnum)result.Params["TargetFramework"];
+
+                _logger.Info($"targetFramework = {targetFramework}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }
