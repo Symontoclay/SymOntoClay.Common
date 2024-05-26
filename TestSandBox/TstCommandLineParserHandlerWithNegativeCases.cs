@@ -12,7 +12,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
+            DuplicatedUniqueOption();
+            //HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineArgument();
             //FlagInsteadOfListInTheMiddle_a();
             //FlagInsteadOfListInTheMiddle();
@@ -44,6 +45,41 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void DuplicatedUniqueOption()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Name = "-nologo",
+                        Kind = KindOfCommandLineArgument.Flag,
+                        IsUnique = true
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "-nologo",
+                    "-nologo"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }

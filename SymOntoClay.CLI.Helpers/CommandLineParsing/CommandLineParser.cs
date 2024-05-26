@@ -227,6 +227,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             BaseNamedCommandLineArgument currentOption = null;
             List<string> currentValuesList = null;
+            CommandLineToken prevToken = null;
 
             foreach (var token in tokensList)
             {
@@ -234,9 +235,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"token = {token}");
 #endif
 
-                if(currentOption == null || currentOption != token.Option)
+                if(currentOption == null || currentOption != token.Option || (prevToken.Kind == KindOfCommandLineToken.Option && token.Kind == KindOfCommandLineToken.Option))
                 {
-                    if(currentOption != null && currentOption != token.Option)
+                    if(currentOption != null && (currentOption != token.Option || prevToken.Kind == KindOfCommandLineToken.Option && token.Kind == KindOfCommandLineToken.Option))
                     {
 #if DEBUG
                         _logger.Info($"currentOption = {currentOption}");
@@ -247,6 +248,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
 
                     currentOption = token.Option;
+                    prevToken = token;
                     currentValuesList = new List<string>();
                 }
 
@@ -312,6 +314,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #if DEBUG
                 _logger.Info($"identifier = {identifier}");
 #endif
+
+                if(resultOptionsDict.ContainsKey(identifier))
+                {
+                    throw new NotImplementedException();
+                }
 
                 var optionKind = option.GetKind();
 
