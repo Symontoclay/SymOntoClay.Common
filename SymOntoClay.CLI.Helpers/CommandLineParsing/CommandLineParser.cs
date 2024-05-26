@@ -285,11 +285,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");
 #endif
 
-            if (rawResultsList.Count > 1 && _uniqueElementsList.Count > 0)
-            {
-                throw new NotImplementedException("Check unique options here");
-            }
-
             var rawResultsDict = rawResultsList.GroupBy(p => p.Option).ToDictionary(p => p.Key, p => p.Select(x => x.ParamValues).ToList());
 
             var resultOptionsDict = new Dictionary<string, object>();
@@ -303,22 +298,37 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 _logger.Info($"rawResultsKvpItem.Value = {JsonConvert.SerializeObject(rawResultsKvpItem.Value, Formatting.Indented)}");
 #endif
 
-                var targetValue = rawResultsKvpItem.Value.LastOrDefault();
-
-#if DEBUG
-                _logger.Info($"targetValue = {targetValue.WritePODListToString()}");
-#endif
-
                 var identifier = option.Identifier;
 
 #if DEBUG
                 _logger.Info($"identifier = {identifier}");
 #endif
 
-                if(resultOptionsDict.ContainsKey(identifier))
+                if (rawResultsKvpItem.Value.Count > 1 && _uniqueElementsList.Contains(option))
                 {
-                    throw new NotImplementedException();
+                    var errorMessage = $"Option '{identifier}' must be unique.";
+
+#if DEBUG
+                    _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                    if (_initWithoutExceptions)
+                    {
+                        errorsList.Add(errorMessage);
+
+                        break;
+                    }
+                    else
+                    {
+                        throw new UniqueOptionException(errorMessage);
+                    }
                 }
+
+                var targetValue = rawResultsKvpItem.Value.LastOrDefault();
+
+#if DEBUG
+                _logger.Info($"targetValue = {targetValue.WritePODListToString()}");
+#endif
 
                 var optionKind = option.GetKind();
 
@@ -344,6 +354,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 {
                     resultOptionsDict[identifier] = true;
                 }
+            }
+
+            if (errorsList.Any())
+            {
+                return new CommandLineParsingResult
+                {
+                    Params = new Dictionary<string, object>(),
+                    Errors = errorsList
+                };
             }
 
             return new CommandLineParsingResult
