@@ -718,7 +718,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var exception = Assert.Catch<TypeCheckingException>(() => {
+                var parser = new CommandLineParser(OneSingleValuePositionedOptionWithEnumCheckerAndWithoutTypeCheckErrorMessage());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Can not convert value 'Cat' to type 'TestEnum'."));
         }
 
         [Test]
@@ -729,7 +734,12 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     "Cat"
                 };
 
-            throw new NotImplementedException();
+            var parser = new CommandLineParser(OneSingleValuePositionedOptionWithEnumCheckerAndWithoutTypeCheckErrorMessage(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Can not convert value 'Cat' to type 'TestEnum'."));
         }
 
         [Test]

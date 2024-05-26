@@ -14,8 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum();//It should be covered
-            EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum();//It should be covered
+            EnumCheckerWithoutTypeCheckErrorMessage_NonexistentEnum();//It should be covered
+            //EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum();
             //DuplicatedUniqueOption();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineNamedGroup();
             //HasOptionalValueButDoesNotHaveRequired_CommandLineArgument();
@@ -66,8 +66,7 @@ namespace TestSandBox
                         Target = "TargetFramework",
                         Kind = KindOfCommandLineArgument.SingleValue,
                         Index = 0,
-                        TypeChecker = new EnumChecker<TestEnum>(),
-                        TypeCheckErrorMessage = "Unknown target framework"
+                        TypeChecker = new EnumChecker<TestEnum>()
                     }
                 });
 
@@ -93,7 +92,7 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum()//It should be covered
+        private void EnumCheckerWithTypeCheckErrorMessage_NonexistentEnum()
         {
             _logger.Info("Begin");
 

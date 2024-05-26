@@ -741,7 +741,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             if (string.IsNullOrWhiteSpace(errorMessage))
             {
-                throw new NotImplementedException();
+                errorMessage = $"Can not convert value '{content}' to type '{typeChecker.GetTypeName()}'.";
             }
             else
             {
