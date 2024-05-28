@@ -73,6 +73,24 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             _logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
 #endif
 
+            var optionsValidationsVisitor = new OptionsValidationsVisitor();
+
+            var errorList = optionsValidationsVisitor.Run(_сommandLineVirtualRootGroup);
+
+            if(errorList.Any())
+            {
+                if (initWithoutExceptions)
+                {
+                    _initialErrors.AddRange(errorList);
+
+                    return;
+                }
+                else
+                {
+                    throw new OptionsValidationException(errorList.First());
+                }
+            }
+
             var namedCommandLineArgumentsVisitor = new NamedCommandLineArgumentsVisitor();
 
             var namedCommandLineArgumentsList = namedCommandLineArgumentsVisitor.Run(_сommandLineVirtualRootGroup);

@@ -14,7 +14,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EmptyOptionsList();//It should be covered
+            RequiredGroup();
+            //EmptyGroup();
+            //EmptyOptionsList();
             //NullInsteadOfOptionsList_a();
             //NullInsteadOfOptionsList();
             //VersionCheckerWithoutTypeCheckErrorMessage_WrongValue();
@@ -60,7 +62,72 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void EmptyOptionsList()//It should be covered
+        private void RequiredGroup()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineGroup()
+                    {
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "-nologo",
+                                Kind = KindOfCommandLineArgument.Flag
+                            }
+                        }
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void EmptyGroup()//It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineGroup()
+                    {
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void EmptyOptionsList()
         {
             _logger.Info("Begin");
 

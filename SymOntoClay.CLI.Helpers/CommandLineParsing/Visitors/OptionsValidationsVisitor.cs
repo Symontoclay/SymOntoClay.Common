@@ -39,7 +39,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"element = {element}");
 #endif
 
-            throw new NotImplementedException();
+            if(string.IsNullOrWhiteSpace(element.Name) && !element.Index.HasValue)
+            {
+                _result.Add($"{nameof(CommandLineArgument)} must have either Name or Index.");
+            }
+
+            OnVisitBaseNamedCommandLineArgument<CommandLineArgument>(element, true);
         }
 
         /// <inheritdoc/>
@@ -49,7 +54,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"element = {element}");
 #endif
 
-            throw new NotImplementedException();
+            if((element.SubItems?.Count ?? 0) == 0)
+            {
+                _result.Add($"{nameof(CommandLineGroup)} must have subitems.");
+            }
+
+            if(element.IsRequired)
+            {
+                _result.Add($"{nameof(CommandLineGroup)} must not be required.");
+            }
         }
 
         /// <inheritdoc/>
@@ -59,7 +72,10 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"element = {element}");
 #endif
 
-            throw new NotImplementedException();
+            if ((element.SubItems?.Count ?? 0) == 0)
+            {
+                _result.Add($"{nameof(CommandLineMutuallyExclusiveSet)} must have subitems.");
+            }
         }
 
         /// <inheritdoc/>
@@ -69,7 +85,31 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"element = {element}");
 #endif
 
-            throw new NotImplementedException();
+            if ((element.SubItems?.Count ?? 0) == 0)
+            {
+                _result.Add($"{nameof(CommandLineNamedGroup)} must have subitems.");
+            }
+
+            OnVisitBaseNamedCommandLineArgument<CommandLineNamedGroup>(element, false);
+        }
+
+        private void OnVisitBaseNamedCommandLineArgument<T>(BaseNamedCommandLineArgument element, bool skipNameCheck)
+            where T : BaseNamedCommandLineArgument
+        {
+#if DEBUG
+            _logger.Info($"element = {element}");
+            _logger.Info($"typeof(T).Name = {typeof(T).Name}");
+#endif
+
+            if(!skipNameCheck && string.IsNullOrWhiteSpace(element.Name))
+            {
+                throw new NotImplementedException();
+            }
+
+            if(string.IsNullOrWhiteSpace(element.Name) && (element.Aliases?.Count ?? 0) > 0)
+            {
+                throw new NotImplementedException();
+            }            
         }
     }
 }
