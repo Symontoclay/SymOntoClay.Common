@@ -25,6 +25,40 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         {
             _initWithoutExceptions = initWithoutExceptions;
 
+            if (commandLineArguments == null)
+            {
+                if(initWithoutExceptions)
+                {
+                    _initialErrors.Add(new ArgumentNullException(nameof(commandLineArguments)).Message);
+
+                    return;
+                }
+                else
+                {
+                    throw new ArgumentNullException(nameof(commandLineArguments));
+                }
+            }
+
+            if(!commandLineArguments.Any())
+            {
+                var errorMessage = "There must be at least one option.";
+
+#if DEBUG
+                _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                if (initWithoutExceptions)
+                {
+                    _initialErrors.Add(errorMessage);
+
+                    return;
+                }
+                else
+                {
+                    throw new OptionsValidationException(errorMessage);
+                }
+            }
+
 #if DEBUG
             //_logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
             _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");

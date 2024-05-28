@@ -14,7 +14,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            VersionCheckerWithoutTypeCheckErrorMessage_WrongValue();
+            EmptyOptionsList();//It should be covered
+            //NullInsteadOfOptionsList_a();
+            //NullInsteadOfOptionsList();
+            //VersionCheckerWithoutTypeCheckErrorMessage_WrongValue();
             //VersionCheckerWithTypeCheckErrorMessage_WrongValue();
             //IntCheckerWithoutTypeCheckErrorMessage_WrongValue();
             //IntCheckerWithTypeCheckErrorMessage_WrongValue();
@@ -53,6 +56,75 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void EmptyOptionsList()//It should be covered
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>());
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void NullInsteadOfOptionsList_a()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(null, true);
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void NullInsteadOfOptionsList()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(null);
+
+                //var args = new List<string>();
+
+                //var result = parser.Parse(args.ToArray());
+
+                //_logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }
