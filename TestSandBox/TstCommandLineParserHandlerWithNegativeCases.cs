@@ -14,7 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RequiredGroup();
+            EmptyMutuallyExclusiveSet();
+            //RequiredGroup();
             //EmptyGroup();
             //EmptyOptionsList();
             //NullInsteadOfOptionsList_a();
@@ -62,6 +63,34 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
+        private void EmptyMutuallyExclusiveSet()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
         private void RequiredGroup()
         {
             _logger.Info("Begin");
@@ -99,7 +128,7 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void EmptyGroup()//It should be covered
+        private void EmptyGroup()
         {
             _logger.Info("Begin");
 

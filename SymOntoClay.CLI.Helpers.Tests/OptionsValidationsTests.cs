@@ -98,6 +98,89 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("CommandLineGroup must not be required."));
         }
 
+        [Test]
+        public void EmptyMutuallyExclusiveSet_Fail()
+        {
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(EmptyMutuallyExclusiveSet());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineMutuallyExclusiveSet must have subitems."));
+        }
+
+        [Test]
+        public void EmptyMutuallyExclusiveSet_ErrorsList()
+        {
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(EmptyMutuallyExclusiveSet(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineMutuallyExclusiveSet must have subitems."));
+        }
+
+        [Test]
+        public void EmptyCommandLineNamedGroup_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void EmptyCommandLineNamedGroup_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineNamedGroupWithoutNameAndAliases_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineNamedGroupWithoutNameAndAliases_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineNamedGroupWithoutNameButWithAliases_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineNamedGroupWithoutNameButWithAliases_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineArgumentWithoutNameAndAliasesAndIndexes_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineArgumentWithoutNameAndAliasesAndIndexes_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineArgumentWithoutNameAndIndexesButWithAliases_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void CommandLineArgumentWithoutNameAndIndexesButWithAliases_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<BaseCommandLineArgument> EmptyCommandLineGroup()
         {
             return new List<BaseCommandLineArgument>()
@@ -125,6 +208,16 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         }
                 }
             };
+        }
+
+        private List<BaseCommandLineArgument> EmptyMutuallyExclusiveSet()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                    }
+                };
         }
     }
 }
