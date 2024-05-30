@@ -14,7 +14,12 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EmptyMutuallyExclusiveSet();
+            CommandLineArgumentWithoutNameAndIndexesButWithAliases_a();
+            //CommandLineArgumentWithoutNameAndIndexesButWithAliases();
+            //CommandLineArgumentWithoutNameAndAliasesAndIndexes();
+            //CommandLineNamedGroupWithoutNameAndAliases();
+            //EmptyCommandLineNamedGroup();
+            //EmptyMutuallyExclusiveSet();
             //RequiredGroup();
             //EmptyGroup();
             //EmptyOptionsList();
@@ -59,6 +64,167 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void CommandLineArgumentWithoutNameAndIndexesButWithAliases_a()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        }
+                    }
+                }, true);
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void CommandLineArgumentWithoutNameAndIndexesButWithAliases()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        }
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void CommandLineArgumentWithoutNameAndAliasesAndIndexes()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void CommandLineNamedGroupWithoutNameAndAliases()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "-thing",
+                                Kind = KindOfCommandLineArgument.SingleValue
+                            }
+                        }
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void EmptyCommandLineNamedGroup()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        Name = "new",
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        }
+                    }
+                });
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }

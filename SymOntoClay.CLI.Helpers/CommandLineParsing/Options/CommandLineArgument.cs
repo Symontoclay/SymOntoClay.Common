@@ -6,7 +6,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 {
     public class CommandLineArgument : BaseNamedCommandLineArgument
     {
-        public KindOfCommandLineArgument Kind { get; set; }
+        public KindOfCommandLineArgument Kind { get; set; } = KindOfCommandLineArgument.Flag;
         public int? Index { get; set; }
 
         /// <inheritdoc/>

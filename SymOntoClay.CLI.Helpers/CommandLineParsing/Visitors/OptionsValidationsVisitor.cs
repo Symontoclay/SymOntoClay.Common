@@ -26,7 +26,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 
             rootElement.Accept(this);
 
-            var result = _result;
+            var result = _result.Distinct().ToList();
             _result = null;
 
             return result;
@@ -44,7 +44,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
                 _result.Add($"{nameof(CommandLineArgument)} must have either Name or Index.");
             }
 
-            OnVisitBaseNamedCommandLineArgument<CommandLineArgument>(element, true);
+            //OnVisitBaseNamedCommandLineArgument<CommandLineArgument>(element, true);
         }
 
         /// <inheritdoc/>
@@ -103,12 +103,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 
             if(!skipNameCheck && string.IsNullOrWhiteSpace(element.Name))
             {
-                throw new NotImplementedException();
+                _result.Add($"{typeof(T).Name} must have Name.");
             }
 
             if(string.IsNullOrWhiteSpace(element.Name) && (element.Aliases?.Count ?? 0) > 0)
             {
-                throw new NotImplementedException();
+                _result.Add($"{typeof(T).Name} must have Name.");
             }            
         }
     }

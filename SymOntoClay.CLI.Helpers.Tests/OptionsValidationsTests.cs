@@ -124,61 +124,116 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void EmptyCommandLineNamedGroup_Fail()
         {
-            throw new NotImplementedException();
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(EmptyCommandLineNamedGroup());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have subitems."));
         }
 
         [Test]
         public void EmptyCommandLineNamedGroup_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(EmptyCommandLineNamedGroup(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have subitems."));
         }
 
         [Test]
         public void CommandLineNamedGroupWithoutNameAndAliases_Fail()
         {
-            throw new NotImplementedException();
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameAndAliases());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name."));
         }
 
         [Test]
         public void CommandLineNamedGroupWithoutNameAndAliases_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameAndAliases(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name."));
         }
 
         [Test]
         public void CommandLineNamedGroupWithoutNameButWithAliases_Fail()
         {
-            throw new NotImplementedException();
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameButWithAliases());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name."));
         }
 
         [Test]
         public void CommandLineNamedGroupWithoutNameButWithAliases_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameButWithAliases(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name."));
         }
 
         [Test]
         public void CommandLineArgumentWithoutNameAndAliasesAndIndexes_Fail()
         {
-            throw new NotImplementedException();
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndAliasesAndIndexes());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index."));
         }
 
         [Test]
         public void CommandLineArgumentWithoutNameAndAliasesAndIndexes_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndAliasesAndIndexes(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index."));
         }
 
         [Test]
         public void CommandLineArgumentWithoutNameAndIndexesButWithAliases_Fail()
         {
-            throw new NotImplementedException();
+            var exception = Assert.Catch<OptionsValidationException>(() => {
+                var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndIndexesButWithAliases());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index."));
         }
 
         [Test]
         public void CommandLineArgumentWithoutNameAndIndexesButWithAliases_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndIndexesButWithAliases(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index."));
         }
 
         private List<BaseCommandLineArgument> EmptyCommandLineGroup()
@@ -216,6 +271,85 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 {
                     new CommandLineMutuallyExclusiveSet()
                     {
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> EmptyCommandLineNamedGroup()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        Name = "new",
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        }
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> CommandLineNamedGroupWithoutNameAndAliases()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "-thing",
+                                Kind = KindOfCommandLineArgument.SingleValue
+                            }
+                        }
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> CommandLineNamedGroupWithoutNameButWithAliases()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineNamedGroup()
+                    {
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        },
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "-thing",
+                                Kind = KindOfCommandLineArgument.SingleValue
+                            }
+                        }
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> CommandLineArgumentWithoutNameAndAliasesAndIndexes()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument()
+                {
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> CommandLineArgumentWithoutNameAndIndexesButWithAliases()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument()
+                    {
+                        Aliases = new List<string>
+                        {
+                            "n"
+                        }
                     }
                 };
         }
