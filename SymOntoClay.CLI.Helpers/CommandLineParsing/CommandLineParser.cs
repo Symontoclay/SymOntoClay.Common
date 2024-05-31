@@ -376,6 +376,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
                 }
 
+                if((option.Requires?.Count ?? 0) > 0)
+                {
+                    throw new NotImplementedException();
+                }
+
                 var targetValue = rawResultsKvpItem.Value.LastOrDefault();
 
 #if DEBUG
