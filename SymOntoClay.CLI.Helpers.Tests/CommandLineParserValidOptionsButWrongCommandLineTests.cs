@@ -870,6 +870,18 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("Can not convert value 'Cat' to type 'Version'."));
         }
 
+        [Test]
+        public void OneOptionWithRequires_AbsentRequiredParameterInCommandLine_Fail()
+        {
+            throw new NotImplementedException();
+        }
+
+        [Test]
+        public void OneOptionWithRequires_AbsentRequiredParameterInCommandLine_ErrorsList()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()

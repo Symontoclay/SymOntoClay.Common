@@ -15,7 +15,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            VersionChecker();
+            Requires_2();
+            //Requires();
+            //VersionChecker();
             //IntChecker();
             //EnumChecker();
             //FlagOrSingleValue_Flag_2();
@@ -30,6 +32,72 @@ namespace TestSandBox
             //TwoNamedSingleValueCase();
             //OneNamedSingleValueCase();
             //NonRequiredMutuallyExclusiveSet_EmptyCommandLine_Success();
+
+            _logger.Info("End");
+        }
+
+        private void Requires_2()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument
+                {
+                    Name = "--html",
+                    Kind = KindOfCommandLineArgument.Flag
+                },
+                new CommandLineArgument
+                {
+                    Name = "--abs-url",
+                    Kind = KindOfCommandLineArgument.Flag,
+                    Requires = new List<string>
+                    {
+                        "--html"
+                    }
+                }
+            });
+
+            var args = new List<string>();
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
+
+            _logger.Info("End");
+        }
+
+        private void Requires()
+        {
+            _logger.Info("Begin");
+
+            var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument
+                {
+                    Name = "--html",
+                    Kind = KindOfCommandLineArgument.Flag
+                },
+                new CommandLineArgument
+                {
+                    Name = "--abs-url",
+                    Kind = KindOfCommandLineArgument.Flag,
+                    Requires = new List<string>
+                    {
+                        "--html"
+                    }
+                }
+            });
+
+            var args = new List<string>()
+            {
+                "--html",
+                "--abs-url"
+            };
+
+            var result = parser.Parse(args.ToArray());
+
+            _logger.Info($"result = {result}");
 
             _logger.Info("End");
         }

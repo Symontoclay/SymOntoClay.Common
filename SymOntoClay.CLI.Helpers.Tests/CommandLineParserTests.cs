@@ -513,6 +513,46 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That((Version)result.Params[versionIdentifier], Is.EqualTo(new Version(0, 3, 1)));
         }
 
+        [Test]
+        public void Requires_ValidCommandLine_Success()
+        {
+            var args = new List<string>()
+            {
+                "--html",
+                "--abs-url"
+            };
+
+            var htmlOptionIdentifier = "--html";
+            var absUrlOptionIdentifier = "--abs-url";
+
+            var parser = new CommandLineParser(Requires());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(2));
+            Assert.That(result.Params.ContainsKey(htmlOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[htmlOptionIdentifier], Is.EqualTo(true));
+
+            Assert.That(result.Params.ContainsKey(absUrlOptionIdentifier), Is.EqualTo(true));
+            Assert.That(result.Params[absUrlOptionIdentifier], Is.EqualTo(true));
+        }
+
+        [Test]
+        public void Requires_EmptyCommandLine_Success()
+        {
+            var args = new List<string>();
+
+            var parser = new CommandLineParser(Requires());
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(0));
+
+            Assert.That(result.Params.Count, Is.EqualTo(0));
+        }
+
         private List<BaseCommandLineArgument> GetMinimalNonRequiredMutuallyExclusiveSet()
         {
             return new List<BaseCommandLineArgument>()
@@ -882,6 +922,27 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Index = 0,
                     TypeChecker = new VersionChecker(),
                     TypeCheckErrorMessage = "Unknown version"
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> Requires()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument
+                {
+                    Name = "--html",
+                    Kind = KindOfCommandLineArgument.Flag
+                },
+                new CommandLineArgument
+                {
+                    Name = "--abs-url",
+                    Kind = KindOfCommandLineArgument.Flag,
+                    Requires = new List<string>
+                    {
+                        "--html"
+                    }
                 }
             };
         }
