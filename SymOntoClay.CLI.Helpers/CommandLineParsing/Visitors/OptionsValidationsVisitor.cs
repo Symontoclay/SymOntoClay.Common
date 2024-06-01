@@ -39,9 +39,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"element = {element}");
 #endif
 
-            if(string.IsNullOrWhiteSpace(element.Name) && !element.Index.HasValue)
+            if(string.IsNullOrWhiteSpace(element.Name) && !element.Index.HasValue && string.IsNullOrWhiteSpace(element.Target))
             {
-                _result.Add($"{nameof(CommandLineArgument)} must have either Name or Index.");
+                _result.Add($"{nameof(CommandLineArgument)} must have either Name or Index or Target.");
             }
 
             CheckEmptyRequiresElements(element);
@@ -109,15 +109,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             _logger.Info($"typeof(T).Name = {typeof(T).Name}");
 #endif
 
-            if(!skipNameCheck && string.IsNullOrWhiteSpace(element.Name))
+            if(!skipNameCheck && (string.IsNullOrWhiteSpace(element.Name) && string.IsNullOrWhiteSpace(element.Target)))
             {
-                _result.Add($"{typeof(T).Name} must have Name.");
+                _result.Add($"{typeof(T).Name} must have Name or Target.");
             }
 
-            if(string.IsNullOrWhiteSpace(element.Name) && (element.Aliases?.Count ?? 0) > 0)
-            {
-                _result.Add($"{typeof(T).Name} must have Name.");
-            }            
+            //if(string.IsNullOrWhiteSpace(element.Name) && (element.Aliases?.Count ?? 0) > 0)
+            //{
+            //    _result.Add($"{typeof(T).Name} must have Name.");
+            //}            
         }
 
         private void CheckEmptyRequiresElements(BaseCommandLineArgument element)

@@ -151,7 +151,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameAndAliases());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name."));
+            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name or Target."));
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name."));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name or Target."));
         }
 
         [Test]
@@ -174,7 +174,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 var parser = new CommandLineParser(CommandLineNamedGroupWithoutNameButWithAliases());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name."));
+            Assert.That(exception.Message, Is.EqualTo("CommandLineNamedGroup must have Name or Target."));
         }
 
         [Test]
@@ -187,7 +187,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name."));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineNamedGroup must have Name or Target."));
         }
 
         [Test]
@@ -197,7 +197,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndAliasesAndIndexes());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index."));
+            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index or Target."));
         }
 
         [Test]
@@ -210,7 +210,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index."));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index or Target."));
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 var parser = new CommandLineParser(CommandLineArgumentWithoutNameAndIndexesButWithAliases());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index."));
+            Assert.That(exception.Message, Is.EqualTo("CommandLineArgument must have either Name or Index or Target."));
         }
 
         [Test]
@@ -233,7 +233,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index."));
+            Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index or Target."));
         }
 
         [Test]

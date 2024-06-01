@@ -12,9 +12,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            //CaseSymOntoClayCLI();
+            CaseSymOntoClayCLI();
             //CaseUpdateInstalledNuGetPackagesInAllCSharpProjects();
-            CaseLogFileBuilderApp();
+            //CaseLogFileBuilderApp();
 
             _logger.Info("End");
         }
