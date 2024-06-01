@@ -44,6 +44,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
                 _result.Add($"{nameof(CommandLineArgument)} must have either Name or Index.");
             }
 
+            CheckEmptyRequiresElements(element);
+
             //OnVisitBaseNamedCommandLineArgument<CommandLineArgument>(element, true);
         }
 
@@ -63,6 +65,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 _result.Add($"{nameof(CommandLineGroup)} must not be required.");
             }
+
+            CheckEmptyRequiresElements(element);
         }
 
         /// <inheritdoc/>
@@ -76,6 +80,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 _result.Add($"{nameof(CommandLineMutuallyExclusiveSet)} must have subitems.");
             }
+
+            CheckEmptyRequiresElements(element);
         }
 
         /// <inheritdoc/>
@@ -89,6 +95,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 _result.Add($"{nameof(CommandLineNamedGroup)} must have subitems.");
             }
+
+            CheckEmptyRequiresElements(element);
 
             OnVisitBaseNamedCommandLineArgument<CommandLineNamedGroup>(element, false);
         }
@@ -110,6 +118,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 _result.Add($"{typeof(T).Name} must have Name.");
             }            
+        }
+
+        private void CheckEmptyRequiresElements(BaseCommandLineArgument element)
+        {
+            if(element.Requires?.Any(string.IsNullOrWhiteSpace) ?? false)
+            {
+                _result.Add("There is empty item in requires of an option.");
+            }
         }
     }
 }
