@@ -19,8 +19,8 @@ namespace TestSandBox
 
             //TstCommandLineParserHandlerWithNegativeCases();
             //TstCommandLineParser();
-            TstCommandLineParserRealAppHandler();
-            //TstPrintExisting();
+            //TstCommandLineParserRealAppHandler();
+            TstPrintExisting();
         }
 
         private static void TstCommandLineParserHandlerWithNegativeCases()
@@ -64,22 +64,30 @@ namespace TestSandBox
             object obj1 = null;
 
             sb.PrintExisting(n, nameof(obj1), obj1);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             var obj2 = new object();
 
             sb.PrintExisting(n, nameof(obj2), obj2);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             var list1 = new List<string>();
 
             sb.PrintExisting(n, nameof(list1), list1);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             List<string> list2 = null;
 
             sb.PrintExisting(n, nameof(list2), list2);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             var list3 = new List<string>()
             {
@@ -87,17 +95,23 @@ namespace TestSandBox
             };
 
             sb.PrintExisting(n, nameof(list3), list3);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             var str1 = "";
 
             sb.PrintExisting(n, nameof(str1), str1);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             string str2 = null;
 
             sb.PrintExisting(n, nameof(str2), str2);
-            //_logger.Info(sb);
+            _logger.Info(sb);
+
+            sb = new StringBuilder();
 
             var str3 = "Hi!";
 
