@@ -100,5 +100,10 @@ namespace SymOntoClay.CLI.Helpers
                 Console.ForegroundColor = _defaultForegroundColor;
             }
         }
+
+        public static void WriteCopyright()
+        {
+            WriteText($"Copyright © 2020 - {DateTime.Today.Year:####} Sergiy Tolkachov aka metatypeman");
+        }
     }
 }
