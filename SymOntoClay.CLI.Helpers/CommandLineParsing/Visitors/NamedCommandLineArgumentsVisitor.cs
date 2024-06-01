@@ -1,5 +1,4 @@
-﻿using NLog;
-using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 {

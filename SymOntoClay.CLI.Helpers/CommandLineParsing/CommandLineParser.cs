@@ -1,19 +1,16 @@
-﻿using Newtonsoft.Json;
-using NLog;
-using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
-using SymOntoClay.Common.DebugHelpers;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
     public class CommandLineParser
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
@@ -44,7 +41,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var errorMessage = "There must be at least one option.";
 
 #if DEBUG
-                _logger.Info($"errorMessage = {errorMessage}");
+                //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                 if (initWithoutExceptions)
@@ -61,7 +58,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
 #if DEBUG
             //_logger.Info($"commandLineArguments = {JsonConvert.SerializeObject(commandLineArguments, Formatting.Indented)}");
-            _logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
+            //_logger.Info($"commandLineArguments = {commandLineArguments.WriteListToString()}");
 #endif
 
             _сommandLineVirtualRootGroup = new CommandLineVirtualRootGroup
@@ -70,7 +67,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             };
 
 #if DEBUG
-            _logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
+            //_logger.Info($"_сommandLineVirtualRootGroup = {_сommandLineVirtualRootGroup}");
 #endif
 
             var optionsValidationsVisitor = new OptionsValidationsVisitor();
@@ -110,8 +107,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             foreach (var namedCommandLineArgumentsKvpItem in namedCommandLineArgumentsRawDict)
             {
 #if DEBUG
-                _logger.Info($"namedCommandLineArgumentsKvpItem.Key = {namedCommandLineArgumentsKvpItem.Key}");
-                _logger.Info($"namedCommandLineArgumentsKvpItem.Value.Count = {namedCommandLineArgumentsKvpItem.Value.Count}");
+                //_logger.Info($"namedCommandLineArgumentsKvpItem.Key = {namedCommandLineArgumentsKvpItem.Key}");
+                //_logger.Info($"namedCommandLineArgumentsKvpItem.Value.Count = {namedCommandLineArgumentsKvpItem.Value.Count}");
 #endif
 
                 if(namedCommandLineArgumentsKvpItem.Value.Count == 1)
@@ -123,7 +120,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var errorMessage = $"Option '{namedCommandLineArgumentsKvpItem.Key}' is declared {namedCommandLineArgumentsKvpItem.Value.Count} times.";
 
 #if DEBUG
-                _logger.Info($"errorMessage = {errorMessage}");
+                //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                 if (initWithoutExceptions)
@@ -139,7 +136,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var defaultElementsList = namedCommandLineArgumentsList.Where(p => p.UseIfCommandLineIsEmpty).ToList();
 
 #if DEBUG
-            _logger.Info($"defaultElementsList = {defaultElementsList.WriteListToString()}");
+            //_logger.Info($"defaultElementsList = {defaultElementsList.WriteListToString()}");
 #endif
 
             if(defaultElementsList.Count > 1)
@@ -164,7 +161,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var kind = _defaultCommandLineArgumentOptions.GetKind();
 
 #if DEBUG
-                    _logger.Info($"kind = {kind}");
+                    //_logger.Info($"kind = {kind}");
 #endif
 
                     if (!KindOfCommandLineArgumentHelper.CanBeUsedIfCommandLineIsEmpty(kind))
@@ -190,13 +187,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var elementsWithRequiresList = elementsWithRequiresVisitor.Run(_сommandLineVirtualRootGroup);
 
 #if DEBUG
-            _logger.Info($"elementsWithRequiresList = {elementsWithRequiresList.WriteListToString()}");
+            //_logger.Info($"elementsWithRequiresList = {elementsWithRequiresList.WriteListToString()}");
 #endif
 
             foreach(var element in elementsWithRequiresList)
             {
 #if DEBUG
-                _logger.Info($"element = {element}");
+                //_logger.Info($"element = {element}");
 #endif
 
                 var requiresIsAvailable = false;
@@ -204,8 +201,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 foreach(var item in element.Requires)
                 {
 #if DEBUG
-                    _logger.Info($"item = {item}");
-                    _logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
+                    //_logger.Info($"item = {item}");
+                    //_logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
 #endif
 
                     if(_namedCommandLineArgumentsDict.ContainsKey(item))
@@ -215,7 +212,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
 
 #if DEBUG
-                _logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
+                //_logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
 #endif
 
                 if(!requiresIsAvailable)
@@ -232,7 +229,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
 
 #if DEBUG
-                    _logger.Info($"errorMessage = {errorMessage}");
+                    //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                     if (initWithoutExceptions)
@@ -254,11 +251,20 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private readonly List<BaseNamedCommandLineArgument> _uniqueElementsList;
         private readonly List<string> _initialErrors = new List<string>();
 
+        /// <summary>
+        /// Converts list of command line arguments to structured result.
+        /// </summary>
+        /// <param name="args">List of command line arguments.</param>
+        /// <returns>Structured result which represents list of command line arguments.</returns>
+        /// <exception cref="UnknownValueException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="UniqueOptionException"></exception>
+        /// <exception cref="RequiredOptionException"></exception>
         public CommandLineParsingResult Parse(string[] args)
         {
 #if DEBUG
-            _logger.Info($"args = {args.WritePODListToString()}");
-            _logger.Info($"_initialErrors = {_initialErrors.WritePODListToString()}");
+            //_logger.Info($"args = {args.WritePODListToString()}");
+            //_logger.Info($"_initialErrors = {_initialErrors.WritePODListToString()}");
 #endif
 
             if(_initialErrors.Any())
@@ -278,7 +284,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var tokensList = ConvertToTokens(args);
 
 #if DEBUG
-            _logger.Info($"tokensList = {tokensList.WriteListToString()}");
+            //_logger.Info($"tokensList = {tokensList.WriteListToString()}");
 #endif
 
             var errorsList = new List<string>();
@@ -286,8 +292,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var processingResult = ProcessCommandLineVirtualRootGroup(_сommandLineVirtualRootGroup, tokensList, null, errorsList);
 
 #if DEBUG
-            _logger.Info($"processingResult = {processingResult}");
-            _logger.Info($"errorsList = {errorsList.WritePODListToString()}");
+            //_logger.Info($"processingResult = {processingResult}");
+            //_logger.Info($"errorsList = {errorsList.WritePODListToString()}");
 #endif
 
             if(errorsList.Any())
@@ -300,7 +306,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
 #if DEBUG
-            _logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
+            //_logger.Info($"tokensList (after) = {tokensList.WriteListToString()}");
 #endif
 
             var unknownTokens = tokensList.Where(p => p.Option == null).ToList();
@@ -308,7 +314,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             if(unknownTokens.Count > 0)
             {
 #if DEBUG
-                _logger.Info($"unknownTokens = {unknownTokens.WriteListToString()}");
+                //_logger.Info($"unknownTokens = {unknownTokens.WriteListToString()}");
 #endif
 
                 if (_initWithoutExceptions)
@@ -329,7 +335,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var firstUnknownToken = unknownTokens.First();
 
 #if DEBUG
-                    _logger.Info($"firstUnknownToken = {firstUnknownToken}");
+                    //_logger.Info($"firstUnknownToken = {firstUnknownToken}");
 #endif
 
                     throw new UnknownValueException(firstUnknownToken.Content, firstUnknownToken.Position);
@@ -345,7 +351,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             foreach (var token in tokensList)
             {
 #if DEBUG
-                _logger.Info($"token = {token}");
+                //_logger.Info($"token = {token}");
 #endif
 
                 if(currentOption == null || currentOption != token.Option || (prevToken.Kind == KindOfCommandLineToken.Option && token.Kind == KindOfCommandLineToken.Option))
@@ -353,8 +359,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     if(currentOption != null && (currentOption != token.Option || prevToken.Kind == KindOfCommandLineToken.Option && token.Kind == KindOfCommandLineToken.Option))
                     {
 #if DEBUG
-                        _logger.Info($"currentOption = {currentOption}");
-                        _logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
+                        //_logger.Info($"currentOption = {currentOption}");
+                        //_logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
 #endif
 
                         rawResultsList.Add((currentOption, currentValuesList));
@@ -368,7 +374,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var tokenKind  = token.Kind;
 
 #if DEBUG
-                _logger.Info($"tokenKind = {tokenKind}");
+                //_logger.Info($"tokenKind = {tokenKind}");
 #endif
 
                 switch(tokenKind)
@@ -386,16 +392,16 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
 #if DEBUG
-            _logger.Info($"currentOption = {currentOption}");
-            _logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
+            //_logger.Info($"currentOption = {currentOption}");
+            //_logger.Info($"currentValuesList = {currentValuesList.WritePODListToString()}");
 #endif
 
             rawResultsList.Add((currentOption, currentValuesList));
 
 #if DEBUG
-            _logger.Info($"rawResultsList.Count = {rawResultsList.Count}");
-            _logger.Info($"rawResultsList = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
-            _logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");
+            //_logger.Info($"rawResultsList.Count = {rawResultsList.Count}");
+            //_logger.Info($"rawResultsList = {JsonConvert.SerializeObject(rawResultsList, Formatting.Indented)}");
+            //_logger.Info($"_uniqueElementsList.Count = {_uniqueElementsList.Count}");
 #endif
 
             var rawResultsDict = rawResultsList.GroupBy(p => p.Option).ToDictionary(p => p.Key, p => p.Select(x => x.ParamValues).ToList());
@@ -407,14 +413,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var option = rawResultsKvpItem.Key;
 
 #if DEBUG
-                _logger.Info($"option = {option}");
-                _logger.Info($"rawResultsKvpItem.Value = {JsonConvert.SerializeObject(rawResultsKvpItem.Value, Formatting.Indented)}");
+                //_logger.Info($"option = {option}");
+                //_logger.Info($"rawResultsKvpItem.Value = {JsonConvert.SerializeObject(rawResultsKvpItem.Value, Formatting.Indented)}");
 #endif
 
                 var identifier = option.Identifier;
 
 #if DEBUG
-                _logger.Info($"identifier = {identifier}");
+                //_logger.Info($"identifier = {identifier}");
 #endif
 
                 if (rawResultsKvpItem.Value.Count > 1 && _uniqueElementsList.Contains(option))
@@ -422,7 +428,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var errorMessage = $"Option '{identifier}' must be unique.";
 
 #if DEBUG
-                    _logger.Info($"errorMessage = {errorMessage}");
+                    //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                     if (_initWithoutExceptions)
@@ -444,15 +450,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     foreach (var item in option.Requires)
                     {
 #if DEBUG
-                        _logger.Info($"item = {item}");
-                        _logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
+                        //_logger.Info($"item = {item}");
+                        //_logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
 #endif
 
                         var requiredOption = _namedCommandLineArgumentsDict[item];
 
 #if DEBUG
-                        _logger.Info($"requiredOption = {requiredOption}");
-                        _logger.Info($"rawResultsDict.ContainsKey(requiredOption) = {rawResultsDict.ContainsKey(requiredOption)}");
+                        //_logger.Info($"requiredOption = {requiredOption}");
+                        //_logger.Info($"rawResultsDict.ContainsKey(requiredOption) = {rawResultsDict.ContainsKey(requiredOption)}");
 #endif
 
                         if(rawResultsDict.ContainsKey(requiredOption))
@@ -462,7 +468,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
 
 #if DEBUG
-                    _logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
+                    //_logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
 #endif
                     if(!requiresIsAvailable)
                     {
@@ -478,7 +484,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         }
 
 #if DEBUG
-                        _logger.Info($"errorMessage = {errorMessage}");
+                        //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                         if (_initWithoutExceptions)
@@ -495,13 +501,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var targetValue = rawResultsKvpItem.Value.LastOrDefault();
 
 #if DEBUG
-                _logger.Info($"targetValue = {targetValue.WritePODListToString()}");
+                //_logger.Info($"targetValue = {targetValue.WritePODListToString()}");
 #endif
 
                 var optionKind = option.GetKind();
 
 #if DEBUG
-                _logger.Info($"optionKind = {optionKind}");
+                //_logger.Info($"optionKind = {optionKind}");
 #endif
 
                 var typeChecker = option.TypeChecker;
@@ -563,14 +569,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             var kind = element.GetKind();
 
 #if DEBUG
-            _logger.Info($"kind = {kind}");
+            //_logger.Info($"kind = {kind}");
 #endif
 
             switch(kind)
@@ -602,8 +608,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             var ownParserContext = new CommandLineParserContext(parserContext);
@@ -615,7 +621,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                _logger.Info($"processingItemResult = {processingItemResult}");
+                //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                 if(processingItemResult.Result)
@@ -630,8 +636,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             var ownParserContext = new CommandLineParserContext(parserContext);
@@ -643,14 +649,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                _logger.Info($"processingItemResult = {processingItemResult}");
+                //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                 processingItemResultsList.Add(processingItemResult);
             }
 
 #if DEBUG
-            _logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
+            //_logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
 #endif
 
             var trueProcessingItemResultsList = processingItemResultsList.Where(p => p.Result == true).ToList();
@@ -658,7 +664,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var trueCount = trueProcessingItemResultsList.Count;
 
 #if DEBUG
-            _logger.Info($"trueCount = {trueCount}");
+            //_logger.Info($"trueCount = {trueCount}");
 #endif
 
             switch(trueCount)
@@ -669,7 +675,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         var errorMessage = $"Required command line arguments must be entered.";
 
 #if DEBUG
-                        _logger.Info($"errorMessage = {errorMessage}");
+                        //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                         if (_initWithoutExceptions)
@@ -693,7 +699,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         var errorMessage = $"Options {string.Join(", ", trueProcessingItemResultsList.Select(p => $"'{p.Name}'"))} cannot be used at the same time.";
 
 #if DEBUG
-                        _logger.Info($"errorMessage = {errorMessage}");
+                        //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                         if (_initWithoutExceptions)
@@ -713,8 +719,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             if (element.Names?.Any() ?? false)
@@ -722,7 +728,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var foundTokens = commandLineTokens.Where(p => p.Kind == KindOfCommandLineToken.Option && element.Names.Contains(p.Content)).ToList();
 
 #if DEBUG
-                _logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
+                //_logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
 #endif
 
                 if(foundTokens.Any())
@@ -730,13 +736,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var firstFoundToken = foundTokens.First();
 
 #if DEBUG
-                    _logger.Info($"firstFoundToken = {firstFoundToken}");
+                    //_logger.Info($"firstFoundToken = {firstFoundToken}");
 #endif
 
                     foreach (var foundToken in foundTokens)
                     {
 #if DEBUG
-                        _logger.Info($"foundToken = {foundToken}");
+                        //_logger.Info($"foundToken = {foundToken}");
 #endif
 
                         var ownParserContext = new CommandLineParserContext(parserContext, foundToken.Position + 1);
@@ -748,7 +754,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                            _logger.Info($"processingItemResult = {processingItemResult}");
+                            //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                             //if (processingItemResult.Result)
@@ -783,15 +789,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
-            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
             var kind = element.Kind;
 
 #if DEBUG
-            _logger.Info($"kind = {kind}");
+            //_logger.Info($"kind = {kind}");
 #endif
 
             if (element.Names?.Any() ?? false)
@@ -799,7 +805,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var foundTokens = commandLineTokens.Where(p => p.Kind == KindOfCommandLineToken.Option && element.Names.Contains(p.Content)).ToList();
 
 #if DEBUG
-                _logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
+                //_logger.Info($"foundTokens = {foundTokens.WriteListToString()}");
 #endif
 
                 if(foundTokens.Any())
@@ -807,7 +813,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var firstFoundToken = foundTokens.First();
 
 #if DEBUG
-                    _logger.Info($"firstFoundToken = {firstFoundToken}");
+                    //_logger.Info($"firstFoundToken = {firstFoundToken}");
 #endif
 
                     switch (kind)
@@ -820,7 +826,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 foreach (var foundToken in foundTokens)
                                 {
 #if DEBUG
-                                    _logger.Info($"foundToken = {foundToken}");
+                                    //_logger.Info($"foundToken = {foundToken}");
 #endif
 
                                     ProcessSingleValue(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
@@ -835,7 +841,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 foreach (var foundToken in foundTokens)
                                 {
 #if DEBUG
-                                    _logger.Info($"foundToken = {foundToken}");
+                                    //_logger.Info($"foundToken = {foundToken}");
 #endif
 
                                     ProcessValueList(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
@@ -849,7 +855,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                 foreach (var foundToken in foundTokens)
                                 {
 #if DEBUG
-                                    _logger.Info($"foundToken = {foundToken}");
+                                    //_logger.Info($"foundToken = {foundToken}");
 #endif
 
                                     ProcessFlagOrSingleValue(element, foundToken.Position + 1, commandLineTokens, errorsList);
@@ -885,8 +891,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private void CheckValueType(BaseNamedCommandLineArgument element, string content, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"content = {content}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"content = {content}");
 #endif
 
             var typeChecker = element.TypeChecker;
@@ -904,7 +910,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var errorMessage = element.TypeCheckErrorMessage;
 
 #if DEBUG
-            _logger.Info($"errorMessage = {errorMessage}");
+            //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
             if (string.IsNullOrWhiteSpace(errorMessage))
@@ -922,7 +928,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
 #if DEBUG
-            _logger.Info($"errorMessage (after) = {errorMessage}");
+            //_logger.Info($"errorMessage (after) = {errorMessage}");
 #endif
 
             if (_initWithoutExceptions)
@@ -938,9 +944,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
-            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
             if (element.Index.HasValue)
@@ -948,7 +954,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var absIndex = parserContext.GetAbsIndex(element.Index.Value);
 
 #if DEBUG
-                _logger.Info($"absIndex = {absIndex}");
+                //_logger.Info($"absIndex = {absIndex}");
 #endif
 
                 if (absIndex < commandLineTokens.Count)
@@ -956,7 +962,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var targetToken = commandLineTokens[absIndex.Value];
 
 #if DEBUG
-                    _logger.Info($"targetToken = {targetToken}");
+                    //_logger.Info($"targetToken = {targetToken}");
 #endif
 
                     if (targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
@@ -981,9 +987,9 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private void ProcessFlagOrSingleValue(BaseNamedCommandLineArgument element, int targetIndex, List<CommandLineToken> commandLineTokens, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"targetIndex = {targetIndex}");
-            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
-            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"targetIndex = {targetIndex}");
+            //_logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
+            //_logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
             if (commandLineTokens.Count >= targetIndex + 1)
@@ -991,7 +997,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var targetToken = commandLineTokens[targetIndex];
 
 #if DEBUG
-                _logger.Info($"targetToken = {targetToken}");
+                //_logger.Info($"targetToken = {targetToken}");
 #endif
 
                 if (targetToken.Kind == KindOfCommandLineToken.Value)
@@ -1010,20 +1016,20 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 else
                 {
 #if DEBUG
-                    _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+                    //_logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
 #endif
 
                     return;
                 }
 
 #if DEBUG
-                _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+                //_logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
 #endif
             }
             else
             {
 #if DEBUG
-                _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+                //_logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
 #endif
 
                 return;
@@ -1033,10 +1039,10 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private void ProcessSingleValue(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"targetIndex = {targetIndex}");
-            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
-            _logger.Info($"isObligate = {isObligate}");
-            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"targetIndex = {targetIndex}");
+            //_logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
+            //_logger.Info($"isObligate = {isObligate}");
+            //_logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
             var flagInsteadOfSingleValueErrorMessage = $"'{element.Identifier}' must be a single value, but used as flag.";
@@ -1046,7 +1052,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var targetToken = commandLineTokens[targetIndex];
 
 #if DEBUG
-                _logger.Info($"targetToken = {targetToken}");
+                //_logger.Info($"targetToken = {targetToken}");
 #endif
 
                 if(targetToken.Kind == KindOfCommandLineToken.Value)
@@ -1087,17 +1093,17 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
 #if DEBUG
-            _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
 #endif
         }
 
         private void ProcessValueList(BaseNamedCommandLineArgument element, int targetIndex, bool isObligate, List<CommandLineToken> commandLineTokens, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"targetIndex = {targetIndex}");
-            _logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
-            _logger.Info($"isObligate = {isObligate}");
-            _logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"targetIndex = {targetIndex}");
+            //_logger.Info($"commandLineTokens.Count = {commandLineTokens.Count}");
+            //_logger.Info($"isObligate = {isObligate}");
+            //_logger.Info($"tokensList = {commandLineTokens.WriteListToString()}");
 #endif
 
             var flagInsteadOfValueListErrorMessage = $"'{element.Identifier}' must be a single value or list of values, but used as flag.";
@@ -1111,8 +1117,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var targetToken = commandLineTokens[i];
 
 #if DEBUG
-                    _logger.Info($"targetToken = {targetToken}");
-                    _logger.Info($"isFirst = {isFirst}");
+                    //_logger.Info($"targetToken = {targetToken}");
+                    //_logger.Info($"isFirst = {isFirst}");
 #endif
 
                     if (targetToken.Kind == KindOfCommandLineToken.Value)
@@ -1168,15 +1174,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
 #if DEBUG
-            _logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
+            //_logger.Info($"tokensList (after) = {commandLineTokens.WriteListToString()}");
 #endif
         }
 
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             var ownParserContext = new CommandLineParserContext(parserContext);
@@ -1188,7 +1194,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                _logger.Info($"processingItemResult = {processingItemResult}");
+                //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                 if (processingItemResult.Result)
@@ -1214,7 +1220,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             foreach (var arg in args)
             {
 #if DEBUG
-                _logger.Info($"arg = {arg}");
+                //_logger.Info($"arg = {arg}");
 #endif
 
                 var token = new CommandLineToken 
@@ -1234,7 +1240,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 }
 
 #if DEBUG
-                _logger.Info($"token = {token}");
+                //_logger.Info($"token = {token}");
 #endif
 
                 n++;
@@ -1248,7 +1254,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private void ProcessRequiredOptionError(BaseCommandLineArgument element, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             var errorMessage = GetRequiredOptionErrorMessage(element);
@@ -1266,13 +1272,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private string GetRequiredOptionErrorMessage(BaseCommandLineArgument element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             var kind = element.GetKind();
 
 #if DEBUG
-            _logger.Info($"kind = {kind}");
+            //_logger.Info($"kind = {kind}");
 #endif
 
             switch (kind)
@@ -1309,7 +1315,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var requiredCommandLineArgumentsList = isRequiredCommandLineArgumentsVisitor.Run(_сommandLineVirtualRootGroup);
 
 #if DEBUG
-                _logger.Info($"requiredCommandLineArgumentsList = {requiredCommandLineArgumentsList.WriteListToString()}");
+                //_logger.Info($"requiredCommandLineArgumentsList = {requiredCommandLineArgumentsList.WriteListToString()}");
 #endif
 
                 if(requiredCommandLineArgumentsList.Count > 0)
@@ -1317,7 +1323,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     var errorMessage = $"Required command line arguments must be entered.";
 
 #if DEBUG
-                    _logger.Info($"errorMessage = {errorMessage}");
+                    //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                     if (_initWithoutExceptions)

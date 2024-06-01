@@ -1,14 +1,12 @@
-﻿using NLog;
-using SymOntoClay.Common.DebugHelpers;
+﻿using SymOntoClay.Common.DebugHelpers;
 using System.Text;
-using System.Xml.Linq;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
 {
     public class EnumChecker<TEnum> : BaseChecker where TEnum : struct
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         /// <inheritdoc/>
@@ -21,7 +19,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
         public override bool Check(string value)
         {
 #if DEBUG
-            _logger.Info($"value = {value}");
+            //_logger.Info($"value = {value}");
 #endif
 
             return Enum.TryParse<TEnum>(value, out var result);
@@ -31,7 +29,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
         public override object ConvertFromString(string value)
         {
 #if DEBUG
-            _logger.Info($"value = {value}");
+            //_logger.Info($"value = {value}");
 #endif
 
             Enum.TryParse<TEnum>(value, out var result);

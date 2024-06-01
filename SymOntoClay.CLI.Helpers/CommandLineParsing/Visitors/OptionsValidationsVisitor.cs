@@ -1,12 +1,11 @@
-﻿using NLog;
-using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
 {
     public class OptionsValidationsVisitor : BaseCommandLineParsingVisitor
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         private List<string> _result;
@@ -36,7 +35,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineArgument(CommandLineArgument element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if(string.IsNullOrWhiteSpace(element.Name) && !element.Index.HasValue && string.IsNullOrWhiteSpace(element.Target))
@@ -53,7 +52,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineGroup(CommandLineGroup element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if((element.SubItems?.Count ?? 0) == 0)
@@ -73,7 +72,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if ((element.SubItems?.Count ?? 0) == 0)
@@ -88,7 +87,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
         protected override void OnVisitCommandLineNamedGroup(CommandLineNamedGroup element)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
+            //_logger.Info($"element = {element}");
 #endif
 
             if ((element.SubItems?.Count ?? 0) == 0)
@@ -105,8 +104,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             where T : BaseNamedCommandLineArgument
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"typeof(T).Name = {typeof(T).Name}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"typeof(T).Name = {typeof(T).Name}");
 #endif
 
             if(!skipNameCheck && (string.IsNullOrWhiteSpace(element.Name) && string.IsNullOrWhiteSpace(element.Target)))

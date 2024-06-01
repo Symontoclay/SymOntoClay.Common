@@ -4,6 +4,17 @@
         <name>SymOntoClay.CLI.Helpers</name>
     </assembly>
     <members>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineParser.Parse(System.String[])">
+            <summary>
+            Converts list of command line arguments to structured result.
+            </summary>
+            <param name="args">List of command line arguments.</param>
+            <returns>Structured result which represents list of command line arguments.</returns>
+            <exception cref="T:SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions.UnknownValueException"></exception>
+            <exception cref="T:System.ArgumentOutOfRangeException"></exception>
+            <exception cref="T:SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions.UniqueOptionException"></exception>
+            <exception cref="T:SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions.RequiredOptionException"></exception>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.CommandLineParsingResult.ToString">
             <inheritdoc/>
         </member>
@@ -205,15 +216,6 @@
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.OptionsValidationsVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.ToString">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.ToString(System.UInt32)">
-            <inheritdoc/>
-        </member>
-        <member name="M:SymOntoClay.CLI.Helpers.OldCommandLineArgumentOptions.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
     </members>
