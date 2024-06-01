@@ -88,6 +88,26 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.BaseChecker.GetTypeName">
+            <summary>
+            Returns name of type which is checked by the checker.
+            </summary>
+            <returns>Name of type which is checked by the checker.</returns>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.BaseChecker.Check(System.String)">
+            <summary>
+            Checks if the string value belongs to the type.
+            </summary>
+            <param name="value">Checked value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.BaseChecker.ConvertFromString(System.String)">
+            <summary>
+            Converts a string value to instance of the type.
+            </summary>
+            <param name="value">Converted string value.</param>
+            <returns>Instance of the type.</returns>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.BaseChecker.ToString">
             <inheritdoc/>
         </member>
@@ -104,6 +124,9 @@
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.EnumChecker`1.ConvertFromString(System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.EnumChecker`1.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers.IntChecker.GetTypeName">
@@ -137,6 +160,18 @@
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.BaseCommandLineParsingVisitor.VisitCommandLineVirtualRootGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ElementsWithRequiresVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ElementsWithRequiresVisitor.OnVisitCommandLineGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ElementsWithRequiresVisitor.OnVisitCommandLineMutuallyExclusiveSet(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.ElementsWithRequiresVisitor.OnVisitCommandLineNamedGroup(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup)">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors.IsRequiredCommandLineArgumentsVisitor.OnVisitCommandLineArgument(SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument)">

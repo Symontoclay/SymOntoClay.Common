@@ -883,7 +883,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 parser.Parse(args.ToArray());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("Option '--html' is requied for '--abs-url'."));
+            Assert.That(exception.Message, Is.EqualTo("Option '--html' is required for '--abs-url'."));
         }
 
         [Test]
@@ -899,7 +899,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("Option '--html' is requied for '--abs-url'."));
+            Assert.That(result.Errors[0], Is.EqualTo("Option '--html' is required for '--abs-url'."));
         }
 
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()

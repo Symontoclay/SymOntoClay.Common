@@ -14,7 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            AbsentRequiredParameter();
+            AbsentRequiredParameterInSettings();
+            //AbsentRequiredParameterInCommandline();
             //CommandLineArgumentWithoutNameAndIndexesButWithAliases_a();
             //CommandLineArgumentWithoutNameAndIndexesButWithAliases();
             //CommandLineArgumentWithoutNameAndAliasesAndIndexes();
@@ -69,7 +70,44 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
-        private void AbsentRequiredParameter()
+        private void AbsentRequiredParameterInSettings()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument
+                    {
+                        Name = "--abs-url",
+                        Kind = KindOfCommandLineArgument.Flag,
+                        Requires = new List<string>
+                        {
+                            "--html"
+                        }
+                    }
+                });
+
+                var args = new List<string>()
+                {
+                    "--abs-url"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
+        private void AbsentRequiredParameterInCommandline()
         {
             _logger.Info("Begin");
 

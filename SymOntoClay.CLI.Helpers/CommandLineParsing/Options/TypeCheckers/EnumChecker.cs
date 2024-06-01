@@ -1,4 +1,7 @@
 ﻿using NLog;
+using SymOntoClay.Common.DebugHelpers;
+using System.Text;
+using System.Xml.Linq;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
 {
@@ -34,6 +37,19 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             Enum.TryParse<TEnum>(value, out var result);
 
             return result;
+        }
+
+        /// <inheritdoc/>
+        protected override string PropertiesToString(uint n)
+        {
+            var spaces = DisplayHelper.Spaces(n);
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"{spaces}{nameof(TEnum)} = {typeof(TEnum).Name}");
+
+            sb.Append(base.PropertiesToString(n));
+
+            return sb.ToString();
         }
     }
 }

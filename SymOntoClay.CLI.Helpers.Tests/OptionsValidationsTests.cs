@@ -236,6 +236,32 @@ namespace SymOntoClay.CLI.Helpers.Tests
             Assert.That(result.Errors[0], Is.EqualTo("CommandLineArgument must have either Name or Index."));
         }
 
+        [Test]
+        public void AbsentRequiredParameterInSettings_Fail()
+        {
+            var exception = Assert.Catch<RequiredOptionException>(() => {
+                var parser = new CommandLineParser(RequiresWithAbsentReqiuredOption());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Option '--html' is required for an option."));
+        }
+
+        [Test]
+        public void AbsentRequiredParameterInSettings_ErrorsList()
+        {
+            var args = new List<string>()
+                {
+                    "--abs-url"
+                };
+
+            var parser = new CommandLineParser(RequiresWithAbsentReqiuredOption(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Option '--html' is required for an option."));
+        }
+
         private List<BaseCommandLineArgument> EmptyCommandLineGroup()
         {
             return new List<BaseCommandLineArgument>()
@@ -349,6 +375,22 @@ namespace SymOntoClay.CLI.Helpers.Tests
                         Aliases = new List<string>
                         {
                             "n"
+                        }
+                    }
+                };
+        }
+
+        private List<BaseCommandLineArgument> RequiresWithAbsentReqiuredOption()
+        {
+            return new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineArgument
+                    {
+                        Name = "--abs-url",
+                        Kind = KindOfCommandLineArgument.Flag,
+                        Requires = new List<string>
+                        {
+                            "--html"
                         }
                     }
                 };

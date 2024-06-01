@@ -18,7 +18,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors
             {
                 if (_result != null)
                 {
-                    throw new Exception($"{nameof(NamedCommandLineArgumentsVisitor)} can not be used in multiple threads.");
+                    throw new Exception($"{nameof(OptionsValidationsVisitor)} can not be used in multiple threads.");
                 }
 
                 _result = new List<string>();

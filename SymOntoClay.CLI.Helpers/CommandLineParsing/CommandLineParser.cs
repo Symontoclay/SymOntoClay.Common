@@ -184,6 +184,67 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
 
             _uniqueElementsList = namedCommandLineArgumentsList.Where(p => p.IsUnique).ToList();
+
+            var elementsWithRequiresVisitor = new ElementsWithRequiresVisitor();
+
+            var elementsWithRequiresList = elementsWithRequiresVisitor.Run(_сommandLineVirtualRootGroup);
+
+#if DEBUG
+            _logger.Info($"elementsWithRequiresList = {elementsWithRequiresList.WriteListToString()}");
+#endif
+
+            foreach(var element in elementsWithRequiresList)
+            {
+#if DEBUG
+                _logger.Info($"element = {element}");
+#endif
+
+                var requiresIsAvailable = false;
+
+                foreach(var item in element.Requires)
+                {
+#if DEBUG
+                    _logger.Info($"item = {item}");
+                    _logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
+#endif
+
+                    if(_namedCommandLineArgumentsDict.ContainsKey(item))
+                    {
+                        requiresIsAvailable = true;
+                    }
+                }
+
+#if DEBUG
+                _logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
+#endif
+
+                if(!requiresIsAvailable)
+                {
+                    var errorMessage = string.Empty;
+
+                    if (element.Requires.Count == 1)
+                    {
+                        errorMessage = $"Option '{element.Requires.First()}' is required for an option.";
+                    }
+                    else
+                    {
+                        errorMessage = $"Options {string.Join(", ", element.Requires.Select(p => $"'{p}'"))} are required for an option.";
+                    }
+
+#if DEBUG
+                    _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                    if (initWithoutExceptions)
+                    {
+                        _initialErrors.Add(errorMessage);
+                    }
+                    else
+                    {
+                        throw new RequiredOptionException(errorMessage);
+                    }
+                }
+            }
         }
 
         private readonly bool _initWithoutExceptions;
@@ -409,11 +470,11 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                         if(option.Requires.Count == 1)
                         {
-                            errorMessage = $"Option '{option.Requires.First()}' is requied for '{identifier}'.";
+                            errorMessage = $"Option '{option.Requires.First()}' is required for '{identifier}'.";
                         }
                         else
                         {
-                            errorMessage = $"Options {string.Join(", ", option.Requires.Select(p => $"'{p}'"))} are requied for '{identifier}'.";
+                            errorMessage = $"Options {string.Join(", ", option.Requires.Select(p => $"'{p}'"))} are required for '{identifier}'.";
                         }
 
 #if DEBUG
