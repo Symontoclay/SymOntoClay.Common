@@ -378,7 +378,57 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                 if((option.Requires?.Count ?? 0) > 0)
                 {
-                    throw new NotImplementedException();
+                    var requiresIsAvailable = false;
+
+                    foreach (var item in option.Requires)
+                    {
+#if DEBUG
+                        _logger.Info($"item = {item}");
+                        _logger.Info($"_namedCommandLineArgumentsDict.ContainsKey(item) = {_namedCommandLineArgumentsDict.ContainsKey(item)}");
+#endif
+
+                        var requiredOption = _namedCommandLineArgumentsDict[item];
+
+#if DEBUG
+                        _logger.Info($"requiredOption = {requiredOption}");
+                        _logger.Info($"rawResultsDict.ContainsKey(requiredOption) = {rawResultsDict.ContainsKey(requiredOption)}");
+#endif
+
+                        if(rawResultsDict.ContainsKey(requiredOption))
+                        {
+                            requiresIsAvailable = true;
+                        }
+                    }
+
+#if DEBUG
+                    _logger.Info($"requiresIsAvailable = {requiresIsAvailable}");
+#endif
+                    if(!requiresIsAvailable)
+                    {
+                        var errorMessage = string.Empty;
+
+                        if(option.Requires.Count == 1)
+                        {
+                            errorMessage = $"Option '{option.Requires.First()}' is requied for '{identifier}'.";
+                        }
+                        else
+                        {
+                            errorMessage = $"Options {string.Join(", ", option.Requires.Select(p => $"'{p}'"))} are requied for '{identifier}'.";
+                        }
+
+#if DEBUG
+                        _logger.Info($"errorMessage = {errorMessage}");
+#endif
+
+                        if (_initWithoutExceptions)
+                        {
+                            errorsList.Add(errorMessage);
+                        }
+                        else
+                        {
+                            throw new RequiredOptionException(errorMessage);
+                        }
+                    }
                 }
 
                 var targetValue = rawResultsKvpItem.Value.LastOrDefault();

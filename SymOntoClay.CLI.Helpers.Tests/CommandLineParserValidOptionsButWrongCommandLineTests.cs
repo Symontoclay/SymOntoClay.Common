@@ -873,13 +873,33 @@ namespace SymOntoClay.CLI.Helpers.Tests
         [Test]
         public void OneOptionWithRequires_AbsentRequiredParameterInCommandLine_Fail()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+                {
+                    "--abs-url"
+                };
+
+            var exception = Assert.Catch<RequiredOptionException>(() => {
+                var parser = new CommandLineParser(Requires());
+                parser.Parse(args.ToArray());
+            });
+
+            Assert.That(exception.Message, Is.EqualTo("Option '--html' is requied for '--abs-url'."));
         }
 
         [Test]
         public void OneOptionWithRequires_AbsentRequiredParameterInCommandLine_ErrorsList()
         {
-            throw new NotImplementedException();
+            var args = new List<string>()
+                {
+                    "--abs-url"
+                };
+
+            var parser = new CommandLineParser(Requires(), true);
+            var result = parser.Parse(args.ToArray());
+
+            Assert.NotNull(result);
+            Assert.That(result.Errors.Count, Is.EqualTo(1));
+            Assert.That(result.Errors[0], Is.EqualTo("Option '--html' is requied for '--abs-url'."));
         }
 
         private List<BaseCommandLineArgument> GetMinimalRequiredMutuallyExclusiveSet()
@@ -1289,6 +1309,27 @@ namespace SymOntoClay.CLI.Helpers.Tests
                     Kind = KindOfCommandLineArgument.SingleValue,
                     Index = 0,
                     TypeChecker = new VersionChecker()
+                }
+            };
+        }
+
+        private List<BaseCommandLineArgument> Requires()
+        {
+            return new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument
+                {
+                    Name = "--html",
+                    Kind = KindOfCommandLineArgument.Flag
+                },
+                new CommandLineArgument
+                {
+                    Name = "--abs-url",
+                    Kind = KindOfCommandLineArgument.Flag,
+                    Requires = new List<string>
+                    {
+                        "--html"
+                    }
                 }
             };
         }

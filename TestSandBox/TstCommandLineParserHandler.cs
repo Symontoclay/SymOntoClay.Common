@@ -15,8 +15,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Requires_2();
-            //Requires();
+            //Requires_2();
+            Requires();
             //VersionChecker();
             //IntChecker();
             //EnumChecker();
