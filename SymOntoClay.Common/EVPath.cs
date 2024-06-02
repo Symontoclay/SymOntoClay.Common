@@ -20,10 +20,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System;
 
 namespace SymOntoClay.Common
 {
@@ -42,6 +42,11 @@ namespace SymOntoClay.Common
             if (string.IsNullOrWhiteSpace(sourcePath))
             {
                 return string.Empty;
+            }
+
+            if (sourcePath.Contains(@":/") || sourcePath.Contains(@":\"))
+            {
+                return sourcePath;
             }
 
             var match = _normalizeMatch.Match(sourcePath);

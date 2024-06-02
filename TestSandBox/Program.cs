@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using NLog;
+using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
+using System.IO;
 using System.Text;
 
 namespace TestSandBox
@@ -17,10 +19,26 @@ namespace TestSandBox
             _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
+            TstEVPathNormalize();
             //TstCommandLineParserHandlerWithNegativeCases();
             //TstCommandLineParser();
             //TstCommandLineParserRealAppHandler();
-            TstPrintExisting();
+            //TstPrintExisting();
+        }
+
+        private static void TstEVPathNormalize()
+        {
+            _logger.Info("Begin");
+
+            var path = @"D:/";
+
+            _logger.Info($"path = '{path}'");
+
+            var result = EVPath.Normalize(path);
+
+            _logger.Info($"result = '{result}'");
+
+            _logger.Info("End");
         }
 
         private static void TstCommandLineParserHandlerWithNegativeCases()
