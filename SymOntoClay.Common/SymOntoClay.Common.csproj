@@ -4,13 +4,13 @@
     <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>SymOntoClay.Common.xml</DocumentationFile>
-    <Version>0.5.4.8</Version>
+    <Version>0.5.4.9</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://symontoclay.github.io/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Symontoclay/SymOntoClay.Common</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <FileVersion>0.5.4.8</FileVersion>
-    <AssemblyVersion>0.5.4.8</AssemblyVersion>
+    <FileVersion>0.5.4.9</FileVersion>
+    <AssemblyVersion>0.5.4.9</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
