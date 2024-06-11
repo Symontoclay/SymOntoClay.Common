@@ -673,7 +673,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 case 0:
                     if(element.IsRequired)
                     {
-                        var errorMessage = $"Required command line arguments must be entered.";
+                        var errorMessage = $"Required command line argument '{element.GetIdentifier()}' must be entered.";
 
 #if DEBUG
                         //_logger.Info($"errorMessage = {errorMessage}");
@@ -1258,7 +1258,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             //_logger.Info($"element = {element}");
 #endif
 
-            var errorMessage = GetRequiredOptionErrorMessage(element);
+            var errorMessage = $"Required command line argument '{element.GetIdentifier()}' must be entered.";
 
             if (_initWithoutExceptions)
             {
@@ -1267,43 +1267,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             else
             {
                 throw new RequiredOptionException(errorMessage);
-            }
-        }
-
-        private string GetRequiredOptionErrorMessage(BaseCommandLineArgument element)
-        {
-#if DEBUG
-            //_logger.Info($"element = {element}");
-#endif
-
-            var kind = element.GetKind();
-
-#if DEBUG
-            //_logger.Info($"kind = {kind}");
-#endif
-
-            switch (kind)
-            {
-                case KindOfCommandLineArgument.Flag:
-                case KindOfCommandLineArgument.SingleValue:
-                case KindOfCommandLineArgument.FlagOrSingleValue:
-                case KindOfCommandLineArgument.List:
-                case KindOfCommandLineArgument.SingleValueOrList:
-                    {
-                        var concreteElem = element as CommandLineArgument;
-
-                        return $"Required command line argument '{concreteElem.Identifier}' must be entered.";
-                    }
-
-                case KindOfCommandLineArgument.NamedGroup:
-                    {
-                        var concreteElem = element as CommandLineNamedGroup;
-
-                        return $"Required command line argument '{concreteElem.Identifier}' must be entered.";
-                    }
-
-                default:
-                    return $"Required command line arguments must be entered.";
             }
         }
 

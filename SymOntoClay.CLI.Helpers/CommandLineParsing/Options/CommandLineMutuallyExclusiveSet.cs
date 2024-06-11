@@ -11,7 +11,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         /// <inheritdoc/>
         public override string GetIdentifier()
         {
-            return $"one of `{string.Join(", ", SubItems.Select(p => p.GetIdentifier()))}`";
+            return $"one of {string.Join(", ", SubItems.Select(p => $"`{p.GetIdentifier()}`"))}";
         }
 
         /// <inheritdoc/>

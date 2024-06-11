@@ -51,7 +51,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 parser.Parse(args.ToArray());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("Required command line arguments must be entered."));
+            Assert.That(exception.Message, Is.EqualTo("Required command line argument 'one of `help`, `run`' must be entered."));
         }
 
         [Test]
@@ -64,7 +64,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("Required command line arguments must be entered."));
+            Assert.That(result.Errors[0], Is.EqualTo("Required command line argument 'one of `help`, `run`' must be entered."));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
                 parser.Parse(args.ToArray());
             });
 
-            Assert.That(exception.Message, Is.EqualTo("Required command line arguments must be entered."));
+            Assert.That(exception.Message, Is.EqualTo("Required command line argument 'one of `help`, `run`' must be entered."));
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace SymOntoClay.CLI.Helpers.Tests
 
             Assert.NotNull(result);
             Assert.That(result.Errors.Count, Is.EqualTo(1));
-            Assert.That(result.Errors[0], Is.EqualTo("Required command line arguments must be entered."));
+            Assert.That(result.Errors[0], Is.EqualTo("Required command line argument 'one of `help`, `run`' must be entered."));
         }
 
         [Test]

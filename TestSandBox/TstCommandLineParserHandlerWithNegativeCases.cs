@@ -14,7 +14,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EmptyCommandLineWithRequiredParameters();
+            //EmptyCommandLineWithRequiredParameters();
             //EmptyRequiredParameterInSettings();
             //AbsentRequiredParameterInSettings();
             //AbsentRequiredParameterInCommandline();
@@ -58,7 +58,7 @@ namespace TestSandBox
             //FlagInsteadOfSingleValue_Case2();
             //FlagInsteadOfSingleValue_a();
             //FlagInsteadOfSingleValue();
-            //Case6();
+            Case6();
             //Case5_a();
             //Case5();
             //Case4_a();
