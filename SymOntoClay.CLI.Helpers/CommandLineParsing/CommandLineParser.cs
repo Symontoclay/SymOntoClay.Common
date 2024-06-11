@@ -1,4 +1,5 @@
-﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
+﻿using NLog;
+using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
@@ -10,7 +11,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     public class CommandLineParser
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
@@ -150,7 +151,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 else
                 {
                     throw new DefaultOptionException(errorMessage);
-                }                
+                }
             }
             else
             {
@@ -1320,27 +1321,31 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
                 if(requiredCommandLineArgumentsList.Count > 0)
                 {
-                    var errorMessage = $"Required command line arguments must be entered.";
+                    var errorList = new List<string>();
+
+                    foreach(var requiredCommandLineArgument in requiredCommandLineArgumentsList)
+                    {
+                        var errorMessage = $"Required command line argument '{requiredCommandLineArgument.GetIdentifier()}' must be entered.";
 
 #if DEBUG
-                    //_logger.Info($"errorMessage = {errorMessage}");
+                        _logger.Info($"errorMessage = {errorMessage}");
 #endif
 
-                    if (_initWithoutExceptions)
-                    {
-                        return new CommandLineParsingResult
+                        if (_initWithoutExceptions)
                         {
-                            Params = new Dictionary<string, object>(),
-                            Errors = new List<string>()
-                            {
-                                errorMessage
-                            }
-                        };
+                            errorList.Add(errorMessage);
+                        }
+                        else
+                        {
+                            throw new RequiredOptionException(errorMessage);
+                        }
                     }
-                    else
+
+                    return new CommandLineParsingResult
                     {
-                        throw new RequiredOptionException(errorMessage);
-                    }
+                        Params = new Dictionary<string, object>(),
+                        Errors = errorList
+                    };
                 }
 
                 return new CommandLineParsingResult

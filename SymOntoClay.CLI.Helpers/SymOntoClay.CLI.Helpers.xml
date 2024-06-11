@@ -51,6 +51,9 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseCommandLineArgument.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseNamedCommandLineArgument.GetIdentifier">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.BaseNamedCommandLineArgument.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
@@ -63,6 +66,9 @@
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineArgument.PropertiesToString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.GetIdentifier">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.GetKind">
             <inheritdoc/>
         </member>
@@ -70,6 +76,9 @@
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineGroup.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.GetIdentifier">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineMutuallyExclusiveSet.GetKind">
@@ -88,6 +97,9 @@
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineNamedGroup.PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.GetIdentifier">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.CLI.Helpers.CommandLineParsing.Options.CommandLineVirtualRootGroup.GetKind">

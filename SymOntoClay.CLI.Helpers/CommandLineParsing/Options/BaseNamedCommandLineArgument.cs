@@ -38,6 +38,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
 
         public string Identifier => string.IsNullOrWhiteSpace(Target) ? Name : Target;
 
+        /// <inheritdoc/>
+        public override string GetIdentifier()
+        {
+            return Identifier;
+        }
+
         public BaseChecker TypeChecker { get; set; }
         public string TypeCheckErrorMessage { get; set; }
 

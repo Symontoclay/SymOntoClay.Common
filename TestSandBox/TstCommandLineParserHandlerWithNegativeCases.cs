@@ -14,7 +14,8 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            EmptyRequiredParameterInSettings();
+            EmptyCommandLineWithRequiredParameters();
+            //EmptyRequiredParameterInSettings();
             //AbsentRequiredParameterInSettings();
             //AbsentRequiredParameterInCommandline();
             //CommandLineArgumentWithoutNameAndIndexesButWithAliases_a();
@@ -67,6 +68,49 @@ namespace TestSandBox
             //Case2_a();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void EmptyCommandLineWithRequiredParameters()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+            {
+                new CommandLineArgument
+                {
+                    Name = "TargetFramework",
+                    Index = 0,
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    TypeChecker = new EnumChecker<TestEnum>(),
+                    TypeCheckErrorMessage = "Unknown target framework",
+                    IsRequired = true
+                },
+                new CommandLineArgument
+                {
+                    Name = "TargetVersion",
+                    Index = 1,
+                    Kind = KindOfCommandLineArgument.SingleValue,
+                    TypeChecker = new VersionChecker(),
+                    TypeCheckErrorMessage = "Unknown version",
+                    IsRequired = true
+                }
+            }, true);
+
+                var args = new List<string>();
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
 
             _logger.Info("End");
         }

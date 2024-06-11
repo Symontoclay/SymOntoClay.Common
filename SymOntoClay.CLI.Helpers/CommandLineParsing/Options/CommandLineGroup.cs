@@ -9,6 +9,12 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public List<BaseCommandLineArgument> SubItems { get; set; }
 
         /// <inheritdoc/>
+        public override string GetIdentifier()
+        {
+            return "NoName CommandLineGroup";
+        }
+
+        /// <inheritdoc/>
         public override KindOfCommandLineArgument GetKind()
         {
             return KindOfCommandLineArgument.Group;

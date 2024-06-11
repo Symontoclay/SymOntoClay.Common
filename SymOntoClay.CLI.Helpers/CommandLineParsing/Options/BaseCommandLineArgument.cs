@@ -11,6 +11,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options
         public string Target { get; set; }
         public List<string> Requires { get; set; }
 
+        public abstract string GetIdentifier();
+
         public abstract KindOfCommandLineArgument GetKind();
 
         public abstract void Accept(ICommandLineParsingVisitor visitor);
