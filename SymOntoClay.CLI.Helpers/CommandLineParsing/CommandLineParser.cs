@@ -11,7 +11,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
     public class CommandLineParser
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
@@ -1291,7 +1291,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         var errorMessage = $"Required command line argument '{requiredCommandLineArgument.GetIdentifier()}' must be entered.";
 
 #if DEBUG
-                        _logger.Info($"errorMessage = {errorMessage}");
+                        //_logger.Info($"errorMessage = {errorMessage}");
 #endif
 
                         if (_initWithoutExceptions)

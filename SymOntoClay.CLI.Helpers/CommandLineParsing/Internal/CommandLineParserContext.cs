@@ -9,7 +9,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
     public class CommandLineParserContext : IObjectToString
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParserContext()
@@ -35,8 +35,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Internal
         public int? GetAbsIndex(int index)
         {
 #if DEBUG
-            _logger.Info($"index = {index}");
-            _logger.Info($"AbsIndex = {AbsIndex}");
+            //_logger.Info($"index = {index}");
+            //_logger.Info($"AbsIndex = {AbsIndex}");
 #endif
 
             if (AbsIndex.HasValue)
