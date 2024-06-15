@@ -20,6 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using NLog;
+
 namespace SymOntoClay.CLI.Helpers
 {
     public static class ConsoleWrapper
@@ -33,6 +35,11 @@ namespace SymOntoClay.CLI.Helpers
         private readonly static object _lockObj = new object();
 
 #if DEBUG
+        public static void SetNLogLogger(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public static bool WriteOutputToTextFileAsParallel
         {
             get
@@ -65,6 +72,8 @@ namespace SymOntoClay.CLI.Helpers
 
         private static bool _writeOutputToTextFileAsParallel;
         private static string _parallelOutputTextFileName;
+        private static ILogger _logger;
+
 #endif
         public static void WriteText(string text)
         {
@@ -72,6 +81,20 @@ namespace SymOntoClay.CLI.Helpers
             {
                 Console.ForegroundColor = _defaultForegroundColor;
                 Console.WriteLine(text);
+
+#if DEBUG
+                if (_writeOutputToTextFileAsParallel)
+                {
+                    if(_logger == null)
+                    {
+                        WriteToFile(text);
+                    }
+                    else
+                    {
+                        _logger.Info(text);
+                    }
+                }
+#endif
             }
         }
 
@@ -84,7 +107,14 @@ namespace SymOntoClay.CLI.Helpers
 #if DEBUG
                 if (_writeOutputToTextFileAsParallel)
                 {
-                    File.AppendAllLines(_parallelOutputTextFileName, new List<string>() { text });
+                    if (_logger == null)
+                    {
+                        WriteToFile(text);
+                    }
+                    else
+                    {
+                        _logger.Info(text);
+                    }
                 }
 #endif
                 Console.ForegroundColor = _defaultForegroundColor;
@@ -97,8 +127,28 @@ namespace SymOntoClay.CLI.Helpers
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(text);
+
+#if DEBUG
+                if (_writeOutputToTextFileAsParallel)
+                {
+                    if (_logger == null)
+                    {
+                        WriteToFile(text);
+                    }
+                    else
+                    {
+                        _logger.Error(text);
+                    }
+                }
+#endif
+
                 Console.ForegroundColor = _defaultForegroundColor;
             }
+        }
+
+        private static void WriteToFile(string text)
+        {
+            File.AppendAllLines(_parallelOutputTextFileName, new List<string>() { text });
         }
 
         public static void WriteCopyright()
