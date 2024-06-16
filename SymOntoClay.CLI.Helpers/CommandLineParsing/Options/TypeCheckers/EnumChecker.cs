@@ -9,6 +9,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
         //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
+        public EnumChecker(bool ignoreCase = true)
+        {
+            _ignoreCase = ignoreCase;
+        }
+
+        private bool _ignoreCase;
+
         /// <inheritdoc/>
         public override string GetTypeName()
         {
@@ -22,7 +29,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             //_logger.Info($"value = {value}");
 #endif
 
-            return Enum.TryParse<TEnum>(value, out var result);
+            return Enum.TryParse<TEnum>(value, _ignoreCase, out var result);
         }
 
         /// <inheritdoc/>
@@ -32,7 +39,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             //_logger.Info($"value = {value}");
 #endif
 
-            Enum.TryParse<TEnum>(value, out var result);
+            Enum.TryParse<TEnum>(value, _ignoreCase, out var result);
 
             return result;
         }
@@ -44,6 +51,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing.Options.TypeCheckers
             var sb = new StringBuilder();
 
             sb.AppendLine($"{spaces}{nameof(TEnum)} = {typeof(TEnum).Name}");
+            sb.AppendLine($"{spaces}{_ignoreCase} = {_ignoreCase}");
 
             sb.Append(base.PropertiesToString(n));
 
