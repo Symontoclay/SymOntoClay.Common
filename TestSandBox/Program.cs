@@ -20,12 +20,19 @@ namespace TestSandBox
             _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
+            TstNLogInAppConfig();
             //TstConsoleWrapper();
             //TstEVPathNormalize();
-            TstCommandLineParserHandlerWithNegativeCases();
+            //TstCommandLineParserHandlerWithNegativeCases();
             //TstCommandLineParser();
             //TstCommandLineParserRealAppHandler();
             //TstPrintExisting();
+        }
+
+        private static void TstNLogInAppConfig()
+        {
+            //https://github.com/NLog/NLog/wiki/Configuration-file
+            //https://github.com/NLog/NLog/issues/4722
         }
 
         private static void TstConsoleWrapper()
