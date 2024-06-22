@@ -20,9 +20,9 @@ namespace TestSandBox
             _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            TstConsoleWrapper();
+            //TstConsoleWrapper();
             //TstEVPathNormalize();
-            //TstCommandLineParserHandlerWithNegativeCases();
+            TstCommandLineParserHandlerWithNegativeCases();
             //TstCommandLineParser();
             //TstCommandLineParserRealAppHandler();
             //TstPrintExisting();

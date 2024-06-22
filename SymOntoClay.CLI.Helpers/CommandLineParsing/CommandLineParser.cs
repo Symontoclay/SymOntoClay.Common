@@ -5,13 +5,15 @@ using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
+using System.Collections.Generic;
+using SymOntoClay.Common.DebugHelpers;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
     public class CommandLineParser
     {
 #if DEBUG
-        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
@@ -567,7 +569,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             };
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessBaseCommandLineArgument(BaseCommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -606,16 +608,18 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            //_logger.Info($"element = {element}");
-            //_logger.Info($"parserContext = {parserContext}");
+            _logger.Info($"element = {element}");
+            _logger.Info($"parserContext = {parserContext}");
 #endif
 
             var ownParserContext = new CommandLineParserContext(parserContext);
 
             var processingResult = false;
+
+            var foundBaseNamedCommandLineArguments = new List<(string Name, BaseNamedCommandLineArgument NamedElement)>();
 
             foreach (var subItem in element.SubItems)
             {
@@ -628,13 +632,24 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 if(processingItemResult.Result)
                 {
                     processingResult = true;
+
+                    if(processingItemResult.FoundBaseNamedCommandLineArguments != null)
+                    {
+                        foundBaseNamedCommandLineArguments.AddRange(processingItemResult.FoundBaseNamedCommandLineArguments);
+                    }                    
                 }
             }
 
-            return (processingResult, null, null);
+            var firstNamedElement = GetFirstNamedElement(foundBaseNamedCommandLineArguments);
+
+#if DEBUG
+            _logger.Info($"firstNamedElement = {firstNamedElement}");
+#endif
+
+            return (processingResult, firstNamedElement.Name, firstNamedElement.NamedElement, foundBaseNamedCommandLineArguments);
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineMutuallyExclusiveSet(CommandLineMutuallyExclusiveSet element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -643,14 +658,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 
             var ownParserContext = new CommandLineParserContext(parserContext);
 
-            var processingItemResultsList = new List<(bool Result, string Name, BaseNamedCommandLineArgument NamedElement)>();
+            var processingItemResultsList = new List<(bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments)>();
 
             foreach (var subItem in element.SubItems)
             {
                 var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                //_logger.Info($"processingItemResult = {processingItemResult}");
+                _logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                 processingItemResultsList.Add(processingItemResult);
@@ -660,12 +675,18 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             //_logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
 #endif
 
+            var foundBaseNamedCommandLineArguments = processingItemResultsList.Where(p => p.FoundBaseNamedCommandLineArguments != null).SelectMany(p => p.FoundBaseNamedCommandLineArguments).ToList();
+
+#if DEBUG
+            _logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
+#endif
+
             var trueProcessingItemResultsList = processingItemResultsList.Where(p => p.Result == true).ToList();
 
             var trueCount = trueProcessingItemResultsList.Count;
 
 #if DEBUG
-            //_logger.Info($"trueCount = {trueCount}");
+            _logger.Info($"trueCount = {trueCount}");
 #endif
 
             switch(trueCount)
@@ -683,17 +704,25 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         {
                             errorsList.Add(errorMessage);
 
-                            return (false, null, null);
+                            return (false, null, null, null);
                         }
                         else
                         {
                             throw new RequiredOptionException(errorMessage);
                         }
                     }
-                    return (false, null, null);
+                    return (false, null, null, null);
 
                 case 1:
-                    return (true, null, null);
+                    {
+                        var firstNamedElement = GetFirstNamedElement(foundBaseNamedCommandLineArguments);
+
+#if DEBUG
+                        _logger.Info($"firstNamedElement = {firstNamedElement}");
+#endif
+
+                        return (true, firstNamedElement.Name, firstNamedElement.NamedElement, foundBaseNamedCommandLineArguments);
+                    }
 
                 default:
                     {
@@ -707,7 +736,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         {
                             errorsList.Add(errorMessage);
 
-                            return (false, null, null);
+                            return (false, null, null, null);
                         }
                         else
                         {
@@ -717,7 +746,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineNamedGroup(CommandLineNamedGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -740,6 +769,14 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     //_logger.Info($"firstFoundToken = {firstFoundToken}");
 #endif
 
+                    var firstFoundTokenOption = firstFoundToken.Option;
+                    var firstFoundTokenContent = firstFoundToken.Content;
+
+                    var foundBaseNamedCommandLineArguments = new List<(string Name, BaseNamedCommandLineArgument NamedElement)>()
+                    {
+                        (firstFoundTokenContent, firstFoundTokenOption)
+                    };
+
                     foreach (var foundToken in foundTokens)
                     {
 #if DEBUG
@@ -747,8 +784,6 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #endif
 
                         var ownParserContext = new CommandLineParserContext(parserContext, foundToken.Position + 1);
-
-                        //var processingResult = false;
 
                         foreach (var subItem in element.SubItems)
                         {
@@ -758,18 +793,17 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                             //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
-                            //if (processingItemResult.Result)
-                            //{
-                            //    processingResult = true;
-                            //}
+                            if (processingItemResult.Result)
+                            {
+                                if(processingItemResult.FoundBaseNamedCommandLineArguments != null)
+                                {
+                                    foundBaseNamedCommandLineArguments.AddRange(processingItemResult.FoundBaseNamedCommandLineArguments);
+                                }
+                            }
                         }
-
-#if DEBUG
-                        //_logger.Info($"processingResult = {processingResult}");
-#endif
                     }
 
-                    return (true, firstFoundToken.Content, firstFoundToken.Option);
+                    return (true, firstFoundTokenContent, firstFoundTokenOption, foundBaseNamedCommandLineArguments);
                 }
                 else
                 {
@@ -778,7 +812,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         ProcessRequiredOptionError(element, errorsList);
                     }
 
-                    return (false, null, null);
+                    return (false, null, null, null);
                 }
             }
             else
@@ -787,7 +821,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineArgument(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -817,10 +851,13 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     //_logger.Info($"firstFoundToken = {firstFoundToken}");
 #endif
 
+                    var firstFoundTokenOption = firstFoundToken.Option;
+                    var firstFoundTokenContent = firstFoundToken.Content;
+
                     switch (kind)
                     {
                         case KindOfCommandLineArgument.Flag:
-                            return (true, firstFoundToken.Content, firstFoundToken.Option);
+                            return (true, firstFoundToken.Content, firstFoundTokenOption, new List<(string Name, BaseNamedCommandLineArgument NamedElement)> { (firstFoundTokenContent, firstFoundTokenOption) });
 
                         case KindOfCommandLineArgument.SingleValue:
                             {
@@ -833,7 +870,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                     ProcessSingleValue(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
                                 }
 
-                                return (true, firstFoundToken.Content, firstFoundToken.Option);
+                                return (true, firstFoundTokenContent, firstFoundTokenOption, new List<(string Name, BaseNamedCommandLineArgument NamedElement)> { (firstFoundTokenContent, firstFoundTokenOption) });
                             }
 
                         case KindOfCommandLineArgument.List:
@@ -848,7 +885,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                     ProcessValueList(element, foundToken.Position + 1, true, commandLineTokens, errorsList);
                                 }
 
-                                return (true, firstFoundToken.Content, firstFoundToken.Option);
+                                return (true, firstFoundTokenContent, firstFoundTokenOption, new List<(string Name, BaseNamedCommandLineArgument NamedElement)> { (firstFoundTokenContent, firstFoundTokenOption) });
                             }
 
                         case KindOfCommandLineArgument.FlagOrSingleValue:
@@ -862,7 +899,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                                     ProcessFlagOrSingleValue(element, foundToken.Position + 1, commandLineTokens, errorsList);
                                 }
 
-                                return (true, firstFoundToken.Content, firstFoundToken.Option);
+                                return (true, firstFoundTokenContent, firstFoundTokenOption, new List<(string Name, BaseNamedCommandLineArgument NamedElement)> { (firstFoundTokenContent, firstFoundTokenOption) });
                             }
 
                         default:
@@ -942,7 +979,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) BindSingleValueByPosition(CommandLineArgument element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -966,13 +1003,15 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     //_logger.Info($"targetToken = {targetToken}");
 #endif
 
+                    var targetTokenContent = targetToken.Content;
+
                     if (targetToken.Kind == KindOfCommandLineToken.Value && targetToken.Option == null)
                     {
                         targetToken.Option = element;
 
-                        CheckValueType(element, targetToken.Content, errorsList);
+                        CheckValueType(element, targetTokenContent, errorsList);
 
-                        return (true, targetToken.Content, element);
+                        return (true, targetTokenContent, element, new List<(string Name, BaseNamedCommandLineArgument NamedElement)> { (targetTokenContent, element) });
                     }
                 }
             }
@@ -982,7 +1021,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 ProcessRequiredOptionError(element, errorsList);
             }
 
-            return (false, null, null);
+            return (false, null, null, null);
         }
 
         private void ProcessFlagOrSingleValue(BaseNamedCommandLineArgument element, int targetIndex, List<CommandLineToken> commandLineTokens, List<string> errorsList)
@@ -1179,7 +1218,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 #endif
         }
 
-        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement) ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
+        private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineVirtualRootGroup(CommandLineVirtualRootGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
             //_logger.Info($"element = {element}");
@@ -1189,6 +1228,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var ownParserContext = new CommandLineParserContext(parserContext);
 
             var processingResult = false;
+
+            var foundBaseNamedCommandLineArguments = new List<(string Name, BaseNamedCommandLineArgument NamedElement)>();
 
             foreach (var subItem in element.SubItems)
             {
@@ -1201,10 +1242,22 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 if (processingItemResult.Result)
                 {
                     processingResult = true;
+
+                    if(processingItemResult.FoundBaseNamedCommandLineArguments != null)
+                    {
+                        foundBaseNamedCommandLineArguments.AddRange(processingItemResult.FoundBaseNamedCommandLineArguments);
+                    }
                 }
             }
 
-            return (processingResult, null, null);
+            var firstNamedElement = GetFirstNamedElement(foundBaseNamedCommandLineArguments);
+
+            return (processingResult, firstNamedElement.Name, firstNamedElement.NamedElement, foundBaseNamedCommandLineArguments);
+        }
+
+        private (string Name, BaseNamedCommandLineArgument NamedElement) GetFirstNamedElement(List<(string Name, BaseNamedCommandLineArgument NamedElement)> foundBaseNamedCommandLineArguments)
+        {
+            return foundBaseNamedCommandLineArguments?.OrderByDescending(p => p.NamedElement.IsRequired)?.FirstOrDefault() ?? (null, null);
         }
 
         private List<CommandLineToken> ConvertToTokens(string[] args)

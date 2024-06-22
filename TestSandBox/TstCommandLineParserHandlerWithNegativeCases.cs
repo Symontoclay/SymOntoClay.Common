@@ -14,6 +14,7 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
+            MutuallyExclusiveSetWithGroup();
             //EmptyCommandLineWithRequiredParameters();
             //EmptyRequiredParameterInSettings();
             //AbsentRequiredParameterInSettings();
@@ -58,7 +59,7 @@ namespace TestSandBox
             //FlagInsteadOfSingleValue_Case2();
             //FlagInsteadOfSingleValue_a();
             //FlagInsteadOfSingleValue();
-            Case6();
+            //Case6();
             //Case5_a();
             //Case5();
             //Case4_a();
@@ -72,6 +73,169 @@ namespace TestSandBox
             _logger.Info("End");
         }
 
+        private void MutuallyExclusiveSetWithGroup()
+        {
+            _logger.Info("Begin");
+
+            try
+            {
+                var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
+                {
+                    new CommandLineMutuallyExclusiveSet()
+                    {
+                        IsRequired = true,
+                        SubItems = new List<BaseCommandLineArgument>
+                        {
+                            new CommandLineArgument()
+                            {
+                                Name = "--help",
+                                Aliases = new List<string>
+                                {
+                                    "h",
+                                    "-h",
+                                    "--h",
+                                    "-help",
+                                    "help"
+                                },
+                                Kind = KindOfCommandLineArgument.Flag,
+                                UseIfCommandLineIsEmpty = true
+                            },
+                            new CommandLineGroup()
+                            {
+                                SubItems = new List<BaseCommandLineArgument>
+                                {
+                                    new CommandLineArgument()
+                                    {
+                                        Name = "--input",
+                                        Aliases = new List<string>()
+                                        {
+                                            "--i",
+                                            "-input",
+                                            "-i"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue,
+                                        Index = 0
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--output",
+                                        Aliases = new List<string>
+                                        {
+                                            "--o",
+                                            "-output",
+                                            "-o"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue,
+                                        Index = 1
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--nologo",
+                                        Aliases = new List<string>
+                                        {
+                                            "-nologo"
+                                        },
+                                        Kind = KindOfCommandLineArgument.Flag
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--target-nodeid",
+                                        Aliases = new List<string>
+                                        {
+                                            "-target-nodeid"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--target-threadid",
+                                        Aliases = new List<string>
+                                        {
+                                            "-target-threadid"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--split-by-nodes",
+                                        Aliases = new List<string>
+                                        {
+                                            "-split-by-nodes"
+                                        },
+                                        Kind = KindOfCommandLineArgument.Flag
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--split-by-threads",
+                                        Aliases = new List<string>
+                                        {
+                                            "-split-by-threads"
+                                        },
+                                        Kind = KindOfCommandLineArgument.Flag
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--configuration",
+                                        Aliases = new List<string>
+                                        {
+                                            "--c",
+                                            "--cfg",
+                                            "--config",
+                                            "-configuration",
+                                            "-c",
+                                            "-cfg",
+                                            "-config"
+                                        },
+                                        Kind = KindOfCommandLineArgument.SingleValue
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--html",
+                                        Aliases = new List<string>
+                                        {
+                                            "-html"
+                                        },
+                                        Kind = KindOfCommandLineArgument.Flag
+                                    },
+                                    new CommandLineArgument
+                                    {
+                                        Name = "--abs-url",
+                                        Aliases = new List<string>
+                                        {
+                                            "-abs-url"
+                                        },
+                                        Kind = KindOfCommandLineArgument.Flag,
+                                        Requires = new List<string>
+                                        {
+                                            "--html"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }, true);
+
+                var args = new List<string>()
+                {
+                    @"%USERPROFILE%\SomeInputDir\",
+                    @"%USERPROFILE%\SomeOutputDir\",
+                    "--help"
+                };
+
+                var result = parser.Parse(args.ToArray());
+
+                _logger.Info($"result = {result}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Info($"ex.Message = '{ex.Message}'");
+                _logger.Info($"ex = {ex}");
+            }
+
+            _logger.Info("End");
+        }
+
         private void EmptyCommandLineWithRequiredParameters()
         {
             _logger.Info("Begin");
@@ -79,26 +243,26 @@ namespace TestSandBox
             try
             {
                 var parser = new CommandLineParser(new List<BaseCommandLineArgument>()
-            {
-                new CommandLineArgument
                 {
-                    Name = "TargetFramework",
-                    Index = 0,
-                    Kind = KindOfCommandLineArgument.SingleValue,
-                    TypeChecker = new EnumChecker<TestEnum>(),
-                    TypeCheckErrorMessage = "Unknown target framework",
-                    IsRequired = true
-                },
-                new CommandLineArgument
-                {
-                    Name = "TargetVersion",
-                    Index = 1,
-                    Kind = KindOfCommandLineArgument.SingleValue,
-                    TypeChecker = new VersionChecker(),
-                    TypeCheckErrorMessage = "Unknown version",
-                    IsRequired = true
-                }
-            }, true);
+                    new CommandLineArgument
+                    {
+                        Name = "TargetFramework",
+                        Index = 0,
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        TypeChecker = new EnumChecker<TestEnum>(),
+                        TypeCheckErrorMessage = "Unknown target framework",
+                        IsRequired = true
+                    },
+                    new CommandLineArgument
+                    {
+                        Name = "TargetVersion",
+                        Index = 1,
+                        Kind = KindOfCommandLineArgument.SingleValue,
+                        TypeChecker = new VersionChecker(),
+                        TypeCheckErrorMessage = "Unknown version",
+                        IsRequired = true
+                    }
+                }, true);
 
                 var args = new List<string>();
 
