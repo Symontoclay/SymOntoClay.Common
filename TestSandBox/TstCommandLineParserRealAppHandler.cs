@@ -230,7 +230,8 @@ namespace TestSandBox
                                     {
                                         "--o"
                                     },
-                                    Kind = KindOfCommandLineArgument.SingleValue
+                                    Kind = KindOfCommandLineArgument.SingleValue,
+                                    Index = 1
                                 },
                                 new CommandLineArgument
                                 {
