@@ -4,6 +4,7 @@ using SymOntoClay.CLI.Helpers;
 using SymOntoClay.Common;
 using SymOntoClay.Common.DebugHelpers;
 using System.IO;
+using System.Reflection;
 using System.Text;
 
 namespace TestSandBox
@@ -20,7 +21,7 @@ namespace TestSandBox
             _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            TstNLogInAppConfig();
+            //TstNLogInAppConfig();
             //TstConsoleWrapper();
             //TstEVPathNormalize();
             //TstCommandLineParserHandlerWithNegativeCases();
@@ -33,6 +34,10 @@ namespace TestSandBox
         {
             //https://github.com/NLog/NLog/wiki/Configuration-file
             //https://github.com/NLog/NLog/issues/4722
+
+            NLogSetupHelper.UseAppConfig();
+
+            _logger.Info("Hi! I am configured in App.Config");
         }
 
         private static void TstConsoleWrapper()
