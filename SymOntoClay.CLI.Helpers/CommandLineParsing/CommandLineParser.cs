@@ -1,19 +1,16 @@
-﻿using NLog;
-using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
+﻿using SymOntoClay.CLI.Helpers.CommandLineParsing.Exceptions;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Helpers;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Internal;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Options;
 using SymOntoClay.CLI.Helpers.CommandLineParsing.Visitors;
 using SymOntoClay.Common.CollectionsHelpers;
-using System.Collections.Generic;
-using SymOntoClay.Common.DebugHelpers;
 
 namespace SymOntoClay.CLI.Helpers.CommandLineParsing
 {
     public class CommandLineParser
     {
 #if DEBUG
-        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        //private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 #endif
 
         public CommandLineParser(List<BaseCommandLineArgument> commandLineArguments)
@@ -611,8 +608,8 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
         private (bool Result, string Name, BaseNamedCommandLineArgument NamedElement, List<(string Name, BaseNamedCommandLineArgument NamedElement)> FoundBaseNamedCommandLineArguments) ProcessCommandLineGroup(CommandLineGroup element, List<CommandLineToken> commandLineTokens, CommandLineParserContext parserContext, List<string> errorsList)
         {
 #if DEBUG
-            _logger.Info($"element = {element}");
-            _logger.Info($"parserContext = {parserContext}");
+            //_logger.Info($"element = {element}");
+            //_logger.Info($"parserContext = {parserContext}");
 #endif
 
             var ownParserContext = new CommandLineParserContext(parserContext);
@@ -643,7 +640,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var firstNamedElement = GetFirstNamedElement(foundBaseNamedCommandLineArguments);
 
 #if DEBUG
-            _logger.Info($"firstNamedElement = {firstNamedElement}");
+            //_logger.Info($"firstNamedElement = {firstNamedElement}");
 #endif
 
             return (processingResult, firstNamedElement.Name, firstNamedElement.NamedElement, foundBaseNamedCommandLineArguments);
@@ -665,7 +662,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                 var processingItemResult = ProcessBaseCommandLineArgument(subItem, commandLineTokens, ownParserContext, errorsList);
 
 #if DEBUG
-                _logger.Info($"processingItemResult = {processingItemResult}");
+                //_logger.Info($"processingItemResult = {processingItemResult}");
 #endif
 
                 processingItemResultsList.Add(processingItemResult);
@@ -678,7 +675,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var foundBaseNamedCommandLineArguments = processingItemResultsList.Where(p => p.FoundBaseNamedCommandLineArguments != null).SelectMany(p => p.FoundBaseNamedCommandLineArguments).ToList();
 
 #if DEBUG
-            _logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
+            //_logger.Info($"processingItemResultsList = {processingItemResultsList.WritePODListToString()}");
 #endif
 
             var trueProcessingItemResultsList = processingItemResultsList.Where(p => p.Result == true).ToList();
@@ -686,7 +683,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             var trueCount = trueProcessingItemResultsList.Count;
 
 #if DEBUG
-            _logger.Info($"trueCount = {trueCount}");
+            //_logger.Info($"trueCount = {trueCount}");
 #endif
 
             switch(trueCount)
@@ -718,7 +715,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         var firstNamedElement = GetFirstNamedElement(foundBaseNamedCommandLineArguments);
 
 #if DEBUG
-                        _logger.Info($"firstNamedElement = {firstNamedElement}");
+                        //_logger.Info($"firstNamedElement = {firstNamedElement}");
 #endif
 
                         return (true, firstNamedElement.Name, firstNamedElement.NamedElement, foundBaseNamedCommandLineArguments);
