@@ -18,6 +18,7 @@
     <ProjectReference Include="..\SymOntoClay.CLI.Helpers\SymOntoClay.CLI.Helpers.csproj" />
     <ProjectReference Include="..\SymOntoClay.Common.Tests\SymOntoClay.Common.Tests.csproj" />
     <ProjectReference Include="..\SymOntoClay.Common\SymOntoClay.Common.csproj" />
+    <ProjectReference Include="..\SymOntoClay.Threading\SymOntoClay.Threading.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="NLog.config">
