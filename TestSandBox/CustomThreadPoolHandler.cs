@@ -1,4 +1,5 @@
 ﻿using SymOntoClay.Threading;
+using System.Collections.Concurrent;
 using System.Threading;
 
 namespace TestSandBox
@@ -13,11 +14,62 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case5();
+            RunMultipleTimes_ExecuteEverithing();
+            //Case5();
             //Case4();
             //Case3();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void RunMultipleTimes_ExecuteEverithing()
+        {
+            _logger.Info("Begin");
+
+            var timeoutBetweenSets = 10000;
+            var itemTimeout = 100;
+
+            using var threadPool = new CustomThreadPool(0, 20);
+
+            var case1BeginList = new ConcurrentBag<int>();
+            var case1EndList = new ConcurrentBag<int>();
+
+            var case2BeginList = new ConcurrentBag<int>();
+            var case2EndList = new ConcurrentBag<int>();
+
+            var count = 200;
+
+            foreach (var n in Enumerable.Range(1, count))
+            {
+                case1BeginList.Add(n);
+
+                threadPool.Run(() => {
+                    Thread.Sleep(itemTimeout);
+                    case1EndList.Add(n);
+                });
+            }
+
+            Thread.Sleep(timeoutBetweenSets);
+
+            _logger.Info($"case1BeginList.Count = {case1BeginList.Count}");
+            _logger.Info($"case1EndList.Count = {case1EndList.Count}");
+
+            foreach (var n in Enumerable.Range(1, count))
+            {
+                case2BeginList.Add(n);
+
+                threadPool.Run(() => {
+                    Thread.Sleep(itemTimeout);
+                    case2EndList.Add(n);
+                });
+            }
+
+            Thread.Sleep(timeoutBetweenSets);
+
+            _logger.Info($"case2BeginList.Count = {case2BeginList.Count}");
+            _logger.Info($"case2EndList.Count = {case2EndList.Count}");
 
             _logger.Info("End");
         }
