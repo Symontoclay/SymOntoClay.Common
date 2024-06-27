@@ -1,4 +1,5 @@
 ﻿using SymOntoClay.Threading;
+using System.Threading;
 
 namespace TestSandBox
 {
@@ -12,10 +13,35 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            Case4();
+            Case5();
+            //Case4();
             //Case3();
             //Case2();
             //Case1();
+
+            _logger.Info("End");
+        }
+
+        private void Case5()
+        {
+            _logger.Info("Begin");
+
+            var threadPool = new CustomThreadPool(0, 20);
+
+            foreach (var n in Enumerable.Range(1, 200))
+            {
+                threadPool.Run(() => {
+                    _logger.Info($"Begin 1 {n}");
+                    Thread.Sleep(100);
+                    _logger.Info($"End 1 {n}");
+                });
+            }
+
+            Thread.Sleep(10000);
+
+            _logger.Info("###################");
+
+            threadPool.Dispose();
 
             _logger.Info("End");
         }

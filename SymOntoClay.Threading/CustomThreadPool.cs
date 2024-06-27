@@ -57,6 +57,11 @@ namespace SymOntoClay.Threading
 
         public void Run(Action action)
         {
+            if (!_needToRun)
+            {
+                return;
+            }
+
 #if DEBUG
             _logger.Info($"_threads.Count = {_threads.Count}");
             _logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
@@ -152,10 +157,29 @@ namespace SymOntoClay.Threading
         /// <inheritdoc/>
         public void Dispose()
         {
+            if (!_needToRun)
+            {
+                return;
+            }
+
             _needToRun = false;
-            //_threads.Clear();
-            //_readyThreads.Clear();
-            //_queue.Clear();
+
+#if DEBUG
+            _logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
+#endif
+
+            while (_queue.TryDequeue(out var action))
+            {
+            }
+
+            while (_readyThreads.TryDequeue(out var thread))
+            {
+                thread.Interrupt();
+            }
+
+            while (_threads.TryTake(out var thread))
+            {
+            }
         }
     }
 }
