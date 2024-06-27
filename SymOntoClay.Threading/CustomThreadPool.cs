@@ -8,7 +8,7 @@ namespace SymOntoClay.Threading
     public class CustomThreadPool : IDisposable
     {
 #if DEBUG
-        private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
+        //private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 #endif
 
         public CustomThreadPool(int minThreadsCount, int maxThreadsCount)
