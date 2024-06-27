@@ -99,25 +99,12 @@ namespace SymOntoClay.Threading
                 _logger.Info($"Begin Iteration");
 #endif
 
-                _readyThreads.Enqueue(Thread.CurrentThread);
-
-                try
-                {
-#if DEBUG
-                    _logger.Info($"Thread.Sleep(Timeout.Infinite)");
-#endif
-
-                    Thread.Sleep(Timeout.Infinite);
-                }
-                catch (ThreadInterruptedException)
-                {
-#if DEBUG
-                    _logger.Info($"Iteration awoken");
-#endif
-                }
-
                 if (_cancellationToken.IsCancellationRequested)
                 {
+#if DEBUG
+                    _logger.Info($"Cancel");
+#endif
+
                     return;
                 }
 
@@ -131,8 +118,29 @@ namespace SymOntoClay.Threading
 
                     if (_cancellationToken.IsCancellationRequested)
                     {
+#if DEBUG
+                        _logger.Info($"Cancel");
+#endif
+
                         return;
                     }
+                }
+
+                try
+                {
+#if DEBUG
+                    _logger.Info($"Thread.Sleep(Timeout.Infinite)");
+#endif
+
+                    _readyThreads.Enqueue(Thread.CurrentThread);
+
+                    Thread.Sleep(Timeout.Infinite);
+                }
+                catch (ThreadInterruptedException)
+                {
+#if DEBUG
+                    _logger.Info($"Iteration awoken");
+#endif
                 }
 
 #if DEBUG
