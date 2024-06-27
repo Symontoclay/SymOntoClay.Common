@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace SymOntoClay.Threading
 {
-    public class CustomThreadPool : IDisposable
+    public class CustomThreadPool : ICustomThreadPool
     {
 #if DEBUG
         //private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
@@ -55,6 +55,7 @@ namespace SymOntoClay.Threading
             thread.Start();
         }
 
+        /// <inheritdoc/>
         public void Run(Action action)
         {
             if (!_needToRun)
