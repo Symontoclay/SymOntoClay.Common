@@ -63,8 +63,8 @@ namespace SymOntoClay.Threading
             }
 
 #if DEBUG
-            _logger.Info($"_threads.Count = {_threads.Count}");
-            _logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
+            //_logger.Info($"_threads.Count = {_threads.Count}");
+            //_logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
 #endif
 
             _cancellationToken.ThrowIfCancellationRequested();
@@ -78,36 +78,36 @@ namespace SymOntoClay.Threading
             else
             {
 #if DEBUG
-                _logger.Info($"Does not have enought threads.");
+                //_logger.Info($"Does not have enought threads.");
 #endif
 
                 if (_threads.Count < _maxThreadsCount)
                 {
-                    _logger.Info($"Thread created");
+#if DEBUG
+                    //_logger.Info($"Thread created");
+#endif
 
                     CreateThread();
                 }
             }
-
-            //throw new NotImplementedException();
         }
 
         private void ThreadMethod()
         {
 #if DEBUG
-            _logger.Info($"Begin");
+            //_logger.Info($"Begin");
 #endif
 
             while (_needToRun)
             {
 #if DEBUG
-                _logger.Info($"Begin Iteration");
+                //_logger.Info($"Begin Iteration");
 #endif
 
                 if (_cancellationToken.IsCancellationRequested)
                 {
 #if DEBUG
-                    _logger.Info($"Cancel");
+                    //_logger.Info($"Cancel");
 #endif
 
                     return;
@@ -116,7 +116,7 @@ namespace SymOntoClay.Threading
                 while (_queue.TryDequeue(out var action))
                 {
 #if DEBUG
-                    _logger.Info($"Dequeue");
+                    //_logger.Info($"Dequeue");
 #endif
 
                     action();
@@ -124,7 +124,7 @@ namespace SymOntoClay.Threading
                     if (_cancellationToken.IsCancellationRequested)
                     {
 #if DEBUG
-                        _logger.Info($"Cancel");
+                        //_logger.Info($"Cancel");
 #endif
 
                         return;
@@ -134,7 +134,7 @@ namespace SymOntoClay.Threading
                 try
                 {
 #if DEBUG
-                    _logger.Info($"Thread.Sleep(Timeout.Infinite)");
+                    //_logger.Info($"Thread.Sleep(Timeout.Infinite)");
 #endif
 
                     _readyThreads.Enqueue(Thread.CurrentThread);
@@ -144,12 +144,12 @@ namespace SymOntoClay.Threading
                 catch (ThreadInterruptedException)
                 {
 #if DEBUG
-                    _logger.Info($"Iteration awoken");
+                    //_logger.Info($"Iteration awoken");
 #endif
                 }
 
 #if DEBUG
-                _logger.Info($"End Itration");
+                //_logger.Info($"End Itration");
 #endif
             }
         }
@@ -165,7 +165,7 @@ namespace SymOntoClay.Threading
             _needToRun = false;
 
 #if DEBUG
-            _logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
+            //_logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
 #endif
 
             while (_queue.TryDequeue(out var action))
