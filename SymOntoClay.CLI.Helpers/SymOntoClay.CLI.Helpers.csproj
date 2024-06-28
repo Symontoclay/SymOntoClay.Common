@@ -11,6 +11,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <DocumentationFile>SymOntoClay.CLI.Helpers.xml</DocumentationFile>
     <Copyright>Copyright (c) 2020 - 2024 Sergiy Tolkachov aka metatypeman</Copyright>
+    <RepositoryUrl>https://github.com/Symontoclay/SymOntoClay.Common</RepositoryUrl>
+    <PackageProjectUrl>https://symontoclay.github.io/</PackageProjectUrl>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\SymOntoClay.Common\SymOntoClay.Common.csproj" />
