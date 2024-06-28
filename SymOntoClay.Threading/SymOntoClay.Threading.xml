@@ -10,6 +10,15 @@
         <member name="M:SymOntoClay.Threading.CustomThreadPool.Dispose">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.Threading.CustomThreadPoolSettings.ToString">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.Threading.CustomThreadPoolSettings.ToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.Threading.CustomThreadPoolSettings.SymOntoClay#Common#IObjectToString#PropertiesToString(System.UInt32)">
+            <inheritdoc/>
+        </member>
         <member name="T:SymOntoClay.Threading.ThreadTask">
             <summary>
             Represents an asynchronous operation.
