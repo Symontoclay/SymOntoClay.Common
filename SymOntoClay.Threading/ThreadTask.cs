@@ -198,8 +198,10 @@ namespace SymOntoClay.Threading
             }
             else
             {
-                throw new NotImplementedException();
-            }            
+                while(_status == ThreadTaskStatus.Running)
+                {
+                }
+            }
         }
 
         public event Action OnStarted;
@@ -212,7 +214,7 @@ namespace SymOntoClay.Threading
         private readonly ICustomThreadPool _threadPool;
         private Thread _thread;
         private object _lockObj = new object();
-        private ThreadTaskStatus _status = ThreadTaskStatus.Created;
+        private volatile ThreadTaskStatus _status = ThreadTaskStatus.Created;
 
         private void RunDelegate()
         {

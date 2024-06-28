@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>SymOntoClay.Threading.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SymOntoClay.Threading</name>
+    </assembly>
+    <members>
+        <member name="M:SymOntoClay.Threading.CustomThreadPool.Run(System.Action)">
+            <inheritdoc/>
+        </member>
+        <member name="M:SymOntoClay.Threading.CustomThreadPool.Dispose">
+            <inheritdoc/>
+        </member>
+        <member name="T:SymOntoClay.Threading.ThreadTask">
+            <summary>
+            Represents an asynchronous operation.
+            This is a wrapper over Thread.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask.Status">
+            <summary>
+            Gets the <see cref="T:SymOntoClay.Threading.ThreadTaskStatus"/> of this task.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask.IsCanceled">
+            <summary>
+            Gets whether this task has completed execution due to being canceled.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask.IsCompleted">
+            <summary>
+            Gets a value that indicates whether the task has completed.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask.IsCompletedSuccessfully">
+            <summary>
+            Gets whether the task ran to completion.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask.IsFaulted">
+            <summary>
+            Gets whether the task completed due to an unhandled exception.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Threading.ThreadTask.Start">
+            <summary>
+            Starts the <see cref="T:SymOntoClay.Threading.ThreadTask"/>.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Threading.ThreadTask.Wait">
+            <summary>
+            Waits for the <see cref="T:SymOntoClay.Threading.ThreadTask"/> to complete execution.
+            </summary>
+        </member>
+        <member name="T:SymOntoClay.Threading.ThreadTaskStatus">
+            <summary>
+            Represents the current stage in the lifecycle of a <see cref="T:SymOntoClay.Threading.ThreadTask"/>.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.Created">
+            <summary>
+            The task has been initialized but has not yet been scheduled.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.WaitingForActivation">
+            <summary>
+            The task is waiting to be activated and scheduled.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.WaitingToRun">
+            <summary>
+            The task has been scheduled for execution but has not yet begun executing.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.Running">
+            <summary>
+            The task is running but has not yet completed.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.WaitingForChildrenToComplete">
+            <summary>
+            The task has finished executing and is implicitly waiting for attached child tasks to complete.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.RanToCompletion">
+            <summary>
+            The task completed execution successfully.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.Canceled">
+            <summary>
+            The task acknowledged cancellation by throwing an <see cref="!:OperationCanceledException"/> with its own <see cref="!:CancellationToken"/> while the token was in signaled state, or the task's <see cref="!:CancellationToken"/> was already signaled before the task started executing.
+            </summary>
+        </member>
+        <member name="F:SymOntoClay.Threading.ThreadTaskStatus.Faulted">
+            <summary>
+            The task completed due to an unhandled exception.
+            </summary>
+        </member>
+    </members>
+</doc>
