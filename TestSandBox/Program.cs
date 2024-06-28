@@ -21,7 +21,8 @@ namespace TestSandBox
             _logger.Info($"namedCommandLineArgumentsRawDict = {JsonConvert.SerializeObject(args, Formatting.Indented)}");
 #endif
 
-            TstCustomThreadPoolHandler();
+            TstThreadTaskHandler();
+            //TstCustomThreadPoolHandler();
             //TstNLogInAppConfig();
             //TstConsoleWrapper();
             //TstEVPathNormalize();
@@ -29,6 +30,16 @@ namespace TestSandBox
             //TstCommandLineParser();
             //TstCommandLineParserRealAppHandler();
             //TstPrintExisting();
+        }
+
+        private static void TstThreadTaskHandler()
+        {
+            _logger.Info("Begin");
+
+            var handler = new ThreadTaskHandler();
+            handler.Run();
+
+            _logger.Info("End");
         }
 
         private static void TstCustomThreadPoolHandler()
