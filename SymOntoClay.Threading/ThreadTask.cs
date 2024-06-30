@@ -32,7 +32,7 @@ namespace SymOntoClay.Threading
     public class ThreadTask
     {
 #if DEBUG
-        private static readonly NLog.ILogger _globalLogger = NLog.LogManager.GetCurrentClassLogger();
+        //private static readonly NLog.ILogger _globalLogger = NLog.LogManager.GetCurrentClassLogger();
 #endif
 
         public static ThreadTask Run(Action action, ICustomThreadPool threadPool)
@@ -67,6 +67,7 @@ namespace SymOntoClay.Threading
         {
             _action = action;
             _threadPool = threadPool;
+            _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool)
@@ -78,6 +79,7 @@ namespace SymOntoClay.Threading
         public ThreadTask(Action action, CancellationToken cancellationToken)
         {
             _action = action;
+            _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action)
@@ -212,6 +214,7 @@ namespace SymOntoClay.Threading
 
         private Action _action;
         private readonly ICustomThreadPool _threadPool;
+        private readonly CancellationToken _cancellationToken;
         private Thread _thread;
         private object _lockObj = new object();
         private volatile ThreadTaskStatus _status = ThreadTaskStatus.Created;
@@ -220,37 +223,45 @@ namespace SymOntoClay.Threading
         {
             try
             {
+                if(_cancellationToken.IsCancellationRequested)
+                {
+                    PerformCanceled();
+                    OnCompleted?.Invoke();
+                    return;
+                }
+
                 OnStarted?.Invoke();
+
+                if (_cancellationToken.IsCancellationRequested)
+                {
+                    PerformCanceled();
+                    OnCompleted?.Invoke();
+                    return;
+                }
 
                 _action?.Invoke();
 
-                lock (_lockObj)
-                {
-                    _status = ThreadTaskStatus.RanToCompletion;
-                }
+                _status = ThreadTaskStatus.RanToCompletion;
 
                 OnCompletedSuccessfully?.Invoke();
             }
             catch (OperationCanceledException)
             {
-                lock (_lockObj)
-                {
-                    _status = ThreadTaskStatus.Canceled;
-                }
-
-                OnCanceled?.Invoke();
+                PerformCanceled();
             }
             catch (Exception)
             {
-                lock (_lockObj)
-                {
-                    _status = ThreadTaskStatus.Faulted;
-                }
-
+                _status = ThreadTaskStatus.Faulted;
                 OnFaulted?.Invoke();
             }
 
             OnCompleted?.Invoke();
+        }
+
+        private void PerformCanceled()
+        {
+            _status = ThreadTaskStatus.Canceled;
+            OnCanceled?.Invoke();
         }
     }
 }
