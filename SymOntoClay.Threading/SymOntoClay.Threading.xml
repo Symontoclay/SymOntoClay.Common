@@ -4,6 +4,44 @@
         <name>SymOntoClay.Threading</name>
     </assembly>
     <members>
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.Status">
+            <summary>
+            Gets the <see cref="T:SymOntoClay.Threading.ThreadTaskStatus"/> of this task.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.IsCanceled">
+            <summary>
+            Gets whether this task has completed execution due to being canceled.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.IsCompleted">
+            <summary>
+            Gets a value that indicates whether the task has completed.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.IsCompletedSuccessfully">
+            <summary>
+            Gets whether the task ran to completion.
+            </summary>
+        </member>
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.IsFaulted">
+            <summary>
+            Gets whether the task completed due to an unhandled exception.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Threading.BaseThreadTask.Start">
+            <summary>
+            Starts the <see cref="T:SymOntoClay.Threading.ThreadTask"/>.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Threading.BaseThreadTask.Wait">
+            <summary>
+            Waits for the <see cref="T:SymOntoClay.Threading.ThreadTask"/> to complete execution.
+            </summary>
+        </member>
+        <member name="M:SymOntoClay.Threading.BaseThreadTask.OnDisposing">
+            <inheritdoc/>
+        </member>
         <member name="M:SymOntoClay.Threading.CustomThreadPool.Run(System.Action)">
             <inheritdoc/>
         </member>
@@ -25,43 +63,10 @@
             This is a wrapper over Thread.
             </summary>
         </member>
-        <member name="P:SymOntoClay.Threading.ThreadTask.Status">
+        <member name="P:SymOntoClay.Threading.ThreadTask`1.Result">
             <summary>
-            Gets the <see cref="T:SymOntoClay.Threading.ThreadTaskStatus"/> of this task.
+            Gets the result value of this <see cref="T:SymOntoClay.Threading.ThreadTask`1"/>.
             </summary>
-        </member>
-        <member name="P:SymOntoClay.Threading.ThreadTask.IsCanceled">
-            <summary>
-            Gets whether this task has completed execution due to being canceled.
-            </summary>
-        </member>
-        <member name="P:SymOntoClay.Threading.ThreadTask.IsCompleted">
-            <summary>
-            Gets a value that indicates whether the task has completed.
-            </summary>
-        </member>
-        <member name="P:SymOntoClay.Threading.ThreadTask.IsCompletedSuccessfully">
-            <summary>
-            Gets whether the task ran to completion.
-            </summary>
-        </member>
-        <member name="P:SymOntoClay.Threading.ThreadTask.IsFaulted">
-            <summary>
-            Gets whether the task completed due to an unhandled exception.
-            </summary>
-        </member>
-        <member name="M:SymOntoClay.Threading.ThreadTask.Start">
-            <summary>
-            Starts the <see cref="T:SymOntoClay.Threading.ThreadTask"/>.
-            </summary>
-        </member>
-        <member name="M:SymOntoClay.Threading.ThreadTask.Wait">
-            <summary>
-            Waits for the <see cref="T:SymOntoClay.Threading.ThreadTask"/> to complete execution.
-            </summary>
-        </member>
-        <member name="M:SymOntoClay.Threading.ThreadTask.OnDisposing">
-            <inheritdoc/>
         </member>
         <member name="T:SymOntoClay.Threading.ThreadTaskStatus">
             <summary>

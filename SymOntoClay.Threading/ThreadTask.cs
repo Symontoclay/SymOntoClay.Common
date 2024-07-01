@@ -31,7 +31,7 @@ namespace SymOntoClay.Threading
     /// Represents an asynchronous operation.
     /// This is a wrapper over Thread.
     /// </summary>
-    public class ThreadTask: Disposable
+    public class ThreadTask: BaseThreadTask
     {
         public static ThreadTask Run(Action action, ICustomThreadPool threadPool)
         {
@@ -62,161 +62,87 @@ namespace SymOntoClay.Threading
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool, CancellationToken cancellationToken)
+            : base(new Task(action, cancellationToken), threadPool, cancellationToken)
         {
-            _task = new Task(action, cancellationToken);
-            _threadPool = threadPool;
-            _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool)
+            : base(new Task(action), threadPool, CancellationToken.None)
         {
-            _task = new Task(action);
-            _threadPool = threadPool;
         }
 
         public ThreadTask(Action action, CancellationToken cancellationToken)
+            : base(new Task(action, cancellationToken), null, cancellationToken)
         {
-            _task = new Task(action, cancellationToken);
-            _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action)
+            : base(new Task(action), null, CancellationToken.None)
         {
-            _task = new Task(action);
+        }
+    }
+
+    public class ThreadTask<TResult> : BaseThreadTask
+    {
+        public static ThreadTask<TResult> Run(Func<TResult> function, ICustomThreadPool threadPool)
+        {
+            var task = new ThreadTask<TResult>(function, threadPool);
+            task.Start();
+            return task;
         }
 
-        /// <summary>
-        /// Gets the <see cref="ThreadTaskStatus"/> of this task.
-        /// </summary>
-        public ThreadTaskStatus Status => _status;
-
-        /// <summary>
-        /// Gets whether this task has completed execution due to being canceled.
-        /// </summary>
-        public bool IsCanceled => _status == ThreadTaskStatus.Canceled;
-
-        /// <summary>
-        /// Gets a value that indicates whether the task has completed.
-        /// </summary>
-        public bool IsCompleted => _status == ThreadTaskStatus.RanToCompletion || _status == ThreadTaskStatus.Faulted || _status == ThreadTaskStatus.Canceled;
-
-        /// <summary>
-        /// Gets whether the task ran to completion.
-        /// </summary>
-        public bool IsCompletedSuccessfully => _status == ThreadTaskStatus.RanToCompletion;
-
-        /// <summary>
-        /// Gets whether the task completed due to an unhandled exception.
-        /// </summary>
-        public bool IsFaulted => _status == ThreadTaskStatus.Faulted;
-
-        /// <summary>
-        /// Starts the <see cref="ThreadTask"/>.
-        /// </summary>
-        public void Start()
+        public static ThreadTask<TResult> Run(Func<TResult> function, ICustomThreadPool threadPool, CancellationToken cancellationToken)
         {
-            lock (_lockObj)
-            {
-                if (_status == ThreadTaskStatus.Running)
-                {
-                    return;
-                }
-
-                _status = ThreadTaskStatus.Running;
-            }
-
-            if(_threadPool == null)
-            {
-                if (_thread == null)
-                {
-                    var threadDelegate = new ThreadStart(RunDelegate);
-                    _thread = new Thread(threadDelegate);
-                    _thread.IsBackground = true;
-                }
-
-                _thread.Start();
-            }
-            else
-            {
-                _threadPool.Run(RunDelegate);
-            }
+            var task = new ThreadTask<TResult>(function, threadPool, cancellationToken);
+            task.Start();
+            return task;
         }
 
+        public static ThreadTask<TResult> Run(Func<TResult> function)
+        {
+            var task = new ThreadTask<TResult>(function);
+            task.Start();
+            return task;
+        }
+
+        public static ThreadTask<TResult> Run(Func<TResult> function, CancellationToken cancellationToken)
+        {
+            var task = new ThreadTask<TResult>(function, cancellationToken);
+            task.Start();
+            return task;
+        }
+
+        public ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, CancellationToken cancellationToken)
+            : this(new Task<TResult>(function, cancellationToken), threadPool, cancellationToken)
+        {
+        }
+
+        public ThreadTask(Func<TResult> function, ICustomThreadPool threadPool)
+            : this(new Task<TResult>(function), threadPool, CancellationToken.None)
+        {
+        }
+
+        public ThreadTask(Func<TResult> function, CancellationToken cancellationToken)
+            : this(new Task<TResult>(function, cancellationToken), null, cancellationToken)
+        {
+        }
+
+        public ThreadTask(Func<TResult> function)
+            : this(new Task<TResult>(function), null, CancellationToken.None)
+        {
+        }
+
+        private ThreadTask(Task<TResult> task, ICustomThreadPool threadPool, CancellationToken cancellationToken)
+            : base(task, threadPool, cancellationToken)
+        {
+            _taskWithResult = task;
+        }
+
+        private readonly Task<TResult> _taskWithResult;
+
         /// <summary>
-        /// Waits for the <see cref="ThreadTask"/> to complete execution.
+        /// Gets the result value of this <see cref="ThreadTask{TResult}"/>.
         /// </summary>
-        public void Wait()
-        {
-            _task.Wait();
-        }
-
-        public event Action OnStarted;
-        public event Action OnCanceled;
-        public event Action OnCompleted;
-        public event Action OnCompletedSuccessfully;
-        public event Action OnFaulted;
-
-        private readonly Task _task;
-
-        public Task StandardTask => _task;
-
-        private readonly ICustomThreadPool _threadPool;
-        private readonly CancellationToken _cancellationToken;
-        private Thread _thread;
-        private object _lockObj = new object();
-        private volatile ThreadTaskStatus _status = ThreadTaskStatus.Created;
-
-        private void RunDelegate()
-        {
-            try
-            {
-                if(_cancellationToken.IsCancellationRequested)
-                {
-                    PerformCanceled();
-                    OnCompleted?.Invoke();
-                    return;
-                }
-
-                OnStarted?.Invoke();
-
-                if (_cancellationToken.IsCancellationRequested)
-                {
-                    PerformCanceled();
-                    OnCompleted?.Invoke();
-                    return;
-                }
-
-                _task.RunSynchronously();
-
-                _status = ThreadTaskStatus.RanToCompletion;
-
-                OnCompletedSuccessfully?.Invoke();
-            }
-            catch (OperationCanceledException)
-            {
-                PerformCanceled();
-            }
-            catch (Exception)
-            {
-                _status = ThreadTaskStatus.Faulted;
-                OnFaulted?.Invoke();
-            }
-
-            OnCompleted?.Invoke();
-        }
-
-        private void PerformCanceled()
-        {
-            _status = ThreadTaskStatus.Canceled;
-            OnCanceled?.Invoke();
-        }
-
-        /// <inheritdoc/>
-        protected override void OnDisposing()
-        {
-            _task.Dispose();
-
-            base.OnDisposing();
-        }
+        public TResult Result => _taskWithResult.Result;
     }
 }

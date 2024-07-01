@@ -1,10 +1,4 @@
 ﻿using SymOntoClay.Threading;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace TestSandBox
 {
@@ -18,9 +12,27 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunManyWithCustomThreadPool();
+            RunWithResult();
+            //RunManyWithCustomThreadPool();
             //RunWithCustomThreadPool();
             //RunWithOwnThread();
+
+            _logger.Info("End");
+        }
+
+        private void RunWithResult()
+        {
+            _logger.Info("Begin");
+
+            using var threadPool = new CustomThreadPool(0, 20);
+
+            var task = ThreadTask<int>.Run(() => { return 16; }, threadPool);
+
+            var result = task.Result;
+
+            _logger.Info($"result = {result}");
+
+            Thread.Sleep(10000);
 
             _logger.Info("End");
         }
