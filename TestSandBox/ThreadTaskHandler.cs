@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestSandBox
@@ -17,8 +18,38 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunWithCustomThreadPool();
+            RunManyWithCustomThreadPool();
+            //RunWithCustomThreadPool();
             //RunWithOwnThread();
+
+            _logger.Info("End");
+        }
+
+        private void RunManyWithCustomThreadPool()
+        {
+            _logger.Info("Begin");
+
+            using var threadPool = new CustomThreadPool(0, 20);
+
+            foreach (var n in Enumerable.Range(1, 2000))
+            {
+                Task.Run(() => {
+                    Thread.Sleep(1000);
+                });
+            }
+
+            foreach (var n in Enumerable.Range(1, 200))
+            {
+                _logger.Info($"1 {n}");
+
+                ThreadTask.Run(() => {
+                    _logger.Info($"Begin 1 {n}");
+                    Thread.Sleep(100);
+                    _logger.Info($"End 1 {n}");
+                }, threadPool);
+            }
+
+            Thread.Sleep(10000);
 
             _logger.Info("End");
         }

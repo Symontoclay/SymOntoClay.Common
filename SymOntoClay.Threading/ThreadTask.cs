@@ -22,6 +22,8 @@ SOFTWARE.*/
 
 using System.Threading;
 using System;
+using System.Threading.Tasks;
+using SymOntoClay.Common.Disposing;
 
 namespace SymOntoClay.Threading
 {
@@ -29,12 +31,8 @@ namespace SymOntoClay.Threading
     /// Represents an asynchronous operation.
     /// This is a wrapper over Thread.
     /// </summary>
-    public class ThreadTask
+    public class ThreadTask: Disposable
     {
-#if DEBUG
-        //private static readonly NLog.ILogger _globalLogger = NLog.LogManager.GetCurrentClassLogger();
-#endif
-
         public static ThreadTask Run(Action action, ICustomThreadPool threadPool)
         {
             var task = new ThreadTask(action, threadPool);
@@ -65,97 +63,52 @@ namespace SymOntoClay.Threading
 
         public ThreadTask(Action action, ICustomThreadPool threadPool, CancellationToken cancellationToken)
         {
-            _action = action;
+            _task = new Task(action, cancellationToken);
             _threadPool = threadPool;
             _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool)
         {
-            _action = action;
+            _task = new Task(action);
             _threadPool = threadPool;
         }
 
         public ThreadTask(Action action, CancellationToken cancellationToken)
         {
-            _action = action;
+            _task = new Task(action, cancellationToken);
             _cancellationToken = cancellationToken;
         }
 
         public ThreadTask(Action action)
         {
-            _action = action;
+            _task = new Task(action);
         }
 
         /// <summary>
         /// Gets the <see cref="ThreadTaskStatus"/> of this task.
         /// </summary>
-        public ThreadTaskStatus Status
-        {
-            get
-            {
-                lock (_lockObj)
-                {
-                    return _status;
-                }
-            }
-        }
+        public ThreadTaskStatus Status => _status;
 
         /// <summary>
         /// Gets whether this task has completed execution due to being canceled.
         /// </summary>
-        public bool IsCanceled
-        {
-            get
-            {
-                lock (_lockObj)
-                {
-                    return _status == ThreadTaskStatus.Canceled;
-                }
-            }
-        }
+        public bool IsCanceled => _status == ThreadTaskStatus.Canceled;
 
         /// <summary>
         /// Gets a value that indicates whether the task has completed.
         /// </summary>
-        public bool IsCompleted
-        {
-            get
-            {
-                lock (_lockObj)
-                {
-                    return _status == ThreadTaskStatus.RanToCompletion || _status == ThreadTaskStatus.Faulted || _status == ThreadTaskStatus.Canceled;
-                }
-            }
-        }
+        public bool IsCompleted => _status == ThreadTaskStatus.RanToCompletion || _status == ThreadTaskStatus.Faulted || _status == ThreadTaskStatus.Canceled;
 
         /// <summary>
         /// Gets whether the task ran to completion.
         /// </summary>
-        public bool IsCompletedSuccessfully
-        {
-            get
-            {
-                lock (_lockObj)
-                {
-                    return _status == ThreadTaskStatus.RanToCompletion;
-                }
-            }
-        }
+        public bool IsCompletedSuccessfully => _status == ThreadTaskStatus.RanToCompletion;
 
         /// <summary>
         /// Gets whether the task completed due to an unhandled exception.
         /// </summary>
-        public bool IsFaulted
-        {
-            get
-            {
-                lock (_lockObj)
-                {
-                    return _status == ThreadTaskStatus.Faulted;
-                }
-            }
-        }
+        public bool IsFaulted => _status == ThreadTaskStatus.Faulted;
 
         /// <summary>
         /// Starts the <see cref="ThreadTask"/>.
@@ -194,16 +147,7 @@ namespace SymOntoClay.Threading
         /// </summary>
         public void Wait()
         {
-            if(_threadPool == null)
-            {
-                _thread?.Join();
-            }
-            else
-            {
-                while(_status == ThreadTaskStatus.Running)
-                {
-                }
-            }
+            _task.Wait();
         }
 
         public event Action OnStarted;
@@ -212,7 +156,10 @@ namespace SymOntoClay.Threading
         public event Action OnCompletedSuccessfully;
         public event Action OnFaulted;
 
-        private Action _action;
+        private readonly Task _task;
+
+        public Task StandardTask => _task;
+
         private readonly ICustomThreadPool _threadPool;
         private readonly CancellationToken _cancellationToken;
         private Thread _thread;
@@ -239,7 +186,7 @@ namespace SymOntoClay.Threading
                     return;
                 }
 
-                _action?.Invoke();
+                _task.RunSynchronously();
 
                 _status = ThreadTaskStatus.RanToCompletion;
 
@@ -262,6 +209,14 @@ namespace SymOntoClay.Threading
         {
             _status = ThreadTaskStatus.Canceled;
             OnCanceled?.Invoke();
+        }
+
+        /// <inheritdoc/>
+        protected override void OnDisposing()
+        {
+            _task.Dispose();
+
+            base.OnDisposing();
         }
     }
 }
