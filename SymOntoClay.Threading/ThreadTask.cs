@@ -140,6 +140,8 @@ namespace SymOntoClay.Threading
 
         private readonly Task<TResult> _taskWithResult;
 
+        public Task<TResult> StandardTaskWithResult => _taskWithResult;
+
         /// <summary>
         /// Gets the result value of this <see cref="ThreadTask{TResult}"/>.
         /// </summary>

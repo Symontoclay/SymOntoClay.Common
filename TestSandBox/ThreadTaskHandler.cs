@@ -12,10 +12,10 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            RunWithResult();
+            //RunWithResult();
             //RunManyWithCustomThreadPool();
             //RunWithCustomThreadPool();
-            //RunWithOwnThread();
+            RunWithOwnThread();
 
             _logger.Info("End");
         }
