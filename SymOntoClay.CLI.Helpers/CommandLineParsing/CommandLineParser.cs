@@ -814,7 +814,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
             }
             else
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("75A80DB8-CCB9-4111-9A32-418399869664");
             }
         }
 
@@ -1047,7 +1047,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("AA01B329-947B-4F68-AED7-EB0126A59795");
                     }
                 }
                 else
@@ -1102,7 +1102,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        throw new NotImplementedException("F3C72040-2E83-43E8-8E19-09426F14AE7E");
                     }
                 }
                 else
@@ -1168,7 +1168,7 @@ namespace SymOntoClay.CLI.Helpers.CommandLineParsing
                         }
                         else
                         {
-                            throw new NotImplementedException();
+                            throw new NotImplementedException("DF736ABA-9286-42C0-B84C-10C20FA24C4E");
                         }
                     }
                     else
