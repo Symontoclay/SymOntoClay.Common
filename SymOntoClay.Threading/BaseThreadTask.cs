@@ -1,7 +1,5 @@
 ﻿using SymOntoClay.Common.Disposing;
 using System;
-using System.Net.NetworkInformation;
-using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -96,6 +94,7 @@ namespace SymOntoClay.Threading
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
+        public CancellationTokenSource CancellationTokenSource => _cancellationTokenSource;
         public CancellationToken Token => _cancellationToken;
 
         public void Cancel()
