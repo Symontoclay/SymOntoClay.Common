@@ -62,22 +62,33 @@ namespace SymOntoClay.Threading
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool, CancellationToken cancellationToken)
-            : base(new Task(action, cancellationToken), threadPool, cancellationToken)
+            : this(action, threadPool, new CancellationTokenSource(), cancellationToken)
         {
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool)
-            : base(new Task(action), threadPool, CancellationToken.None)
+            : this(action, threadPool, CancellationToken.None)
         {
         }
 
         public ThreadTask(Action action, CancellationToken cancellationToken)
-            : base(new Task(action, cancellationToken), null, cancellationToken)
+            : this(action, null, cancellationToken)
         {
         }
 
         public ThreadTask(Action action)
-            : base(new Task(action), null, CancellationToken.None)
+            : this(action, null, CancellationToken.None)
+        {
+        }
+
+        private ThreadTask(Action action, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationToken cancellationToken)
+            : this(new Task(action, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken).Token),
+                  threadPool, cancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken))
+        {
+        }
+
+        private ThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationTokenSource linkedCancellationTokenSource)
+            : base(task, threadPool, cancellationTokenSource, linkedCancellationTokenSource)
         {
         }
     }
@@ -113,27 +124,33 @@ namespace SymOntoClay.Threading
         }
 
         public ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, CancellationToken cancellationToken)
-            : this(new Task<TResult>(function, cancellationToken), threadPool, cancellationToken)
+            : this(function, threadPool, new CancellationTokenSource(), cancellationToken)
         {
         }
 
         public ThreadTask(Func<TResult> function, ICustomThreadPool threadPool)
-            : this(new Task<TResult>(function), threadPool, CancellationToken.None)
+            : this(function, threadPool, CancellationToken.None)
         {
         }
 
         public ThreadTask(Func<TResult> function, CancellationToken cancellationToken)
-            : this(new Task<TResult>(function, cancellationToken), null, cancellationToken)
+            : this(function, null, cancellationToken)
         {
         }
 
         public ThreadTask(Func<TResult> function)
-            : this(new Task<TResult>(function), null, CancellationToken.None)
+            : this(function, null, CancellationToken.None)
         {
         }
 
-        private ThreadTask(Task<TResult> task, ICustomThreadPool threadPool, CancellationToken cancellationToken)
-            : base(task, threadPool, cancellationToken)
+        private ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationToken cancellationToken)
+            : this(new Task<TResult>(function, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken).Token),
+                  threadPool, cancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken))
+        {
+        }
+
+        private ThreadTask(Task<TResult> task, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationTokenSource linkedCancellationTokenSource)
+            : base(task, threadPool, cancellationTokenSource, linkedCancellationTokenSource)
         {
             _taskWithResult = task;
         }

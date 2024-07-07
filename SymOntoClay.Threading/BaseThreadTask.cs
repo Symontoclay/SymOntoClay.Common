@@ -1,6 +1,7 @@
 ﻿using SymOntoClay.Common.Disposing;
 using System;
 using System.Net.NetworkInformation;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,11 +9,12 @@ namespace SymOntoClay.Threading
 {
     public abstract class BaseThreadTask : Disposable
     {
-        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationToken cancellationToken)
+        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationTokenSource linkedCancellationTokenSource)
         {
             _task = task;
             _threadPool = threadPool;
-            _cancellationToken = cancellationToken;
+            _cancellationTokenSource = cancellationTokenSource;
+            _cancellationToken = linkedCancellationTokenSource.Token;
         }
 
         /// <summary>
@@ -91,9 +93,15 @@ namespace SymOntoClay.Threading
         public Task StandardTask => _task;
 
         private readonly ICustomThreadPool _threadPool;
+        private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
         public CancellationToken Token => _cancellationToken;
+
+        public void Cancel()
+        {
+            _cancellationTokenSource.Cancel();
+        }
 
         private Thread _thread;
         private object _lockObj = new object();
