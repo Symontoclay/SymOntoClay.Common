@@ -92,6 +92,9 @@ namespace SymOntoClay.Threading
 
         private readonly ICustomThreadPool _threadPool;
         private readonly CancellationToken _cancellationToken;
+
+        public CancellationToken Token => _cancellationToken;
+
         private Thread _thread;
         private object _lockObj = new object();
         private volatile ThreadTaskStatus _status = ThreadTaskStatus.Created;
