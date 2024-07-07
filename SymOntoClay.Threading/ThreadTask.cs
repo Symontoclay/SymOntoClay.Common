@@ -20,10 +20,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
-using System.Threading;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
-using SymOntoClay.Common.Disposing;
 
 namespace SymOntoClay.Threading
 {

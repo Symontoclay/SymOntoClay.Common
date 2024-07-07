@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SymOntoClay.Threading
 {
-    public abstract class BaseThreadTask : Disposable
+    public abstract class BaseThreadTask : Disposable, IThreadTask
     {
         protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationTokenSource linkedCancellationTokenSource)
         {
@@ -15,34 +15,22 @@ namespace SymOntoClay.Threading
             _cancellationToken = linkedCancellationTokenSource.Token;
         }
 
-        /// <summary>
-        /// Gets the <see cref="ThreadTaskStatus"/> of this task.
-        /// </summary>
+        /// <inheritdoc/>
         public ThreadTaskStatus Status => _status;
 
-        /// <summary>
-        /// Gets whether this task has completed execution due to being canceled.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsCanceled => _status == ThreadTaskStatus.Canceled;
 
-        /// <summary>
-        /// Gets a value that indicates whether the task has completed.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsCompleted => _status == ThreadTaskStatus.RanToCompletion || _status == ThreadTaskStatus.Faulted || _status == ThreadTaskStatus.Canceled;
 
-        /// <summary>
-        /// Gets whether the task ran to completion.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsCompletedSuccessfully => _status == ThreadTaskStatus.RanToCompletion;
 
-        /// <summary>
-        /// Gets whether the task completed due to an unhandled exception.
-        /// </summary>
+        /// <inheritdoc/>
         public bool IsFaulted => _status == ThreadTaskStatus.Faulted;
 
-        /// <summary>
-        /// Starts the <see cref="ThreadTask"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public void Start()
         {
             lock (_lockObj)
@@ -72,31 +60,43 @@ namespace SymOntoClay.Threading
             }
         }
 
-        /// <summary>
-        /// Waits for the <see cref="ThreadTask"/> to complete execution.
-        /// </summary>
+        /// <inheritdoc/>
         public void Wait()
         {
             _task.Wait();
         }
 
+        /// <inheritdoc/>
         public event Action OnStarted;
+
+        /// <inheritdoc/>
         public event Action OnCanceled;
+
+        /// <inheritdoc/>
         public event Action OnCompleted;
+
+        /// <inheritdoc/>
         public event Action OnCompletedSuccessfully;
+
+        /// <inheritdoc/>
         public event Action OnFaulted;
 
         private readonly Task _task;
 
+        /// <inheritdoc/>
         public Task StandardTask => _task;
 
         private readonly ICustomThreadPool _threadPool;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly CancellationToken _cancellationToken;
 
+        /// <inheritdoc/>
         public CancellationTokenSource CancellationTokenSource => _cancellationTokenSource;
+
+        /// <inheritdoc/>
         public CancellationToken Token => _cancellationToken;
 
+        /// <inheritdoc/>
         public void Cancel()
         {
             _cancellationTokenSource.Cancel();
