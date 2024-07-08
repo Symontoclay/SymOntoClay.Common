@@ -92,7 +92,7 @@ namespace SymOntoClay.Threading
         }
     }
 
-    public class ThreadTask<TResult> : BaseThreadTask
+    public class ThreadTask<TResult> : BaseThreadTask, IThreadTask<TResult>
     {
         public static ThreadTask<TResult> Run(Func<TResult> function, ICustomThreadPool threadPool)
         {
@@ -156,11 +156,10 @@ namespace SymOntoClay.Threading
 
         private readonly Task<TResult> _taskWithResult;
 
+        /// <inheritdoc/>
         public Task<TResult> StandardTaskWithResult => _taskWithResult;
 
-        /// <summary>
-        /// Gets the result value of this <see cref="ThreadTask{TResult}"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public TResult Result => _taskWithResult.Result;
     }
 }

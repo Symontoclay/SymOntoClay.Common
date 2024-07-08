@@ -56,4 +56,14 @@ namespace SymOntoClay.Threading
 
         void Cancel();
     }
+
+    public interface IThreadTask<TResult> : IThreadTask
+    {
+        Task<TResult> StandardTaskWithResult { get; }
+
+        /// <summary>
+        /// Gets the result value of this <see cref="ThreadTask{TResult}"/>.
+        /// </summary>
+        TResult Result { get; }
+    }
 }

@@ -105,16 +105,22 @@
             Waits for the <see cref="T:SymOntoClay.Threading.ThreadTask"/> to complete execution.
             </summary>
         </member>
+        <member name="P:SymOntoClay.Threading.IThreadTask`1.Result">
+            <summary>
+            Gets the result value of this <see cref="T:SymOntoClay.Threading.ThreadTask`1"/>.
+            </summary>
+        </member>
         <member name="T:SymOntoClay.Threading.ThreadTask">
             <summary>
             Represents an asynchronous operation.
             This is a wrapper over Thread.
             </summary>
         </member>
+        <member name="P:SymOntoClay.Threading.ThreadTask`1.StandardTaskWithResult">
+            <inheritdoc/>
+        </member>
         <member name="P:SymOntoClay.Threading.ThreadTask`1.Result">
-            <summary>
-            Gets the result value of this <see cref="T:SymOntoClay.Threading.ThreadTask`1"/>.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="T:SymOntoClay.Threading.ThreadTaskStatus">
             <summary>
