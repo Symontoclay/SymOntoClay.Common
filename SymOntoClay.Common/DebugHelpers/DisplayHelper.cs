@@ -380,7 +380,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
@@ -413,7 +413,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToShortString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
@@ -446,7 +446,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToBriefString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
@@ -850,7 +850,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
@@ -887,7 +887,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToShortString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
@@ -924,7 +924,7 @@ namespace SymOntoClay.Common.DebugHelpers
                 foreach (var item in items)
                 {
                     sb.AppendLine($"{nextNSpaces}Begin Item");
-                    sb.AppendLine($"{nextNextNSpaces}Beign Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
                     sb.Append(item.Key.ToBriefString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Key");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
