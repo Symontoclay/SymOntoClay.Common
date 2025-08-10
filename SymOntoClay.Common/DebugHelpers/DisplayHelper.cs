@@ -458,6 +458,39 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
+        public static void PrintDbgObjDict_1_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
+            where K : IObjectToDbgString
+            where V : IObjectToDbgString
+        {
+            var spaces = Spaces(n);
+            var nextN = n + IndentationStep;
+            var nextNSpaces = Spaces(nextN);
+            var nextNextN = nextN + IndentationStep;
+            var nextNextNSpaces = Spaces(nextNextN);
+            var nextNextNextN = nextNextN + IndentationStep;
+
+            if (items == null)
+            {
+                sb.AppendLine($"{spaces}{propName} = NULL");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {propName}");
+                foreach (var item in items)
+                {
+                    sb.AppendLine($"{nextNSpaces}Begin Item");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Key");
+                    sb.Append(item.Key.ToDbgString(nextNextNextN));
+                    sb.AppendLine($"{nextNextNSpaces}End Key");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Value");
+                    sb.Append(item.Value.ToDbgString(nextNextNextN));
+                    sb.AppendLine($"{nextNextNSpaces}End Value");
+                    sb.AppendLine($"{nextNSpaces}End Item");
+                }
+                sb.AppendLine($"{spaces}End {propName}");
+            }
+        }
+
         public static void PrintObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IDictionary<K, V> items)
             where K : struct
             where V : IObjectToString
@@ -551,6 +584,37 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
+        public static void PrintDbgObjDict_2_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<K, V>> items)
+            where K : struct
+            where V : IObjectToDbgString
+        {
+            var spaces = Spaces(n);
+            var nextN = n + IndentationStep;
+            var nextNSpaces = Spaces(nextN);
+            var nextNextN = nextN + IndentationStep;
+            var nextNextNSpaces = Spaces(nextNextN);
+            var nextNextNextN = nextNextN + IndentationStep;
+
+            if (items == null)
+            {
+                sb.AppendLine($"{spaces}{propName} = NULL");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {propName}");
+                foreach (var item in items)
+                {
+                    sb.AppendLine($"{nextNSpaces}Begin Item");
+                    sb.AppendLine($"{nextNextNSpaces}Key = {item.Key}");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Value");
+                    sb.Append(item.Value.ToDbgString(nextNextNextN));
+                    sb.AppendLine($"{nextNextNSpaces}End Value");
+                    sb.AppendLine($"{nextNSpaces}End Item");
+                }
+                sb.AppendLine($"{spaces}End {propName}");
+            }
+        }
+
         public static void PrintObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
             where V : IObjectToString
         {
@@ -611,7 +675,7 @@ namespace SymOntoClay.Common.DebugHelpers
             }
         }
 
-        public static void PrintBriefObjDict_3_Prop<K, V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
+        public static void PrintBriefObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
             where V : IObjectToBriefString
         {
             var spaces = Spaces(n);
@@ -634,6 +698,36 @@ namespace SymOntoClay.Common.DebugHelpers
                     sb.AppendLine($"{nextNextNSpaces}Key = {item.Key}");
                     sb.AppendLine($"{nextNextNSpaces}Begin Value");
                     sb.Append(item.Value.ToBriefString(nextNextNextN));
+                    sb.AppendLine($"{nextNextNSpaces}End Value");
+                    sb.AppendLine($"{nextNSpaces}End Item");
+                }
+                sb.AppendLine($"{spaces}End {propName}");
+            }
+        }
+
+        public static void PrintDbgObjDict_3_Prop<V>(this StringBuilder sb, uint n, string propName, IEnumerable<KeyValuePair<string, V>> items)
+            where V : IObjectToDbgString
+        {
+            var spaces = Spaces(n);
+            var nextN = n + IndentationStep;
+            var nextNSpaces = Spaces(nextN);
+            var nextNextN = nextN + IndentationStep;
+            var nextNextNSpaces = Spaces(nextNextN);
+            var nextNextNextN = nextNextN + IndentationStep;
+
+            if (items == null)
+            {
+                sb.AppendLine($"{spaces}{propName} = NULL");
+            }
+            else
+            {
+                sb.AppendLine($"{spaces}Begin {propName}");
+                foreach (var item in items)
+                {
+                    sb.AppendLine($"{nextNSpaces}Begin Item");
+                    sb.AppendLine($"{nextNextNSpaces}Key = {item.Key}");
+                    sb.AppendLine($"{nextNextNSpaces}Begin Value");
+                    sb.Append(item.Value.ToDbgString(nextNextNextN));
                     sb.AppendLine($"{nextNextNSpaces}End Value");
                     sb.AppendLine($"{nextNSpaces}End Item");
                 }
