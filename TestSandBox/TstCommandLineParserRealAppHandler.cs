@@ -18,7 +18,7 @@ namespace TestSandBox
 
             _logger.Info("End");
         }
-
+        
         private void CaseSymOntoClayCLI()
         {
             _logger.Info("Begin");
