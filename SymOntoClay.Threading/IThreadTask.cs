@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using SymOntoClay.Common.Cancellation;
 using SymOntoClay.Common.Disposing;
 using System;
 using System.Threading;
@@ -72,9 +73,9 @@ namespace SymOntoClay.Threading
 
         Task StandardTask { get; }
 
-        CancellationTokenSource CancellationTokenSource { get; }
+        CancellationTokenSourceContext CancellationTokenSourceContext { get; }
 
-        CancellationToken Token { get; }
+        ICancellationContext CancellationContext { get; }
 
         void Cancel();
     }

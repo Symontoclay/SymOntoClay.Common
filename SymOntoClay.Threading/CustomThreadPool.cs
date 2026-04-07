@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using SymOntoClay.Common.Cancellation;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -34,18 +35,20 @@ namespace SymOntoClay.Threading
 #endif
 
         public CustomThreadPool(int minThreadsCount, int maxThreadsCount)
-            : this(minThreadsCount, maxThreadsCount, CancellationToken.None)
+            : this(minThreadsCount, maxThreadsCount, new CancellationTokenContext(CancellationToken.None))
         {
         }
 
-        public CustomThreadPool(int minThreadsCount, int maxThreadsCount, CancellationToken cancellationToken)
+        public CustomThreadPool(int minThreadsCount, int maxThreadsCount, ICancellationContext cancellationContext)
         {
-            _cancellationToken = cancellationToken;
+            _cancellationContext = cancellationContext;
 
             _maxThreadsCount = maxThreadsCount;
 
             if (minThreadsCount > 0)
             {
+                var cancellationToken = cancellationContext.Token;
+
                 foreach (var n in Enumerable.Range(1, minThreadsCount))
                 {
 #if DEBUG
@@ -60,7 +63,7 @@ namespace SymOntoClay.Threading
         }
 
         private readonly int _maxThreadsCount;
-        private readonly CancellationToken _cancellationToken;
+        private readonly ICancellationContext _cancellationContext;
         private readonly ConcurrentBag<Thread> _threads = new ConcurrentBag<Thread>();
         private readonly ConcurrentQueue<Thread> _readyThreads = new ConcurrentQueue<Thread>();
         private readonly ConcurrentQueue<Action> _queue = new ConcurrentQueue<Action>();
@@ -90,7 +93,9 @@ namespace SymOntoClay.Threading
             //_logger.Info($"_readyThreads.Count = {_readyThreads.Count}");
 #endif
 
-            _cancellationToken.ThrowIfCancellationRequested();
+            var cancellationToken = _cancellationContext.Token;
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             _queue.Enqueue(action);
 
@@ -127,7 +132,7 @@ namespace SymOntoClay.Threading
                 //_logger.Info($"Begin Iteration");
 #endif
 
-                if (_cancellationToken.IsCancellationRequested)
+                if (_cancellationContext.IsCancellationRequested)
                 {
 #if DEBUG
                     //_logger.Info($"Cancel");
@@ -144,7 +149,7 @@ namespace SymOntoClay.Threading
 
                     action();
 
-                    if (_cancellationToken.IsCancellationRequested)
+                    if (_cancellationContext.IsCancellationRequested)
                     {
 #if DEBUG
                         //_logger.Info($"Cancel");

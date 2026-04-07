@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using SymOntoClay.Common.Cancellation;
 using SymOntoClay.Common.Disposing;
 using System;
 using System.Threading;
@@ -29,12 +30,12 @@ namespace SymOntoClay.Threading
 {
     public abstract class BaseThreadTask : Disposable, IThreadTask
     {
-        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, CancellationTokenSource linkedCancellationTokenSource)
+        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationTokenSourceContext linkedCancellationTokenSourceContext)
         {
             _task = task;
             _threadPool = threadPool;
-            _cancellationTokenSource = cancellationTokenSource;
-            _cancellationToken = linkedCancellationTokenSource.Token;
+            _cancellationTokenSourceContext = cancellationTokenSourceContext;
+            _linkedCancellationTokenSourceContext = linkedCancellationTokenSourceContext;
         }
 
         /// <inheritdoc/>
@@ -109,19 +110,19 @@ namespace SymOntoClay.Threading
         public Task StandardTask => _task;
 
         private readonly ICustomThreadPool _threadPool;
-        private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly CancellationToken _cancellationToken;
+        private readonly CancellationTokenSourceContext _cancellationTokenSourceContext;
+        private readonly CancellationTokenSourceContext _linkedCancellationTokenSourceContext;
 
         /// <inheritdoc/>
-        public CancellationTokenSource CancellationTokenSource => _cancellationTokenSource;
+        public CancellationTokenSourceContext CancellationTokenSourceContext => _cancellationTokenSourceContext;
 
         /// <inheritdoc/>
-        public CancellationToken Token => _cancellationToken;
+        public ICancellationContext CancellationContext => _linkedCancellationTokenSourceContext;
 
         /// <inheritdoc/>
         public void Cancel()
         {
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSourceContext.Cancel();
         }
 
         private Thread _thread;
@@ -132,7 +133,7 @@ namespace SymOntoClay.Threading
         {
             try
             {
-                if (_cancellationToken.IsCancellationRequested)
+                if (_linkedCancellationTokenSourceContext.IsCancellationRequested)
                 {
                     PerformCanceled();
                     OnCompleted?.Invoke();
@@ -141,7 +142,7 @@ namespace SymOntoClay.Threading
 
                 OnStarted?.Invoke();
 
-                if (_cancellationToken.IsCancellationRequested)
+                if (_linkedCancellationTokenSourceContext.IsCancellationRequested)
                 {
                     PerformCanceled();
                     OnCompleted?.Invoke();
