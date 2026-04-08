@@ -30,7 +30,7 @@ namespace SymOntoClay.Threading
 {
     public abstract class BaseThreadTask : Disposable, IThreadTask
     {
-        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationTokenSourceContext linkedCancellationTokenSourceContext)
+        protected BaseThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationLinkedTokenSourceContext linkedCancellationTokenSourceContext)
         {
             _task = task;
             _threadPool = threadPool;
@@ -111,7 +111,7 @@ namespace SymOntoClay.Threading
 
         private readonly ICustomThreadPool _threadPool;
         private readonly CancellationTokenSourceContext _cancellationTokenSourceContext;
-        private readonly CancellationTokenSourceContext _linkedCancellationTokenSourceContext;
+        private readonly CancellationLinkedTokenSourceContext _linkedCancellationTokenSourceContext;
 
         /// <inheritdoc/>
         public CancellationTokenSourceContext CancellationTokenSourceContext => _cancellationTokenSourceContext;

@@ -62,7 +62,7 @@ namespace SymOntoClay.Threading
         }
 
         public ThreadTask(Action action, ICustomThreadPool threadPool, ICancellationContext cancellationContext)
-            : this(action, threadPool, new CancellationTokenSource(), cancellationContext)
+            : this(action, threadPool, new CancellationTokenSourceContext(), cancellationContext)
         {
         }
 
@@ -81,13 +81,13 @@ namespace SymOntoClay.Threading
         {
         }
 
-        private ThreadTask(Action action, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, ICancellationContext cancellationContext)
-            : this(new Task(action, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken).Token),
-                  threadPool, cancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken))
+        private ThreadTask(Action action, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, ICancellationContext cancellationContext)
+            : this(new Task(action, new CancellationLinkedTokenSourceContext(cancellationTokenSourceContext, cancellationContext).Token),
+                  threadPool, cancellationTokenSourceContext, new CancellationLinkedTokenSourceContext(cancellationTokenSourceContext, cancellationContext))
         {
         }
 
-        private ThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationTokenSourceContext linkedCancellationTokenSourceContext)
+        private ThreadTask(Task task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationLinkedTokenSourceContext linkedCancellationTokenSourceContext)
             : base(task, threadPool, cancellationTokenSourceContext, linkedCancellationTokenSourceContext)
         {
         }
@@ -124,7 +124,7 @@ namespace SymOntoClay.Threading
         }
 
         public ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, ICancellationContext cancellationContext)
-            : this(function, threadPool, new CancellationTokenSource(), cancellationContext)
+            : this(function, threadPool, new CancellationTokenSourceContext(), cancellationContext)
         {
         }
 
@@ -143,13 +143,13 @@ namespace SymOntoClay.Threading
         {
         }
 
-        private ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, CancellationTokenSource cancellationTokenSource, ICancellationContext cancellationContext)
-            : this(new Task<TResult>(function, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken).Token),
-                  threadPool, cancellationTokenSource, CancellationTokenSource.CreateLinkedTokenSource(cancellationTokenSource.Token, cancellationToken))
+        private ThreadTask(Func<TResult> function, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, ICancellationContext cancellationContext)
+            : this(new Task<TResult>(function, new CancellationLinkedTokenSourceContext(cancellationTokenSourceContext, cancellationContext).Token),
+                  threadPool, cancellationTokenSourceContext, new CancellationLinkedTokenSourceContext(cancellationTokenSourceContext, cancellationContext))
         {
         }
 
-        private ThreadTask(Task<TResult> task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationTokenSourceContext linkedCancellationTokenSourceContext)
+        private ThreadTask(Task<TResult> task, ICustomThreadPool threadPool, CancellationTokenSourceContext cancellationTokenSourceContext, CancellationLinkedTokenSourceContext linkedCancellationTokenSourceContext)
             : base(task, threadPool, cancellationTokenSourceContext, linkedCancellationTokenSourceContext)
         {
             _taskWithResult = task;

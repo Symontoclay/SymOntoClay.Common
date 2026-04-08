@@ -43,10 +43,10 @@
         <member name="P:SymOntoClay.Threading.BaseThreadTask.StandardTask">
             <inheritdoc/>
         </member>
-        <member name="P:SymOntoClay.Threading.BaseThreadTask.CancellationTokenSource">
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.CancellationTokenSourceContext">
             <inheritdoc/>
         </member>
-        <member name="P:SymOntoClay.Threading.BaseThreadTask.Token">
+        <member name="P:SymOntoClay.Threading.BaseThreadTask.CancellationContext">
             <inheritdoc/>
         </member>
         <member name="M:SymOntoClay.Threading.BaseThreadTask.Cancel">
