@@ -20,6 +20,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
+using SymOntoClay.Common.Cancellation;
 using SymOntoClay.Threading;
 using System.Collections.Concurrent;
 using System.Threading;
@@ -124,11 +125,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var source = new CancellationTokenSource();
+            using var sourceContext = new CancellationTokenSourceContext();
 
-            using var threadPool1 = new CustomThreadPool(0, 20, source.Token);
-            using var threadPool2 = new CustomThreadPool(0, 20, source.Token);
-            using var threadPool3 = new CustomThreadPool(0, 20, source.Token);
+            using var threadPool1 = new CustomThreadPool(0, 20, sourceContext);
+            using var threadPool2 = new CustomThreadPool(0, 20, sourceContext);
+            using var threadPool3 = new CustomThreadPool(0, 20, sourceContext);
 
             foreach (var n in Enumerable.Range(1, 200))
             {
@@ -167,7 +168,7 @@ namespace TestSandBox
 
             _logger.Info("###################");
 
-            source.Cancel();
+            sourceContext.Cancel();
 
             Thread.Sleep(100000);
 
