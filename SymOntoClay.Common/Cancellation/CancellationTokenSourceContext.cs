@@ -15,7 +15,7 @@ namespace SymOntoClay.Common.Cancellation
             _cancellationTokenSource = cancellationTokenSource;
         }
 
-        [SettingsMember]
+        [SystemNoSerializedMember]
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>

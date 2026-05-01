@@ -18,7 +18,7 @@ namespace SymOntoClay.Common.Cancellation
         private readonly ICancellationContext _cancellationContext1;
         private readonly ICancellationContext _cancellationContext2;
 
-        [SettingsMember]
+        [SystemNoSerializedMember]
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>
