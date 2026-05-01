@@ -1,4 +1,5 @@
 ﻿using SymOntoClay.Common.DebugHelpers;
+using SymOntoClay.Common.SerializationToImage.Attributes;
 using System.Text;
 using System.Threading;
 
@@ -17,6 +18,7 @@ namespace SymOntoClay.Common.Cancellation
         private readonly ICancellationContext _cancellationContext1;
         private readonly ICancellationContext _cancellationContext2;
 
+        [SettingsMember]
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>
