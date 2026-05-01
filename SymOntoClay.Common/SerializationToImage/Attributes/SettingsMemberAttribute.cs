@@ -2,7 +2,7 @@
 
 namespace SymOntoClay.Common.SerializationToImage.Attributes
 {
-    public class SystemNoSerializedMemberAttribute : Attribute
+    public class SettingsMemberAttribute : Attribute
     {
     }
 }
