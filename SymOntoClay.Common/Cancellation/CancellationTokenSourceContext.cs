@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using SymOntoClay.Common.SerializationToImage.Attributes;
+using System.Threading;
 
 namespace SymOntoClay.Common.Cancellation
 {
@@ -14,6 +15,7 @@ namespace SymOntoClay.Common.Cancellation
             _cancellationTokenSource = cancellationTokenSource;
         }
 
+        [SettingsMember]
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>
