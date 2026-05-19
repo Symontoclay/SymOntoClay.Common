@@ -32,7 +32,9 @@ namespace SymOntoClay.Threading.Tests
             var timeoutBetweenSets = 10000;
             var itemTimeout = 100;
 
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var case1BeginList = new ConcurrentBag<int>();
             var case1EndList = new ConcurrentBag<int>();

@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 using SymOntoClay.Common.Cancellation;
+using SymOntoClay.Common.SerializationToImage.Attributes;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -34,22 +35,31 @@ namespace SymOntoClay.Threading
         //private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
 #endif
 
-        public CustomThreadPool(int minThreadsCount, int maxThreadsCount)
-            : this(minThreadsCount, maxThreadsCount, new CancellationTokenContext(CancellationToken.None))
+        //public CustomThreadPool(int minThreadsCount, int maxThreadsCount)
+        public CustomThreadPool(CustomThreadPoolSettings settings)
+            : this(settings, new CancellationTokenContext(CancellationToken.None))
         {
         }
 
-        public CustomThreadPool(int minThreadsCount, int maxThreadsCount, ICancellationContext cancellationContext)
+        //public CustomThreadPool(int minThreadsCount, int maxThreadsCount, ICancellationContext cancellationContext)
+        public CustomThreadPool(CustomThreadPoolSettings settings, ICancellationContext cancellationContext)
         {
+            _settings = settings;
             _cancellationContext = cancellationContext;
 
-            _maxThreadsCount = maxThreadsCount;
+            Init();
+        }
 
-            if (minThreadsCount > 0)
+        private void Init()
+        {
+            _maxThreadsCount = _settings.MaxThreadsCount ?? DefaultCustomThreadPoolSettings.MaxThreadsCount;
+            _minThreadsCount = _settings.MinThreadsCount ?? DefaultCustomThreadPoolSettings.MinThreadsCount;
+
+            if (_minThreadsCount > 0)
             {
-                var cancellationToken = cancellationContext.Token;
+                var cancellationToken = _cancellationContext.Token;
 
-                foreach (var n in Enumerable.Range(1, minThreadsCount))
+                foreach (var n in Enumerable.Range(1, _minThreadsCount))
                 {
 #if DEBUG
                     //_logger.Info($"n = {n}");
@@ -62,10 +72,18 @@ namespace SymOntoClay.Threading
             }
         }
 
-        private readonly int _maxThreadsCount;
+        private CustomThreadPoolSettings _settings;
+        private int _maxThreadsCount;
+        private int _minThreadsCount;
         private readonly ICancellationContext _cancellationContext;
+
+        [SystemNoSerializedMember]
         private readonly ConcurrentBag<Thread> _threads = new ConcurrentBag<Thread>();
+
+        [SystemNoSerializedMember]
         private readonly ConcurrentQueue<Thread> _readyThreads = new ConcurrentQueue<Thread>();
+
+        [SystemNoSerializedMember]
         private readonly ConcurrentQueue<Action> _queue = new ConcurrentQueue<Action>();
         private volatile bool _needToRun = true;
 

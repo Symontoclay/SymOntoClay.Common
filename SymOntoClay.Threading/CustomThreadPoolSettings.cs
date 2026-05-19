@@ -28,6 +28,16 @@ namespace SymOntoClay.Threading
 {
     public class CustomThreadPoolSettings: IObjectToString
     {
+        public CustomThreadPoolSettings()
+        {
+        }
+
+        public CustomThreadPoolSettings(int minThreadsCount, int maxThreadsCount)
+        {
+            MinThreadsCount = minThreadsCount;
+            MaxThreadsCount = maxThreadsCount;
+        }
+
         public int? MinThreadsCount { get; set; }
         public int? MaxThreadsCount { get; set; }
 

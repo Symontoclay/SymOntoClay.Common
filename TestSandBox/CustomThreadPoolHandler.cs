@@ -54,7 +54,9 @@ namespace TestSandBox
             var timeoutBetweenSets = 10000;
             var itemTimeout = 100;
 
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var case1BeginList = new ConcurrentBag<int>();
             var case1EndList = new ConcurrentBag<int>();
@@ -101,7 +103,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            var threadPool = new CustomThreadPool(threadPoolSettings);
 
             foreach (var n in Enumerable.Range(1, 200))
             {
@@ -127,9 +131,11 @@ namespace TestSandBox
 
             using var sourceContext = new CancellationTokenSourceContext();
 
-            using var threadPool1 = new CustomThreadPool(0, 20, sourceContext);
-            using var threadPool2 = new CustomThreadPool(0, 20, sourceContext);
-            using var threadPool3 = new CustomThreadPool(0, 20, sourceContext);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool1 = new CustomThreadPool(threadPoolSettings, sourceContext);
+            using var threadPool2 = new CustomThreadPool(threadPoolSettings, sourceContext);
+            using var threadPool3 = new CustomThreadPool(threadPoolSettings, sourceContext);
 
             foreach (var n in Enumerable.Range(1, 200))
             {
@@ -179,9 +185,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var threadPool1 = new CustomThreadPool(0, 20);
-            using var threadPool2 = new CustomThreadPool(0, 20);
-            using var threadPool3 = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool1 = new CustomThreadPool(threadPoolSettings);
+            using var threadPool2 = new CustomThreadPool(threadPoolSettings);
+            using var threadPool3 = new CustomThreadPool(threadPoolSettings);
 
             foreach (var n in Enumerable.Range(1, 200))
             {
@@ -219,9 +227,11 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var threadPool1 = new CustomThreadPool(20, 20);
-            using var threadPool2 = new CustomThreadPool(20, 20);
-            using var threadPool3 = new CustomThreadPool(20, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(20, 20);
+
+            using var threadPool1 = new CustomThreadPool(threadPoolSettings);
+            using var threadPool2 = new CustomThreadPool(threadPoolSettings);
+            using var threadPool3 = new CustomThreadPool(threadPoolSettings);
 
             foreach (var n in Enumerable.Range(1, 200))
             {
@@ -259,7 +269,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            var threadPool = new CustomThreadPool(200, 200);
+            var threadPoolSettings = new CustomThreadPoolSettings(200, 200);
+
+            var threadPool = new CustomThreadPool(threadPoolSettings);
 
             Thread.Sleep(100);
 

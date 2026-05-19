@@ -46,7 +46,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var task = ThreadTask<int>.Run(() => { return 16; }, threadPool);
 
@@ -63,7 +65,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             foreach (var n in Enumerable.Range(1, 2000))
             {
@@ -92,7 +96,9 @@ namespace TestSandBox
         {
             _logger.Info("Begin");
 
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var task = new ThreadTask(() => {
                 _logger.Info("Run");

@@ -27,7 +27,9 @@ namespace SymOntoClay.Threading.Tests
         [Test]
         public void RunThreadTaskWithoutResultWithThreadPool_Success()
         {
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var task = new ThreadTask(() => {
             }, threadPool);
@@ -40,7 +42,9 @@ namespace SymOntoClay.Threading.Tests
         [Test]
         public void RunThreadTaskWithResultWithThreadPool_Success()
         {
-            using var threadPool = new CustomThreadPool(0, 20);
+            var threadPoolSettings = new CustomThreadPoolSettings(0, 20);
+
+            using var threadPool = new CustomThreadPool(threadPoolSettings);
 
             var task = ThreadTask<int>.Run(() => { return 16; }, threadPool);
 
