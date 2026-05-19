@@ -52,8 +52,8 @@ namespace SymOntoClay.Threading
 
         private void Init()
         {
-            _maxThreadsCount = _settings.MaxThreadsCount ?? DefaultCustomThreadPoolSettings.MaxThreadsCount;
-            _minThreadsCount = _settings.MinThreadsCount ?? DefaultCustomThreadPoolSettings.MinThreadsCount;
+            _maxThreadsCount = _settings?.MaxThreadsCount ?? DefaultCustomThreadPoolSettings.MaxThreadsCount;
+            _minThreadsCount = _settings?.MinThreadsCount ?? DefaultCustomThreadPoolSettings.MinThreadsCount;
 
             if (_minThreadsCount > 0)
             {
