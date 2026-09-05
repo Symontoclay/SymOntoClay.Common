@@ -1,11 +1,12 @@
 ﻿using SymOntoClay.Common.DebugHelpers;
+using SymOntoClay.Common.SerializationToImage;
 using SymOntoClay.Common.SerializationToImage.Attributes;
 using System.Text;
 using System.Threading;
 
 namespace SymOntoClay.Common.Cancellation
 {
-    public class CancellationLinkedTokenSourceContext : BaseCancellationContext
+    public class CancellationLinkedTokenSourceContext : BaseCancellationContext, IPostDeserializationHandler
     {
         /// <summary>
         /// Constructor for deserialization.
@@ -13,12 +14,23 @@ namespace SymOntoClay.Common.Cancellation
         private CancellationLinkedTokenSourceContext()
         {
         }
-
+        
         public CancellationLinkedTokenSourceContext(ICancellationContext cancellationContext1, ICancellationContext cancellationContext2)
         {
             _cancellationContext1 = cancellationContext1;
             _cancellationContext2 = cancellationContext2;
 
+            Init();
+        }
+
+        /// <inheritdoc/>
+        void IPostDeserializationHandler.Handle()
+        {
+            Init();
+        }
+
+        private void Init()
+        {
             _cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(_cancellationContext1?.Token ?? CancellationToken.None, _cancellationContext2?.Token ?? CancellationToken.None);
         }
 
@@ -26,7 +38,7 @@ namespace SymOntoClay.Common.Cancellation
         private readonly ICancellationContext _cancellationContext2;
 
         [SystemNoSerializedMember]
-        private readonly CancellationTokenSource _cancellationTokenSource;
+        private CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>
         public override bool IsCancellationRequested => _cancellationTokenSource.IsCancellationRequested;

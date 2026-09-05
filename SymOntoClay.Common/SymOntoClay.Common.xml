@@ -45,6 +45,9 @@
             Constructor for deserialization.
             </summary>
         </member>
+        <member name="M:SymOntoClay.Common.Cancellation.CancellationLinkedTokenSourceContext.SymOntoClay#Common#SerializationToImage#IPostDeserializationHandler#Handle">
+            <inheritdoc/>
+        </member>
         <member name="P:SymOntoClay.Common.Cancellation.CancellationLinkedTokenSourceContext.IsCancellationRequested">
             <inheritdoc/>
         </member>
