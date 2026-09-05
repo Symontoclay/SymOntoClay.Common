@@ -41,7 +41,7 @@ namespace SymOntoClay.Common.Cancellation
         private CancellationTokenSource _cancellationTokenSource;
 
         /// <inheritdoc/>
-        public override bool IsCancellationRequested => _cancellationTokenSource.IsCancellationRequested;
+        public override bool IsCancellationRequested => _cancellationTokenSource?.IsCancellationRequested ?? false;
 
         /// <inheritdoc/>
         public override CancellationToken Token => _cancellationTokenSource.Token;
