@@ -40,6 +40,11 @@
         <member name="M:SymOntoClay.Common.Cancellation.BaseCancellationContext.SymOntoClay#Common#IObjectToDbgString#PropertiesToDbgString(System.UInt32)">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.Common.Cancellation.CancellationLinkedTokenSourceContext.#ctor">
+            <summary>
+            Constructor for deserialization.
+            </summary>
+        </member>
         <member name="P:SymOntoClay.Common.Cancellation.CancellationLinkedTokenSourceContext.IsCancellationRequested">
             <inheritdoc/>
         </member>

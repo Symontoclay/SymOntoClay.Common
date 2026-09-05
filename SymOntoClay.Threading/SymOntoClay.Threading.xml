@@ -55,6 +55,11 @@
         <member name="M:SymOntoClay.Threading.BaseThreadTask.OnDisposing">
             <inheritdoc/>
         </member>
+        <member name="M:SymOntoClay.Threading.CustomThreadPool.#ctor">
+            <summary>
+            Constructor for deserialization.
+            </summary>
+        </member>
         <member name="M:SymOntoClay.Threading.CustomThreadPool.Run(System.Action)">
             <inheritdoc/>
         </member>
