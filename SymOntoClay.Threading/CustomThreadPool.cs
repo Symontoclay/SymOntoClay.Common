@@ -36,6 +36,14 @@ namespace SymOntoClay.Threading
 #endif
 
         //public CustomThreadPool(int minThreadsCount, int maxThreadsCount)
+
+        /// <summary>
+        /// Constructor for deserialization.
+        /// </summary>
+        private CustomThreadPool()
+        {
+        }
+
         public CustomThreadPool(CustomThreadPoolSettings settings)
             : this(settings, new CancellationTokenContext(CancellationToken.None))
         {

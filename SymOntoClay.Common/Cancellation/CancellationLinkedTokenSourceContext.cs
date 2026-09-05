@@ -7,6 +7,13 @@ namespace SymOntoClay.Common.Cancellation
 {
     public class CancellationLinkedTokenSourceContext : BaseCancellationContext
     {
+        /// <summary>
+        /// Constructor for deserialization.
+        /// </summary>
+        private CancellationLinkedTokenSourceContext()
+        {
+        }
+
         public CancellationLinkedTokenSourceContext(ICancellationContext cancellationContext1, ICancellationContext cancellationContext2)
         {
             _cancellationContext1 = cancellationContext1;
