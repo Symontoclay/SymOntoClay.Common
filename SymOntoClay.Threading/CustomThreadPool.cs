@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.*/
 
 using SymOntoClay.Common.Cancellation;
+using SymOntoClay.Common.SerializationToImage;
 using SymOntoClay.Common.SerializationToImage.Attributes;
 using System;
 using System.Collections.Concurrent;
@@ -29,7 +30,7 @@ using System.Threading;
 
 namespace SymOntoClay.Threading
 {
-    public class CustomThreadPool : ICustomThreadPool
+    public class CustomThreadPool : ICustomThreadPool, IPostDeserializationHandler
     {
 #if DEBUG
         //private static readonly NLog.ILogger _logger = NLog.LogManager.GetCurrentClassLogger();
@@ -55,6 +56,12 @@ namespace SymOntoClay.Threading
             _settings = settings;
             _cancellationContext = cancellationContext;
 
+            Init();
+        }
+
+        /// <inheritdoc/>
+        void IPostDeserializationHandler.Handle()
+        {
             Init();
         }
 
